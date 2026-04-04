@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) {
         return FluentApp(
           debugShowCheckedModeBanner: false,
-          title: 'Windows UI for Flutter',
+          title: 'Servicable Stock',
           themeMode: theme.mode.value,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
