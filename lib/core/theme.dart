@@ -1,7 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-const labelIconAlignPadding = EdgeInsets.only(top: 8, bottom: 11, left: 3);
-
 class AppTheme {
   const AppTheme._();
 
@@ -17,7 +15,7 @@ class AppTheme {
       ),
       navigationPaneTheme: NavigationPaneThemeData(
         // vertical is asymmetric to better align with leading icon
-        labelPadding: labelIconAlignPadding,
+        labelPadding: .only(top: 8, bottom: 11, left: 3),
       ),
     );
   }
