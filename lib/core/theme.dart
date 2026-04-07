@@ -27,6 +27,8 @@ class AppTheme {
   static final FluentThemeData darkTheme = _extendBaseTheme(
     FluentThemeData(accentColor: Colors.orange, brightness: Brightness.dark),
   );
+
+  static const TextStyle fixedTextHeightStyle = TextStyle(height: 0);
 }
 
 extension AppThemeBuildContext on BuildContext {
@@ -38,6 +40,6 @@ class BtnStyles {
 
   /// For some reason, Fluent text doesn't properly align with leading icon or padding in general. This is a workaround to fix that.
   static const ButtonStyle fixedTextAlignmentStyle = ButtonStyle(
-    textStyle: WidgetStatePropertyAll(TextStyle(height: 0)),
+    textStyle: WidgetStatePropertyAll(AppTheme.fixedTextHeightStyle),
   );
 }
