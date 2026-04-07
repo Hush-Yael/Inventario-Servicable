@@ -1,7 +1,7 @@
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/controllers/shared_preferences_controller.dart';
+import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeController {

@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:disco/disco.dart';
-import 'package:servicable_stock/controllers/shared_preferences_controller.dart';
-import 'package:servicable_stock/controllers/theme_controller.dart';
+import 'package:servicable_stock/controllers/auth_controller.dart';
+import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
+import 'package:servicable_stock/core/controllers/theme_controller.dart';
 import 'package:servicable_stock/core/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';

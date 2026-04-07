@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/login_screen.dart';
-import 'package:servicable_stock/controllers/theme_controller.dart';
+import 'package:servicable_stock/core/controllers/theme_controller.dart';
 import 'package:servicable_stock/core/setup_page.dart';
 import 'package:servicable_stock/core/theme.dart';
 
