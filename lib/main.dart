@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/auth/login_screen.dart';
+import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/core/router/router.dart';
 import 'package:servicable_stock/core/controllers/theme_controller.dart';
 import 'package:servicable_stock/core/setup_page.dart';
 import 'package:servicable_stock/core/theme.dart';
@@ -25,13 +26,15 @@ class _MyAppState extends State<MyApp> {
 
     return SignalBuilder(
       builder: (context, child) {
-        return FluentApp(
+        return FluentApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Servicable Stock',
           themeMode: theme.mode.value,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          home: LoginScreen(),
+          routerConfig: AppRouter(
+            authController: AuthController.provider.of(context),
+          ).config,
         );
       },
     );
