@@ -1,12 +1,22 @@
 import 'package:flutter/foundation.dart';
 
-enum UserRole { admin, operator, supervisor }
+enum UserRole {
+  admin,
+  operator,
+  supervisor;
 
-const Map<UserRole, String> userRolesLabels = {
-  UserRole.admin: 'Admin',
-  UserRole.operator: 'Operador',
-  UserRole.supervisor: 'Supervisor',
-};
+  /// Returns the user role label
+  String get label {
+    switch (this) {
+      case UserRole.admin:
+        return 'Admin';
+      case UserRole.operator:
+        return 'Operador';
+      case UserRole.supervisor:
+        return 'Supervisor';
+    }
+  }
+}
 
 const kNameMinLength = 3;
 const kNameMaxLength = 64;

@@ -6,8 +6,16 @@ const Map<ThemeMode, IconData> themeIcons = {
   ThemeMode.system: FluentIcons.auto_deploy_settings,
 };
 
-const Map<ThemeMode, String> themeLabels = {
-  ThemeMode.light: 'Claro',
-  ThemeMode.dark: 'Oscuro',
-  ThemeMode.system: 'Sistema',
-};
+extension ThemeModeExt on ThemeMode {
+  /// Returns the label of the theme mode
+  String get label {
+    switch (this) {
+      case ThemeMode.light:
+        return 'Claro';
+      case ThemeMode.dark:
+        return 'Oscuro';
+      case ThemeMode.system:
+        return 'Sistema';
+    }
+  }
+}
