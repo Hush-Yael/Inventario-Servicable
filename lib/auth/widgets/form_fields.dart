@@ -7,40 +7,35 @@ import 'package:servicable_stock/auth/auth_vm.dart';
 import 'package:servicable_stock/auth/widgets/external_error.dart';
 import 'package:servicable_stock/core/utils/validators.dart';
 
-class FormFields extends StatefulWidget {
+final nameValidators = FormBuilderValidators.compose([
+  Validators.required,
+  FormBuilderValidators.match(
+    RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
+    errorText: 'El nombre solo puede contener letras y espacios',
+  ),
+  Validators.minLength(kNameMinLength),
+  Validators.maxLength(kNameMaxLength),
+]);
+
+final usernameValidators = FormBuilderValidators.compose([
+  Validators.required,
+  Validators.minLength(kUsernameMinLength),
+  Validators.maxLength(kUsernameMaxLength),
+  FormBuilderValidators.match(
+    RegExp(r'^[a-zA-Z0-9_]+$'),
+    errorText:
+        'El nombre de usuario solo puede contener letras, números y pisos',
+  ),
+]);
+
+final passwordValidators = FormBuilderValidators.compose([
+  Validators.required,
+  Validators.minLength(kPasswordMinLength),
+  Validators.maxLength(kPasswordMaxLength),
+]);
+
+class FormFields extends StatelessWidget {
   const FormFields({super.key});
-
-  @override
-  State<FormFields> createState() => _FormFieldsState();
-}
-
-class _FormFieldsState extends State<FormFields> {
-  final nameValidators = FormBuilderValidators.compose([
-    Validators.required,
-    FormBuilderValidators.match(
-      RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
-      errorText: 'El nombre solo puede contener letras y espacios',
-    ),
-    Validators.minLength(kNameMinLength),
-    Validators.maxLength(kNameMaxLength),
-  ]);
-
-  final usernameValidators = FormBuilderValidators.compose([
-    Validators.required,
-    Validators.minLength(kUsernameMinLength),
-    Validators.maxLength(kUsernameMaxLength),
-    FormBuilderValidators.match(
-      RegExp(r'^[a-zA-Z0-9_]+$'),
-      errorText:
-          'El nombre de usuario solo puede contener letras, números y pisos',
-    ),
-  ]);
-
-  final passwordValidators = FormBuilderValidators.compose([
-    Validators.required,
-    Validators.minLength(kPasswordMinLength),
-    Validators.maxLength(kPasswordMaxLength),
-  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +55,13 @@ class _FormFieldsState extends State<FormFields> {
               const SizedBox(height: 8),
               FormBuilderField(
                 name: 'name',
-                builder: (field) => TextFormBox(
-                  enabled: !isSubmitting.value,
-                  validator: nameValidators,
-                  onChanged: field.didChange,
-                  onFieldSubmitted: vm.fieldSubmit,
+                builder: (field) => SignalBuilder(
+                  builder: (context, child) => TextFormBox(
+                    enabled: !isSubmitting.value,
+                    validator: nameValidators,
+                    onChanged: field.didChange,
+                    onFieldSubmitted: vm.fieldSubmit,
+                  ),
                 ),
               ),
               const SizedBox(height: 22),
@@ -78,15 +75,17 @@ class _FormFieldsState extends State<FormFields> {
         FormBuilderField(
           name: 'username',
           autovalidateMode: .always,
-          builder: (field) => TextFormBox(
-            enabled: !isSubmitting.value,
-            validator: (t) {
-              vm.invalidUsernameMsg.value = null;
-              final String? error = usernameValidators(t);
-              return error;
-            },
-            onChanged: field.didChange,
-            onFieldSubmitted: vm.fieldSubmit,
+          builder: (field) => SignalBuilder(
+            builder: (context, child) => TextFormBox(
+              enabled: !isSubmitting.value,
+              validator: (t) {
+                vm.invalidUsernameMsg.value = null;
+                final String? error = usernameValidators(t);
+                return error;
+              },
+              onChanged: field.didChange,
+              onFieldSubmitted: vm.fieldSubmit,
+            ),
           ),
         ),
 
@@ -104,17 +103,19 @@ class _FormFieldsState extends State<FormFields> {
 
         FormBuilderField(
           name: 'password',
-          builder: (field) => PasswordFormBox(
-            enabled: !isSubmitting.value,
-            revealMode: .peekAlways,
-            // no "onChanged", so use validator instead
-            validator: (t) {
-              vm.invalidPasswordMsg.value = null;
-              final String? error = passwordValidators(t);
-              field.didChange(t);
-              return error;
-            },
-            onFieldSubmitted: vm.fieldSubmit,
+          builder: (field) => SignalBuilder(
+            builder: (context, child) => PasswordFormBox(
+              enabled: !isSubmitting.value,
+              revealMode: .peekAlways,
+              // no "onChanged", so use validator instead
+              validator: (t) {
+                vm.invalidPasswordMsg.value = null;
+                final String? error = passwordValidators(t);
+                field.didChange(t);
+                return error;
+              },
+              onFieldSubmitted: vm.fieldSubmit,
+            ),
           ),
         ),
 

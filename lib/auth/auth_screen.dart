@@ -8,14 +8,9 @@ import 'package:servicable_stock/core/theme.dart';
 import 'package:servicable_stock/auth/auth_vm.dart';
 import 'package:servicable_stock/auth/widgets/theme_selector.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
-  @override
-  State<AuthScreen> createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage(
@@ -76,30 +71,31 @@ class Form extends StatelessWidget {
                       ),
                     ),
                     padding: const .symmetric(horizontal: 20, vertical: 15),
-                    child: SignalBuilder(
-                      builder: (context, child) {
-                        final vm = AuthVm.provider.of(context);
-                        final isSignIn = vm.isSignIn;
+                    child: Column(
+                      crossAxisAlignment: .stretch,
+                      mainAxisAlignment: .spaceBetween,
+                      spacing: 20,
+                      children: [
+                        SignalBuilder(
+                          builder: (context, child) {
+                            final isSignIn = AuthVm.provider
+                                .of(context)
+                                .isSignIn;
 
-                        return Column(
-                          crossAxisAlignment: .stretch,
-                          mainAxisAlignment: .spaceBetween,
-                          spacing: 20,
-                          children: [
-                            Text(
+                            return Text(
                               isSignIn.value
                                   ? 'Ingresar al sistema'
                                   : 'Crear cuenta',
                               style: context.theme.typography.title,
                               textAlign: .center,
-                            ),
+                            );
+                          },
+                        ),
 
-                            FormFields(),
+                        FormFields(),
 
-                            FormBtns(),
-                          ],
-                        );
-                      },
+                        FormBtns(),
+                      ],
                     ),
                   ),
                 ),
