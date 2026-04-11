@@ -29,6 +29,11 @@ class AppTheme {
   );
 
   static const TextStyle fixedTextHeightStyle = TextStyle(height: 0);
+
+  static Color errorColor(BuildContext context) =>
+      MediaQuery.of(context).platformBrightness == Brightness.dark
+      ? Colors.red.lightest
+      : Colors.red.darkest;
 }
 
 extension AppThemeBuildContext on BuildContext {

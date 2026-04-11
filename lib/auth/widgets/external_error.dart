@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:servicable_stock/core/theme.dart';
 
 /// A widget that shows an error message after async validation for any field.
 class ExternalError extends StatelessWidget {
@@ -11,12 +12,12 @@ class ExternalError extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         const SizedBox(height: 3),
+
         Text(
           text,
           style: TextStyle(
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? Colors.red.lightest
-                : Colors.errorPrimaryColor,
+            color: AppTheme.errorColor(context),
+            fontWeight: .w500,
           ),
         ),
       ],
