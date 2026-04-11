@@ -1,9 +1,12 @@
 import 'package:disco/disco.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/auth_models.dart';
+import 'package:path/path.dart' as p;
+import 'dart:io';
 
 part 'db.g.dart';
 
@@ -17,9 +20,17 @@ class AppDatabase extends _$AppDatabase {
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',
-      native: const DriftNativeOptions(
-        databaseDirectory: getApplicationSupportDirectory,
-      ),
+      native: kReleaseMode
+          ? const DriftNativeOptions(
+              databaseDirectory: getApplicationSupportDirectory,
+            )
+          : DriftNativeOptions(
+              databasePath: () async {
+                final directory = Directory.current.path;
+
+                return p.join(directory, 'lib', 'core', 'db', 'dev.db');
+              },
+            ),
     );
   }
 
