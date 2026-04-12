@@ -18,13 +18,13 @@ class SignInUpThemeSelector extends StatelessWidget {
         style: ButtonStyle(
           padding: .all(.symmetric(vertical: 7, horizontal: 6)),
         ),
-        title: WindowsIcon(themeIcons[themeController.mode.value]!),
+        title: WindowsIcon(themeController.mode.value!.icon),
         trailing: null,
         items: List.generate(
           ThemeMode.values.length,
           (index) => MenuFlyoutItem(
-            text: Text(themeLabels[ThemeMode.values[index]]!),
-            leading: WindowsIcon(themeIcons[ThemeMode.values[index]]),
+            text: Text(ThemeMode.values[index].label),
+            leading: WindowsIcon(ThemeMode.values[index].icon),
             onPressed: () => themeController.setTheme(ThemeMode.values[index]),
           ),
         ),
