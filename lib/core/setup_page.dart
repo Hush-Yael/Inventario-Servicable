@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:disco/disco.dart';
+import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_controller.dart';
 import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
 import 'package:servicable_stock/core/controllers/theme_controller.dart';
@@ -38,14 +39,22 @@ class _SetupPageState extends State<SetupPage> {
 
         final data = snapshot.data!;
 
-        return ProviderScope(
-          providers: [
-            sharedPreferencesProvider(data.preferences),
-            ThemeController.provider,
-            AppDatabase.provider,
-            AuthController.provider,
-          ],
-          child: widget.app,
+        return QueryClientProvider(
+          create: (context) => QueryClient(
+            defaultQueryOptions: .new(
+              refetchOnResume: .never,
+              refetchOnReconnect: .never,
+            ),
+          ),
+          child: ProviderScope(
+            providers: [
+              sharedPreferencesProvider(data.preferences),
+              ThemeController.provider,
+              AppDatabase.provider,
+              AuthController.provider,
+            ],
+            child: widget.app,
+          ),
         );
       },
     );
