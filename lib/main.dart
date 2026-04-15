@@ -12,14 +12,9 @@ void main() async {
   runApp(const SetupPage(app: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final ThemeController theme = ThemeController.instance.of(context);

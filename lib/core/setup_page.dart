@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 class SetupPage extends StatefulWidget {
-  final StatefulWidget app;
+  final Widget app;
   const SetupPage({super.key, required this.app});
 
   @override
