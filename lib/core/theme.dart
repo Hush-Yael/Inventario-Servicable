@@ -47,4 +47,30 @@ class BtnStyles {
   static const ButtonStyle fixedTextAlignmentStyle = ButtonStyle(
     textStyle: WidgetStatePropertyAll(AppTheme.fixedTextHeightStyle),
   );
+
+  static ButtonStyle dangerButtonStyle = ButtonStyle(
+    backgroundColor: .resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return Colors.red.withAlpha(128);
+      }
+
+      if (states.contains(WidgetState.pressed)) {
+        return Colors.red.dark;
+      }
+
+      if (states.contains(WidgetState.hovered)) {
+        return Colors.red.light;
+      }
+
+      return Colors.red;
+    }),
+
+    foregroundColor: .resolveWith((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return Colors.white.withAlpha(128);
+      }
+
+      return Colors.white;
+    }),
+  );
 }
