@@ -3,7 +3,7 @@ import 'package:disco/disco.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
-import 'package:servicable_stock/core/controllers/theme_controller.dart';
+import 'package:servicable_stock/core/controllers/theme_state.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +49,7 @@ class _SetupPageState extends State<SetupPage> {
           child: ProviderScope(
             providers: [
               sharedPreferencesProvider(data.preferences),
-              ThemeController.instance,
+              ThemeModeState.instance,
               AppDatabase.instance,
               AuthState.instance,
             ],

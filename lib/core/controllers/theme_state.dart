@@ -4,20 +4,26 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeController {
-  ThemeController(SharedPreferences prefs) : _prefs = prefs {
-    mode.value = getTheme();
+class ThemeModeState {
+  final SharedPreferences _prefs;
+  late final Signal<ThemeMode> state;
+
+  ThemeModeState(SharedPreferences prefs) : _prefs = prefs {
+    state = Signal(_getStoredValue());
   }
 
-  final SharedPreferences _prefs;
-  Signal<ThemeMode?> mode = Signal(null);
+  static final instance = Provider((context) {
+    final sharedPrefs = sharedPreferencesProvider.of(context);
+
+    return ThemeModeState(sharedPrefs);
+  });
 
   Future setTheme(ThemeMode newMode) async {
-    mode.value = newMode;
+    state.value = newMode;
     await _prefs.setString('theme', newMode.name);
   }
 
-  ThemeMode getTheme() {
+  ThemeMode _getStoredValue() {
     final t = _prefs.getString('theme');
     final isSystem = t == null || t == 'system';
 
@@ -27,10 +33,4 @@ class ThemeController {
         ? ThemeMode.dark
         : ThemeMode.light;
   }
-
-  static final instance = Provider((context) {
-    final sharedPrefs = sharedPreferencesProvider.of(context);
-
-    return ThemeController(sharedPrefs);
-  });
 }
