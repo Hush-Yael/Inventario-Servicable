@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/core/theme.dart';
+import 'package:servicable_stock/core/theme/theme.dart';
 import 'package:trina_grid/trina_grid.dart';
 
 TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {

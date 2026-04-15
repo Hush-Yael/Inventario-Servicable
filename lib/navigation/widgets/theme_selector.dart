@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:servicable_stock/core/constants/theme_constants.dart';
-import 'package:servicable_stock/core/controllers/theme_state.dart';
+import 'package:servicable_stock/core/theme/theme_constants.dart';
+import 'package:servicable_stock/core/theme/theme_mode_state.dart';
 import 'package:servicable_stock/navigation/widgets/pane_item_dropdown.dart';
 
 class ThemeSelector extends StatelessWidget {

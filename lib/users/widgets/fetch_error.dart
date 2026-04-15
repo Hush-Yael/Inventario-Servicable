@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:servicable_stock/core/theme.dart';
+import 'package:servicable_stock/core/theme/theme.dart';
 import 'package:servicable_stock/users/users_types.dart';
 
 class FetchError extends StatelessWidget {

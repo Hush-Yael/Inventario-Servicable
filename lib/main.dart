@@ -2,9 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/router/router.dart';
-import 'package:servicable_stock/core/controllers/theme_state.dart';
+import 'package:servicable_stock/core/theme/theme_mode_state.dart';
 import 'package:servicable_stock/core/setup_page.dart';
-import 'package:servicable_stock/core/theme.dart';
+import 'package:servicable_stock/core/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
