@@ -8,7 +8,7 @@ class ThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = ThemeController.provider.of(context);
+    final themeController = ThemeController.instance.of(context);
 
     return PaneItemDropdown(
       text: 'Tema de la aplicación',

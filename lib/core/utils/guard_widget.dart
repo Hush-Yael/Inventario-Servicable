@@ -9,7 +9,7 @@ class Guard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (AuthState.provider.of(context).user?.role == role) {
+    if (AuthState.instance.of(context).user?.role == role) {
       return child;
     } else {
       return const SizedBox.shrink();

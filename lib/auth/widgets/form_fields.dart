@@ -39,7 +39,7 @@ class FormFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthVm vm = AuthVm.provider.of(context);
+    final AuthVm vm = AuthVm.instance.of(context);
     final isSignIn = vm.isSignIn;
     final isSubmitting = vm.isSubmitting;
 

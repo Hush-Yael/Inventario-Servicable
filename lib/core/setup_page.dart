@@ -49,9 +49,9 @@ class _SetupPageState extends State<SetupPage> {
           child: ProviderScope(
             providers: [
               sharedPreferencesProvider(data.preferences),
-              ThemeController.provider,
-              AppDatabase.provider,
-              AuthState.provider,
+              ThemeController.instance,
+              AppDatabase.instance,
+              AuthState.instance,
             ],
             child: widget.app,
           ),

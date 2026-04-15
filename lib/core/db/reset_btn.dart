@@ -19,7 +19,7 @@ class WithResetBtn extends StatelessWidget {
           right: 0,
           child: Button(
             onPressed: () async {
-              final db = AppDatabase.provider.of(context);
+              final db = AppDatabase.instance.of(context);
               final m = drift.Migrator(db);
               final tables = db.allTables;
 

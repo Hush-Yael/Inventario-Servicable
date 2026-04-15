@@ -7,7 +7,7 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthState.provider.of(context);
+    final authController = AuthState.instance.of(context);
 
     return PaneItemDropdown(
       text: authController.user?.name ?? 'usuario desconocido',
@@ -22,7 +22,7 @@ class Account extends StatelessWidget {
         MenuFlyoutItem(
           text: const Text('Cerrar sesión'),
           leading: const WindowsIcon(FluentIcons.sign_out, size: 14),
-          onPressed: AuthState.provider.of(context).clearUser,
+          onPressed: AuthState.instance.of(context).clearUser,
         ),
       ],
       placement: .rightCenter,

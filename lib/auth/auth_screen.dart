@@ -44,7 +44,7 @@ class Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      providers: [AuthVm.provider(_formKey)],
+      providers: [AuthVm.instance(_formKey)],
       child: FormBuilder(
         key: _formKey,
         child: Center(
@@ -78,7 +78,7 @@ class Form extends StatelessWidget {
                       children: [
                         SignalBuilder(
                           builder: (context, child) {
-                            final isSignIn = AuthVm.provider
+                            final isSignIn = AuthVm.instance
                                 .of(context)
                                 .isSignIn;
 

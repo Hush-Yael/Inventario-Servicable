@@ -22,9 +22,9 @@ class UsersVm extends UsersBaseVm
     with TableMixin, DeleteMutationMixin, ChangeRoleMutationMixin {
   UsersVm({required super.service, required super.authController});
 
-  static final provider = Provider((ctx) {
-    final AppDatabase db = AppDatabase.provider.of(ctx);
-    final authController = AuthState.provider.of(ctx);
+  static final instance = Provider((ctx) {
+    final AppDatabase db = AppDatabase.instance.of(ctx);
+    final authController = AuthState.instance.of(ctx);
     final usersService = UsersService(db);
     // final usersService = FakeUsersService();
 

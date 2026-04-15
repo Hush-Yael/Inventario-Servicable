@@ -14,7 +14,7 @@ class _UsersPageState extends State<UsersPage> {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      providers: [UsersVm.provider],
+      providers: [UsersVm.instance],
       child: const UsersTable(),
     );
   }

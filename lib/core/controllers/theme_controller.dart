@@ -5,7 +5,7 @@ import 'package:servicable_stock/core/controllers/shared_preferences_controller.
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeController {
-  ThemeController({required SharedPreferences prefs}) : _prefs = prefs {
+  ThemeController(SharedPreferences prefs) : _prefs = prefs {
     mode.value = getTheme();
   }
 
@@ -28,7 +28,9 @@ class ThemeController {
         : ThemeMode.light;
   }
 
-  static final provider = Provider(
-    (context) => ThemeController(prefs: sharedPreferencesProvider.of(context)),
-  );
+  static final instance = Provider((context) {
+    final sharedPrefs = sharedPreferencesProvider.of(context);
+
+    return ThemeController(sharedPrefs);
+  });
 }

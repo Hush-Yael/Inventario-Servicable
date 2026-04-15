@@ -7,7 +7,7 @@ class SignInUpThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeController themeController = ThemeController.provider.of(
+    final ThemeController themeController = ThemeController.instance.of(
       context,
     );
 

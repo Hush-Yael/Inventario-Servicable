@@ -37,7 +37,7 @@ mixin TableMixin on UsersBaseVm {
   List<TrinaRow> getRows(BuildContext context, UsersList usersList) {
     final selfId = authController.user?.id;
     final UserRole role =
-        AuthState.provider.of(context).user?.role ?? UserRole.supervisor;
+        AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
 
     final bool isAdmin = role == UserRole.admin;
 

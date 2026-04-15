@@ -34,5 +34,5 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  static final provider = Provider((context) => AppDatabase());
+  static final instance = Provider((context) => AppDatabase());
 }

@@ -22,7 +22,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final ThemeController theme = ThemeController.provider.of(context);
+    final ThemeController theme = ThemeController.instance.of(context);
 
     return SignalBuilder(
       builder: (context, child) {
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           routerConfig: AppRouter(
-            authController: AuthState.provider.of(context),
+            authController: AuthState.instance.of(context),
           ).config,
         );
       },

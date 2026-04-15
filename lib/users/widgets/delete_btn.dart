@@ -10,7 +10,7 @@ class DeleteBtn extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var vm = UsersVm.provider.of(context);
+    var vm = UsersVm.instance.of(context);
 
     final mutation = vm.createDeleteMutation(context);
 
@@ -51,7 +51,7 @@ class DeleteBtn extends HookWidget {
   }
 
   void handler(BuildContext context, DeleteMutation mutation) async {
-    final users = UsersVm.provider.of(context).selectedRows;
+    final users = UsersVm.instance.of(context).selectedRows;
 
     if (users.isEmpty) return;
 

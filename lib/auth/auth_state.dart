@@ -3,6 +3,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/core/db/db.dart';
 
 class AuthState extends ChangeNotifier {
+  AuthState._internal();
+
   User? _user;
 
   User? get user => _user;
@@ -19,5 +21,5 @@ class AuthState extends ChangeNotifier {
 
   bool isAuthenticated() => _user != null;
 
-  static final provider = Provider((context) => AuthState());
+  static final instance = Provider((context) => AuthState._internal());
 }

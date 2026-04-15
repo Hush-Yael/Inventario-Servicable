@@ -24,11 +24,11 @@ class AuthVm {
     required this.authController,
   });
 
-  static final provider = Provider.withArgument(
+  static final instance = Provider.withArgument(
     (ctx, GlobalKey<FormBuilderState> formKey) => AuthVm(
-      service: AuthService(AppDatabase.provider.of(ctx)),
+      service: AuthService(AppDatabase.instance.of(ctx)),
       formKey: formKey,
-      authController: AuthState.provider.of(ctx),
+      authController: AuthState.instance.of(ctx),
       context: ctx,
     ),
   );

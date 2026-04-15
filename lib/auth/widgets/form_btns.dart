@@ -13,7 +13,7 @@ class FormBtns extends StatefulWidget {
 class _FormBtnsState extends State<FormBtns> {
   @override
   Widget build(BuildContext context) {
-    final vm = AuthVm.provider.of(context);
+    final vm = AuthVm.instance.of(context);
     final isSignIn = vm.isSignIn;
 
     return SignalBuilder(

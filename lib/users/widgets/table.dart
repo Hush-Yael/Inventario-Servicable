@@ -19,9 +19,9 @@ class UsersTable extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = UsersVm.provider.of(context);
+    final vm = UsersVm.instance.of(context);
     final getUsers = vm.getUsers;
-    final selfId = AuthState.provider.of(context).user?.id;
+    final selfId = AuthState.instance.of(context).user?.id;
 
     final UsersQuery query = useQuery(
       kUserTableQueryKey,
@@ -147,7 +147,7 @@ class UsersTable extends HookWidget {
     required EdgeInsets cellsPadding,
   }) {
     final UserRole role =
-        AuthState.provider.of(context).user?.role ?? UserRole.supervisor;
+        AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
 
     final columns = [
       indexColumn(listLength),
@@ -186,7 +186,7 @@ class UsersTable extends HookWidget {
         selectAllRowsColumn(
           cellsPadding: cellsPadding,
           selfId: selfId,
-          checkValueSignal: UsersVm.provider.of(context).selectAllCheckedValue,
+          checkValueSignal: UsersVm.instance.of(context).selectAllCheckedValue,
           disabled: (rendererContext) =>
               // When displaying only the current user row, disable the select all checkbox
               rendererContext.stateManager.rows.length == 1 &&

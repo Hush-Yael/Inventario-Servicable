@@ -10,7 +10,7 @@ class ChangeRoleBtn extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var vm = UsersVm.provider.of(context);
+    var vm = UsersVm.instance.of(context);
 
     final mutation = vm.createChangeRoleMutation(context);
 
