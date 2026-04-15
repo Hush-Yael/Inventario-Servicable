@@ -1,0 +1,33 @@
+import 'package:disco/disco.dart';
+import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/users/service/users_repository.dart';
+import 'package:servicable_stock/users/service/users_service.dart';
+// import 'package:servicable_stock/users/service/users_fake_service.dart';
+import 'package:servicable_stock/users/users_types.dart';
+import 'package:servicable_stock/users/view_model/users_delete_mixin.dart';
+import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
+import 'package:servicable_stock/users/view_model/users_change_role_mixin.dart';
+
+class UsersBaseVm {
+  final UsersRepository service;
+  final AuthController authController;
+
+  UsersBaseVm({required this.service, required this.authController});
+
+  late final Future<UsersList> Function() getUsers = service.fetchUsers;
+}
+
+class UsersVm extends UsersBaseVm
+    with TableMixin, DeleteMutationMixin, ChangeRoleMutationMixin {
+  UsersVm({required super.service, required super.authController});
+
+  static final provider = Provider((ctx) {
+    final AppDatabase db = AppDatabase.provider.of(ctx);
+    final authController = AuthController.provider.of(ctx);
+    final usersService = UsersService(db);
+    // final usersService = FakeUsersService();
+
+    return UsersVm(service: usersService, authController: authController);
+  });
+}
