@@ -13,6 +13,7 @@ class AppTheme {
         outlinedButtonStyle: BtnStyles.fixedTextAlignmentStyle,
         hyperlinkButtonStyle: BtnStyles.fixedTextAlignmentStyle,
       ),
+
       navigationPaneTheme: NavigationPaneThemeData(
         // vertical is asymmetric to better align with leading icon
         labelPadding: .only(top: 8, bottom: 11, left: 3),
@@ -29,6 +30,7 @@ class AppTheme {
   );
 
   static const TextStyle fixedTextHeightStyle = TextStyle(height: 0);
+  static const TextStyle dialogTitleStyle = TextStyle(fontSize: 20);
 
   static Color errorColor(BuildContext context) =>
       MediaQuery.of(context).platformBrightness == Brightness.dark
