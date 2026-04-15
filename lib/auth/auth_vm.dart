@@ -10,6 +10,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/auth/auth_service.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
 
 class AuthVm {
   final AuthService service;
@@ -83,11 +84,16 @@ class AuthVm {
 
     isSubmitting.value = true;
 
-    final User? existingUser = await service.getExistingUser(username);
+    final User? existingUser = await stall(
+      service.getExistingUser(username),
+      const Duration(milliseconds: 250),
+    );
 
-    final String? result =
-        await (isSignIn.value ? signIn(existingUser) : signUp(existingUser))
-            .whenComplete(() => isSubmitting.value = false);
+    final String? result = await stall(
+      (isSignIn.value ? signIn(existingUser) : signUp(existingUser))
+          .whenComplete(() => isSubmitting.value = false),
+      const Duration(milliseconds: 250),
+    );
 
     if (result == null && context.mounted) {
       displayInfoBar(
