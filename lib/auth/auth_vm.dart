@@ -15,20 +15,20 @@ class AuthVm {
   final AuthService service;
   final BuildContext context;
   final GlobalKey<FormBuilderState> formKey;
-  final AuthState authController;
+  final AuthState authState;
 
   AuthVm({
     required this.service,
     required this.formKey,
     required this.context,
-    required this.authController,
+    required this.authState,
   });
 
   static final instance = Provider.withArgument(
     (ctx, GlobalKey<FormBuilderState> formKey) => AuthVm(
       service: AuthService(AppDatabase.instance.of(ctx)),
       formKey: formKey,
-      authController: AuthState.instance.of(ctx),
+      authState: AuthState.instance.of(ctx),
       context: ctx,
     ),
   );
@@ -125,7 +125,7 @@ class AuthVm {
 
     await service.updateCurrentUserLastLogin(existingUser.id);
 
-    authController.setUser(existingUser);
+    authState.setUser(existingUser);
 
     return null;
   }
@@ -153,7 +153,7 @@ class AuthVm {
       salt: base64Encode(newSalt),
     );
 
-    authController.setUser(newUser);
+    authState.setUser(newUser);
 
     return null;
   }

@@ -35,7 +35,7 @@ mixin TableMixin on UsersBaseVm {
       selectedRows.map((row) => row.metadata?['id'] as int).toList();
 
   List<TrinaRow> getRows(BuildContext context, UsersList usersList) {
-    final selfId = authController.user?.id;
+    final selfId = authState.user?.id;
     final UserRole role =
         AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
 

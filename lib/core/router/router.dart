@@ -6,20 +6,20 @@ import 'package:servicable_stock/core/router/not_found.dart';
 import 'package:servicable_stock/core/router/routes.dart';
 
 class AppRouter {
-  final AuthState authController;
+  final AuthState authState;
 
-  AppRouter({required this.authController});
+  AppRouter({required this.authState});
 
   late final config = GoRouter(
     initialLocation: AppRoutes.navigation.path,
-    refreshListenable: authController,
+    refreshListenable: authState,
     routes: routesList,
     errorBuilder: (context, state) => const NotFound(),
     redirect: handleRedirect,
   );
 
   FutureOr<String?> handleRedirect(BuildContext context, GoRouterState state) {
-    final bool isAuthenticated = authController.isAuthenticated();
+    final bool isAuthenticated = authState.isAuthenticated();
 
     // Redirect to login if not authenticated and not already on login
     if (!isAuthenticated &&

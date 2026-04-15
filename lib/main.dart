@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           routerConfig: AppRouter(
-            authController: AuthState.instance.of(context),
+            authState: AuthState.instance.of(context),
           ).config,
         );
       },

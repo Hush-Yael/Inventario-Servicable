@@ -11,23 +11,23 @@ import 'package:servicable_stock/users/view_model/users_change_role_mixin.dart';
 
 class UsersBaseVm {
   final UsersRepository service;
-  final AuthState authController;
+  final AuthState authState;
 
-  UsersBaseVm({required this.service, required this.authController});
+  UsersBaseVm({required this.service, required this.authState});
 
   late final Future<UsersList> Function() getUsers = service.fetchUsers;
 }
 
 class UsersVm extends UsersBaseVm
     with TableMixin, DeleteMutationMixin, ChangeRoleMutationMixin {
-  UsersVm({required super.service, required super.authController});
+  UsersVm({required super.service, required super.authState});
 
   static final instance = Provider((ctx) {
     final AppDatabase db = AppDatabase.instance.of(ctx);
-    final authController = AuthState.instance.of(ctx);
+    final authState = AuthState.instance.of(ctx);
     final usersService = UsersService(db);
     // final usersService = FakeUsersService();
 
-    return UsersVm(service: usersService, authController: authController);
+    return UsersVm(service: usersService, authState: authState);
   });
 }

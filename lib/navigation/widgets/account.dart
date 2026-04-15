@@ -7,11 +7,11 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthState.instance.of(context);
+    final authState = AuthState.instance.of(context);
 
     return PaneItemDropdown(
-      text: authController.user?.name ?? 'usuario desconocido',
-      subtitle: Text(authController.user?.role.label ?? 'rol desconocido'),
+      text: authState.user?.name ?? 'usuario desconocido',
+      subtitle: Text(authState.user?.role.label ?? 'rol desconocido'),
       icon: FluentIcons.contact,
       items: [
         MenuFlyoutItem(
