@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/navigation/widgets/pane_item_dropdown.dart';
 
 class Account extends StatelessWidget {
@@ -7,7 +7,7 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthController.provider.of(context);
+    final authController = AuthState.provider.of(context);
 
     return PaneItemDropdown(
       text: authController.user?.name ?? 'usuario desconocido',
@@ -22,7 +22,7 @@ class Account extends StatelessWidget {
         MenuFlyoutItem(
           text: const Text('Cerrar sesión'),
           leading: const WindowsIcon(FluentIcons.sign_out, size: 14),
-          onPressed: AuthController.provider.of(context).clearUser,
+          onPressed: AuthState.provider.of(context).clearUser,
         ),
       ],
       placement: .rightCenter,

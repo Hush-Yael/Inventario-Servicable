@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:disco/disco.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/controllers/shared_preferences_controller.dart';
 import 'package:servicable_stock/core/controllers/theme_controller.dart';
 import 'package:servicable_stock/core/db/db.dart';
@@ -51,7 +51,7 @@ class _SetupPageState extends State<SetupPage> {
               sharedPreferencesProvider(data.preferences),
               ThemeController.provider,
               AppDatabase.provider,
-              AuthController.provider,
+              AuthState.provider,
             ],
             child: widget.app,
           ),

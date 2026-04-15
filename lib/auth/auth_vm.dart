@@ -7,7 +7,7 @@ import 'package:drift/drift.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/auth/auth_service.dart';
 import 'package:servicable_stock/core/db/db.dart';
 
@@ -15,7 +15,7 @@ class AuthVm {
   final AuthService service;
   final BuildContext context;
   final GlobalKey<FormBuilderState> formKey;
-  final AuthController authController;
+  final AuthState authController;
 
   AuthVm({
     required this.service,
@@ -28,7 +28,7 @@ class AuthVm {
     (ctx, GlobalKey<FormBuilderState> formKey) => AuthVm(
       service: AuthService(AppDatabase.provider.of(ctx)),
       formKey: formKey,
-      authController: AuthController.provider.of(ctx),
+      authController: AuthState.provider.of(ctx),
       context: ctx,
     ),
   );

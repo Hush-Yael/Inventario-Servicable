@@ -1,5 +1,5 @@
 import 'package:disco/disco.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/users/service/users_repository.dart';
 import 'package:servicable_stock/users/service/users_service.dart';
@@ -11,7 +11,7 @@ import 'package:servicable_stock/users/view_model/users_change_role_mixin.dart';
 
 class UsersBaseVm {
   final UsersRepository service;
-  final AuthController authController;
+  final AuthState authController;
 
   UsersBaseVm({required this.service, required this.authController});
 
@@ -24,7 +24,7 @@ class UsersVm extends UsersBaseVm
 
   static final provider = Provider((ctx) {
     final AppDatabase db = AppDatabase.provider.of(ctx);
-    final authController = AuthController.provider.of(ctx);
+    final authController = AuthState.provider.of(ctx);
     final usersService = UsersService(db);
     // final usersService = FakeUsersService();
 

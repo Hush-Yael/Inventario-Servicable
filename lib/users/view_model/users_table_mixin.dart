@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
@@ -37,7 +37,7 @@ mixin TableMixin on UsersBaseVm {
   List<TrinaRow> getRows(BuildContext context, UsersList usersList) {
     final selfId = authController.user?.id;
     final UserRole role =
-        AuthController.provider.of(context).user?.role ?? UserRole.supervisor;
+        AuthState.provider.of(context).user?.role ?? UserRole.supervisor;
 
     final bool isAdmin = role == UserRole.admin;
 

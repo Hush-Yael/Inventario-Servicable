@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/router/not_found.dart';
 import 'package:servicable_stock/core/router/routes.dart';
 
 class AppRouter {
-  final AuthController authController;
+  final AuthState authController;
 
   AppRouter({required this.authController});
 

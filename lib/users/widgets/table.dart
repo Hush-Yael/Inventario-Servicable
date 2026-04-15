@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -21,7 +21,7 @@ class UsersTable extends HookWidget {
   Widget build(BuildContext context) {
     final vm = UsersVm.provider.of(context);
     final getUsers = vm.getUsers;
-    final selfId = AuthController.provider.of(context).user?.id;
+    final selfId = AuthState.provider.of(context).user?.id;
 
     final UsersQuery query = useQuery(
       kUserTableQueryKey,
@@ -147,7 +147,7 @@ class UsersTable extends HookWidget {
     required EdgeInsets cellsPadding,
   }) {
     final UserRole role =
-        AuthController.provider.of(context).user?.role ?? UserRole.supervisor;
+        AuthState.provider.of(context).user?.role ?? UserRole.supervisor;
 
     final columns = [
       indexColumn(listLength),

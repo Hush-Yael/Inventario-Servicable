@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 
 class Guard extends StatelessWidget {
   final Widget child;
@@ -9,7 +9,7 @@ class Guard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (AuthController.provider.of(context).user?.role == role) {
+    if (AuthState.provider.of(context).user?.role == role) {
       return child;
     } else {
       return const SizedBox.shrink();

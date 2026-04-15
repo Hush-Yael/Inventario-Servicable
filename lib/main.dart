@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/auth/auth_controller.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/router/router.dart';
 import 'package:servicable_stock/core/controllers/theme_controller.dart';
 import 'package:servicable_stock/core/setup_page.dart';
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           routerConfig: AppRouter(
-            authController: AuthController.provider.of(context),
+            authController: AuthState.provider.of(context),
           ).config,
         );
       },
