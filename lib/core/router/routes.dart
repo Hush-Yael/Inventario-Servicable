@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/auth/auth_screen.dart';
 import 'package:servicable_stock/core/db/reset_btn.dart';
-import 'package:servicable_stock/navigation_page.dart';
+import 'package:servicable_stock/navigation/navigation_screen.dart';
 
 enum AppRoutes {
   auth('/auth', AuthScreen()),
-  navigation('/', NavigationPage());
+  navigation('/', NavigationScreen());
 
   const AppRoutes(this.path, this.view);
 
