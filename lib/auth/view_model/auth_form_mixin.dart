@@ -1,68 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:cryptography_plus/cryptography_plus.dart';
-import 'package:disco/disco.dart';
-import 'package:drift/drift.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/auth/auth_state.dart';
-import 'package:servicable_stock/auth/auth_service.dart';
+import 'package:servicable_stock/auth/view_model/auth_state_mixin.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 
-class AuthVm {
-  final AuthService service;
-  final BuildContext context;
-  final GlobalKey<FormBuilderState> formKey;
-  final AuthState authState;
-
-  AuthVm({
-    required this.service,
-    required this.formKey,
-    required this.context,
-    required this.authState,
-  });
-
-  static final instance = Provider.withArgument(
-    (ctx, GlobalKey<FormBuilderState> formKey) => AuthVm(
-      service: AuthService(AppDatabase.instance.of(ctx)),
-      formKey: formKey,
-      authState: AuthState.instance.of(ctx),
-      context: ctx,
-    ),
-  );
-
-  final isSignIn = Signal(true);
-
-  void toggleIsSignIn() {
-    if (isSubmitting.value) {
-      return;
-    }
-
-    isSignIn.value = !isSignIn.value;
-    formKey.currentState?.reset();
-    clearAsyncErrors();
-  }
-
-  void clearAsyncErrors() {
-    invalidUsernameMsg.value = null;
-    invalidPasswordMsg.value = null;
-  }
-
-  final invalidUsernameMsg = Signal<String?>(null);
-  final invalidPasswordMsg = Signal<String?>(null);
-
-  final isSubmitting = Signal(false);
-
-  final algorithm = Argon2id(
-    memory: 10 * 1000, // 10 MB
-    parallelism: 2, //  two CPU cores.
-    iterations: 1,
-    hashLength: 32,
-  );
-
+mixin FormMixin on StateMixin {
   /// Callback for when a field is submitted through the keyboard
   Future<dynamic>? fieldSubmit(String value) =>
       isSubmitting.value ? null : submit();

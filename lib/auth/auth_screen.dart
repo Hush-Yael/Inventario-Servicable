@@ -2,10 +2,10 @@ import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:servicable_stock/auth/view_model/auth_vm.dart';
 import 'package:servicable_stock/auth/widgets/form_btns.dart';
 import 'package:servicable_stock/auth/widgets/form_fields.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
-import 'package:servicable_stock/auth/auth_vm.dart';
 import 'package:servicable_stock/auth/widgets/theme_selector.dart';
 
 class AuthScreen extends StatelessWidget {
