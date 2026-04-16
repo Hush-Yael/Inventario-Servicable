@@ -2,11 +2,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:disco/disco.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
-import 'package:servicable_stock/core/shared_preferences.dart';
+import 'package:servicable_stock/core/shared_prefs_service.dart';
 import 'package:servicable_stock/core/theme/theme_mode_state.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 class SetupPage extends StatefulWidget {
@@ -20,10 +19,11 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   late final initialization = Future(() async {
     await WindowManager.instance.ensureInitialized();
-    await WindowManager.instance.setTitle("Sistema de inventario - Servicable");
 
-    final prefs = await SharedPreferences.getInstance();
-    return (preferences: prefs);
+    await Future.wait([
+      WindowManager.instance.setTitle("Sistema de inventario - Servicable"),
+      SharedPrefsService.setup(),
+    ]);
   });
 
   @override
@@ -37,8 +37,6 @@ class _SetupPageState extends State<SetupPage> {
           return Error(snapshot: snapshot);
         }
 
-        final data = snapshot.data!;
-
         return QueryClientProvider(
           create: (context) => QueryClient(
             defaultQueryOptions: .new(
@@ -48,7 +46,7 @@ class _SetupPageState extends State<SetupPage> {
           ),
           child: ProviderScope(
             providers: [
-              sharedPrefsInstance(data.preferences),
+              SharedPrefsService.instance,
               ThemeModeState.instance,
               AppDatabase.instance,
               AuthState.instance,
