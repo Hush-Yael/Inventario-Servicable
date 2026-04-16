@@ -2,23 +2,27 @@ import 'package:drift/drift.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 
 class Users extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  late final id = integer().autoIncrement()();
 
-  TextColumn get name =>
-      text().withLength(min: kNameMinLength, max: kNameMaxLength)();
+  late final name = text().withLength(
+    min: kNameMinLength,
+    max: kNameMaxLength,
+  )();
 
-  TextColumn get username => text()
+  late final username = text()
       .withLength(min: kUsernameMinLength, max: kUsernameMaxLength)
       .unique()();
 
-  TextColumn get password =>
-      text().withLength(min: kPasswordMinLength, max: kPasswordMaxLength)();
+  late final password = text().withLength(
+    min: kPasswordMinLength,
+    max: kPasswordMaxLength,
+  )();
 
-  TextColumn get salt => text()();
+  late final salt = text()();
 
-  IntColumn get role => intEnum<UserRole>()();
+  late final role = intEnum<UserRole>()();
 
-  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  late final createdAt = dateTime().withDefault(currentDateAndTime)();
 
-  DateTimeColumn get lastLogin => dateTime().nullable()();
+  late final lastLogin = dateTime().nullable()();
 }
