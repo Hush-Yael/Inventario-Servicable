@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:drift/drift.dart' as drift;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/core/db/db.dart';
@@ -23,7 +25,6 @@ class WithResetBtn extends StatelessWidget {
               final m = drift.Migrator(db);
               final tables = db.allTables;
 
-              // ignore: avoid_print
               print('Resetting database...');
 
               await Future.wait(
@@ -38,7 +39,6 @@ class WithResetBtn extends StatelessWidget {
                 ),
               );
 
-              // ignore: avoid_print
               print('Database was reset successfully');
             },
             child: const WindowsIcon(FluentIcons.delete),
