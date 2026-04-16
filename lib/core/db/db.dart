@@ -17,6 +17,19 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (m) async {
+        await m.createAll();
+      },
+      beforeOpen: (details) async {
+        // Enable foreign keys immediately upon opening the database
+        await customStatement('PRAGMA foreign_keys = ON');
+      },
+    );
+  }
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',
