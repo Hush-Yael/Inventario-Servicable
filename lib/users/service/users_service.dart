@@ -1,14 +1,13 @@
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
+import 'package:servicable_stock/core/services_repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/users/service/users_repository.dart';
 import 'package:servicable_stock/users/users_types.dart';
 
-class UsersService implements UsersRepository {
-  final AppDatabase db;
-
-  UsersService(this.db);
+class UsersService extends ServiceRepository implements UsersRepository {
+  const UsersService(super.db);
 
   @override
   Future<UsersList> fetchUsers() async {

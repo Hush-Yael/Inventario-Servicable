@@ -1,11 +1,10 @@
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/core/services_repository.dart';
 
-class AuthService {
-  final AppDatabase db;
-
-  const AuthService(this.db);
+class AuthService extends ServiceRepository {
+  const AuthService(super.db);
 
   /// Used to verify if a user already exists when signing in/up
   Future<User?> getExistingUser(String username) async {
