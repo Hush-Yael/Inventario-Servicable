@@ -4,8 +4,7 @@ import 'package:servicable_stock/users/users_screen.dart';
 enum NavigationPages {
   home(FluentIcons.home, 'Inicio', Text('Index')),
   inventory(FluentIcons.grid_view_medium, 'Inventario', Text('Inventario')),
-  users(FluentIcons.people, 'Usuarios', UsersScreen()),
-  settings(FluentIcons.settings, 'Configuración', Text('Configuración'));
+  users(FluentIcons.people, 'Usuarios', UsersScreen());
 
   const NavigationPages(this.icon, this.label, this.view);
 
