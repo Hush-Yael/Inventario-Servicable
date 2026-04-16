@@ -9,7 +9,7 @@ class NavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paneIndex = Signal(NavigationPages.users);
+    final paneIndex = Signal(NavigationPages.home);
 
     return SignalBuilder(
       builder: (context, child) {
@@ -21,23 +21,20 @@ class NavigationScreen extends StatelessWidget {
                 paneIndex.value = NavigationPages.values[index],
             size: const .new(openWidth: 250),
             toggleButton: null,
-            items: navigationPages,
-            footerItems: [
-              PaneItemSeparator(),
-
-              PaneItemWidgetAdapter(
-                child: const Account(),
-                applyPadding: false,
-              ),
-
-              PaneItemWidgetAdapter(
-                child: const ThemeSelector(),
-                applyPadding: false,
-              ),
-            ],
+            items: paneItems,
           ),
         );
       },
     );
   }
+
+  List<NavigationPaneItem> get paneItems => [
+    PaneItemWidgetAdapter(child: const Account(), applyPadding: false),
+
+    PaneItemWidgetAdapter(child: const ThemeSelector(), applyPadding: false),
+
+    PaneItemSeparator(),
+
+    ...navigationPages,
+  ];
 }

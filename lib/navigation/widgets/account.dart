@@ -25,7 +25,7 @@ class Account extends StatelessWidget {
           onPressed: AuthState.instance.of(context).clearUser,
         ),
       ],
-      placement: .rightCenter,
+      placement: .rightTop,
     );
   }
 }
