@@ -26,9 +26,9 @@ class PaneItemDropdown extends StatelessWidget {
       child: ListTile.selectable(
         title: Text(
           text,
-          style: context.theme.navigationPaneTheme.unselectedTextStyle?.resolve(
-            {},
-          ),
+          style: context.theme.navigationPaneTheme.unselectedTextStyle
+              ?.resolve({})
+              ?.copyWith(height: 0),
         ),
         subtitle: subtitle,
         leading: WindowsIcon(
