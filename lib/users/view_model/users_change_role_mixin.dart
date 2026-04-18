@@ -7,8 +7,6 @@ import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
 
 mixin ChangeRoleMutationMixin on TableMixin {
   ChangeRoleMutation createChangeRoleMutation(BuildContext context) {
-    final queryClient = useQueryClient();
-
     return useMutation(
       (role, _) async {
         return await service.changeUsersRole(role, getIdsFromSelected);
@@ -69,14 +67,14 @@ mixin ChangeRoleMutationMixin on TableMixin {
         }
       },
 
-      onSuccess: (data, role, prevRoles, _) {
+      onSuccess: (data, role, prevRoles, ctx) {
         showMutationResultMsg(
           context: context,
           message: 'Roles cambiados',
           severity: .success,
         );
 
-        queryClient.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
+        ctx.client.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
           users,
         ) {
           for (var i = 0; i < users!.length; i++) {

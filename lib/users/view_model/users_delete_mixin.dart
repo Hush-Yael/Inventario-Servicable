@@ -7,8 +7,6 @@ import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
 
 mixin DeleteMutationMixin on TableMixin {
   DeleteMutation createDeleteMutation(BuildContext context) {
-    final queryClient = useQueryClient();
-
     return useMutation(
       (values, _) async {
         return await service.deleteUsers(getIdsFromSelected);
@@ -23,7 +21,7 @@ mixin DeleteMutationMixin on TableMixin {
         return ids;
       },
 
-      onError: (error, variables, deletedIds, _) {
+      onError: (error, variables, deletedIds, ctx) {
         showMutationResultMsg(
           context: context,
           message: 'Error al eliminar los usuarios',
@@ -33,7 +31,7 @@ mixin DeleteMutationMixin on TableMixin {
         try {
           final prevRows = getRows(
             context,
-            queryClient.getQueryData(kUserTableQueryKey),
+            ctx.client.getQueryData(kUserTableQueryKey),
           );
 
           stateManager!.refRows.clear();
@@ -45,14 +43,14 @@ mixin DeleteMutationMixin on TableMixin {
         }
       },
 
-      onSuccess: (data, variables, deletedIds, _) {
+      onSuccess: (data, variables, deletedIds, ctx) {
         showMutationResultMsg(
           context: context,
           message: 'Usuarios eliminados',
           severity: .success,
         );
 
-        queryClient.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
+        ctx.client.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
           usersList,
         ) {
           usersList!.removeWhere((user) {
