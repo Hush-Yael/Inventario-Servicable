@@ -41,43 +41,42 @@ mixin TableMixin on UsersBaseVm {
     final bool isAdmin = role == UserRole.admin;
 
     return usersList.mapIndexed((rowIndex, user) {
-      final cells = {
-        kIndexColumnField: TrinaCell(value: rowIndex + 1),
-        UsersTableColumns.name.name: TrinaCell(
-          value: user.name,
-          renderer: user.id == selfId
-              ? (ctx) => Row(
-                  crossAxisAlignment: .center,
-                  mainAxisAlignment: .spaceBetween,
-                  spacing: 7,
-                  children: [
-                    Text(ctx.cell.value),
-                    InfoBadge.informational(
-                      source: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: const Text(
-                          'Tú',
-                          style: TextStyle(fontWeight: .w600),
+      return TrinaRow(
+        metadata: {'id': user.id},
+        cells: {
+          kIndexColumnField: TrinaCell(value: rowIndex + 1),
+          UsersTableColumns.name.name: TrinaCell(
+            value: user.name,
+            renderer: user.id == selfId
+                ? (ctx) => Row(
+                    crossAxisAlignment: .center,
+                    mainAxisAlignment: .spaceBetween,
+                    spacing: 7,
+                    children: [
+                      Text(ctx.cell.value),
+                      InfoBadge.informational(
+                        source: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                          child: const Text(
+                            'Tú',
+                            style: TextStyle(fontWeight: .w600),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              : null,
-        ),
+                    ],
+                  )
+                : null,
+          ),
 
-        UsersTableColumns.username.name: TrinaCell(value: user.username),
+          UsersTableColumns.username.name: TrinaCell(value: user.username),
 
-        UsersTableColumns.role.name: TrinaCell(value: user.role.label),
+          UsersTableColumns.role.name: TrinaCell(value: user.role.label),
 
-        UsersTableColumns.lastLogin.name: TrinaCell(value: user.lastLogin),
-      };
+          UsersTableColumns.lastLogin.name: TrinaCell(value: user.lastLogin),
 
-      if (isAdmin) {
-        cells[kSelectAllRowsColumnField] = TrinaCell();
-      }
-
-      return TrinaRow(metadata: {'id': user.id}, cells: cells);
+          if (isAdmin) kSelectAllRowsColumnField: TrinaCell(),
+        },
+      );
     }).toList();
   }
 }

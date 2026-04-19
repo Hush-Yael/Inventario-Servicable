@@ -149,7 +149,7 @@ class UsersTable extends HookWidget {
     final UserRole role =
         AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
 
-    final columns = [
+    return [
       indexColumn(listLength),
 
       TrinaColumn(
@@ -179,10 +179,8 @@ class UsersTable extends HookWidget {
         title: 'Último ingreso',
         enableEditingMode: false,
       ),
-    ];
 
-    if (role == UserRole.admin) {
-      columns.add(
+      if (role == UserRole.admin)
         selectAllRowsColumn(
           cellsPadding: cellsPadding,
           selfId: selfId,
@@ -192,9 +190,6 @@ class UsersTable extends HookWidget {
               rendererContext.stateManager.rows.length == 1 &&
               rendererContext.stateManager.rows[0].metadata?['id'] == selfId,
         ),
-      );
-    }
-
-    return columns;
+    ];
   }
 }
