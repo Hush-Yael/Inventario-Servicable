@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:disco/disco.dart';
 import 'package:flutter_query/flutter_query.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/shared_prefs_service.dart';
 import 'package:servicable_stock/core/theme/theme_mode_state.dart';
@@ -18,9 +20,12 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   late final initialization = Future(() async {
+    Intl.defaultLocale = 'es_VE';
+
     await WindowManager.instance.ensureInitialized();
 
     await Future.wait([
+      initializeDateFormatting(),
       WindowManager.instance.setTitle("Sistema de inventario - Servicable"),
       SharedPrefsService.setup(),
     ]);
