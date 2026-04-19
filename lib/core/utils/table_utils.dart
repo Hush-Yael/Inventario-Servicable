@@ -7,7 +7,7 @@ import 'package:trina_grid/trina_grid.dart';
 
 TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
   return TrinaGridConfiguration(
-    localeText: TrinaGridLocaleText(
+    localeText: TrinaGridLocaleText.spanish(
       unfreezeColumn: 'Desfijar columna',
       freezeColumnToEnd: 'Fijar columna al final',
       freezeColumnToStart: 'Fijar columna al inicio',
