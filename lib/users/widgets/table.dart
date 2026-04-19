@@ -175,7 +175,7 @@ class UsersTable extends HookWidget {
 
       TrinaColumn(
         field: UsersTableColumns.lastLogin.name,
-        type: .date(),
+        type: formattedDateColumnType,
         title: 'Último ingreso',
         enableEditingMode: false,
       ),

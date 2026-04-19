@@ -181,3 +181,7 @@ TrinaColumn selectAllRowsColumn({
     );
   },
 );
+
+final formattedDateColumnType = TrinaColumnType.date(
+  format: 'EEE, dd MMM yyyy hh:mm a',
+);

@@ -7,7 +7,6 @@ import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
 import 'package:collection/collection.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
-import 'package:intl/intl.dart';
 import 'package:trina_grid/trina_grid.dart';
 
 mixin TableMixin on UsersBaseVm {
@@ -66,23 +65,12 @@ mixin TableMixin on UsersBaseVm {
                 )
               : null,
         ),
+
         UsersTableColumns.username.name: TrinaCell(value: user.username),
+
         UsersTableColumns.role.name: TrinaCell(value: user.role.label),
-        UsersTableColumns.lastLogin.name: TrinaCell(
-          value: user.lastLogin,
-          renderer: (ctx) {
-            return user.lastLogin == null
-                ? const SizedBox.shrink()
-                : Text(
-                    DateFormat.yMMMEd(
-                      Localizations.localeOf(context).languageCode,
-                    ).add_jm().format(user.lastLogin!),
-                    style: const TextStyle(
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
-                  );
-          },
-        ),
+
+        UsersTableColumns.lastLogin.name: TrinaCell(value: user.lastLogin),
       };
 
       if (isAdmin) {
