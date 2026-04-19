@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -145,51 +145,46 @@ class UsersTable extends HookWidget {
     required int listLength,
     required int selfId,
     required EdgeInsets cellsPadding,
-  }) {
-    final UserRole role =
-        AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
+  }) => [
+    indexColumn(listLength),
 
-    return [
-      indexColumn(listLength),
+    TrinaColumn(
+      field: UsersTableColumns.name.name,
+      type: .text(),
+      title: 'Nombre',
+      enableEditingMode: false,
+    ),
 
-      TrinaColumn(
-        field: UsersTableColumns.name.name,
-        type: .text(),
-        title: 'Nombre',
-        enableEditingMode: false,
+    TrinaColumn(
+      field: UsersTableColumns.username.name,
+      type: .text(),
+      title: 'Nombre de usuario',
+      enableEditingMode: false,
+    ),
+
+    TrinaColumn(
+      field: UsersTableColumns.role.name,
+      type: .text(),
+      title: 'Rol',
+      enableEditingMode: false,
+    ),
+
+    TrinaColumn(
+      field: UsersTableColumns.lastLogin.name,
+      type: formattedDateColumnType,
+      title: 'Último ingreso',
+      enableEditingMode: false,
+    ),
+
+    if (isAdmin(context))
+      selectAllRowsColumn(
+        cellsPadding: cellsPadding,
+        selfId: selfId,
+        checkValueSignal: UsersVm.instance.of(context).selectAllCheckedValue,
+        disabled: (rendererContext) =>
+            // When displaying only the current user row, disable the select all checkbox
+            rendererContext.stateManager.rows.length == 1 &&
+            rendererContext.stateManager.rows[0].metadata?['id'] == selfId,
       ),
-
-      TrinaColumn(
-        field: UsersTableColumns.username.name,
-        type: .text(),
-        title: 'Nombre de usuario',
-        enableEditingMode: false,
-      ),
-
-      TrinaColumn(
-        field: UsersTableColumns.role.name,
-        type: .text(),
-        title: 'Rol',
-        enableEditingMode: false,
-      ),
-
-      TrinaColumn(
-        field: UsersTableColumns.lastLogin.name,
-        type: formattedDateColumnType,
-        title: 'Último ingreso',
-        enableEditingMode: false,
-      ),
-
-      if (role == UserRole.admin)
-        selectAllRowsColumn(
-          cellsPadding: cellsPadding,
-          selfId: selfId,
-          checkValueSignal: UsersVm.instance.of(context).selectAllCheckedValue,
-          disabled: (rendererContext) =>
-              // When displaying only the current user row, disable the select all checkbox
-              rendererContext.stateManager.rows.length == 1 &&
-              rendererContext.stateManager.rows[0].metadata?['id'] == selfId,
-        ),
-    ];
-  }
+  ];
 }

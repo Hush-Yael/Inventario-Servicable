@@ -1,4 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:servicable_stock/auth/auth_constants.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
 
 /// Displays a info bar with [message] and [severity] after mutation result
 Future<void> showMutationResultMsg({
@@ -22,4 +24,11 @@ Future<T> stall<T>(
 ]) async {
   final [awaited, _] = await Future.wait([resource, Future.delayed(duration)]);
   return awaited;
+}
+
+bool isAdmin(BuildContext context) {
+  final UserRole role =
+      AuthState.instance.of(context).user?.role ?? UserRole.supervisor;
+
+  return role == UserRole.admin;
 }
