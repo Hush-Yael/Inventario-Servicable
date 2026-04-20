@@ -8,14 +8,6 @@ import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:trina_grid/trina_grid.dart';
 
 mixin TableMixin on UsersBaseVm {
-  TrinaGridStateManager? _stateManager;
-
-  TrinaGridStateManager? get stateManager => _stateManager;
-
-  set stateManager(TrinaGridStateManager stateManager) {
-    _stateManager = stateManager;
-  }
-
   bool shiftPressed = false;
   int lastSelectedIndex = -1;
 

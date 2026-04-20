@@ -2,6 +2,7 @@ import 'package:disco/disco.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
+import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/service/users_repository.dart';
 import 'package:servicable_stock/users/service/users_service.dart';
 // import 'package:servicable_stock/users/service/users_fake_service.dart';
@@ -10,7 +11,7 @@ import 'package:servicable_stock/users/view_model/users_delete_mixin.dart';
 import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
 import 'package:servicable_stock/users/view_model/users_change_role_mixin.dart';
 
-class UsersBaseVm {
+class UsersBaseVm with VmTrinaGridMixin {
   final UsersRepository service;
   final AuthState authState;
   final bool isAdmin;

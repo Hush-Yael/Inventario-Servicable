@@ -181,6 +181,16 @@ final formattedDateColumnType = TrinaColumnType.date(
   format: 'EEE, dd MMM yyyy hh:mm a',
 );
 
+mixin VmTrinaGridMixin {
+  TrinaGridStateManager? _stateManager;
+
+  TrinaGridStateManager? get stateManager => _stateManager;
+
+  set stateManager(TrinaGridStateManager stateManager) {
+    _stateManager = stateManager;
+  }
+}
+
 extension TrinaRowExt on TrinaRow {
   /// returns the id of the object associated with the row
   int? get objId => metadata?['id'];
