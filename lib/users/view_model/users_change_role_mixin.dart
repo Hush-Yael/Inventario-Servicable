@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/core/utils/fn.dart' show showMutationResultMsg;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -10,6 +10,12 @@ mixin ChangeRoleMutationMixin on TableMixin {
   ChangeRoleMutation createChangeRoleMutation(BuildContext context) {
     return useMutation(
       (role, _) async {
+        if (!isAdmin) {
+          return Future.error(
+            'No tienes permiso para cambiar roles de usuarios',
+          );
+        }
+
         return await service.changeUsersRole(role, getIdsFromSelected);
       },
 

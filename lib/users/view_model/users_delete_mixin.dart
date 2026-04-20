@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/core/utils/fn.dart' show showMutationResultMsg;
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
@@ -9,6 +9,10 @@ mixin DeleteMutationMixin on TableMixin {
   DeleteMutation createDeleteMutation(BuildContext context) {
     return useMutation(
       (values, _) async {
+        if (!isAdmin) {
+          return Future.error('No tienes permiso para eliminar usuarios');
+        }
+
         return await service.deleteUsers(getIdsFromSelected);
       },
 
