@@ -32,3 +32,11 @@ bool isAdmin(BuildContext context) {
 
   return role == UserRole.admin;
 }
+
+bool hasPerm(BuildContext context, UserRole reqRole) {
+  final int currentLevel =
+      AuthState.instance.of(context).user?.role.level ??
+      UserRole.supervisor.level;
+
+  return currentLevel >= reqRole.level;
+}
