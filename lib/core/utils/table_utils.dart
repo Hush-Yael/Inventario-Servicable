@@ -32,9 +32,6 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
         #gridBackgroundColor:
             context.theme.resources.cardBackgroundFillColorDefault,
 
-        #enableCellBorderVertical: false,
-        #enableColumnBorderVertical: false,
-
         #borderColor: context.theme.brightness == Brightness.dark
             ? Color(0xff595959)
             : context.theme.resources.cardStrokeColorDefaultSolid,
