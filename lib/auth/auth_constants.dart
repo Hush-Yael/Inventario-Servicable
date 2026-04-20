@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 enum UserRole {
-  admin(label: 'Admin'),
-  operator(label: 'Operador'),
-  supervisor(label: 'Supervisor');
+  admin('Admin'),
+  operator('Operador'),
+  supervisor('Supervisor');
 
   final String label;
 
-  const UserRole({required this.label});
+  const UserRole(this.label);
 }
 
 const kNameMinLength = 3;
