@@ -29,7 +29,7 @@ mixin TableMixin on UsersBaseVm {
       stateManager?.checkedRows ?? const [];
 
   List<int> get getIdsFromSelected =>
-      selectedRows.map((row) => row.metadata?['id'] as int).toList();
+      selectedRows.map((row) => row.objId!).toList();
 
   List<TrinaRow> getRows(BuildContext context, UsersList usersList) {
     final selfId = authState.user?.id;

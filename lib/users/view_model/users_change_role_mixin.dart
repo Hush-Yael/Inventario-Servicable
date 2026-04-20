@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
@@ -19,7 +20,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
           final prevRoles = users
               .map(
                 (row) => (
-                  id: row.metadata?['id'] as int,
+                  id: row.objId!,
                   role: row.cells[UsersTableColumns.role.name]?.value as String,
                 ),
               )
@@ -47,7 +48,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
 
         try {
           for (var user in selectedRows) {
-            final int id = user.metadata?['id'];
+            final int id = user.objId!;
 
             final int changedUserIndex = prevRoles!.indexWhere(
               (prevUser) => prevUser.id == id,

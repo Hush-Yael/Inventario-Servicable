@@ -108,7 +108,7 @@ TrinaColumn selectAllRowsColumn({
   title: '',
   field: kSelectAllRowsColumnField,
   type: .custom(toDisplayString: (value) => ''),
-  disableRowCheckboxWhen: (row) => row.metadata?['id'] == selfId,
+  disableRowCheckboxWhen: (row) => row.objId == selfId,
   width: 60,
   enableContextMenu: false,
   enableSorting: false,
@@ -160,9 +160,7 @@ TrinaColumn selectAllRowsColumn({
                       // 'toggleAllRowChecked' checks all rows even if they are disabled, so we need to manually uncheck them since they are not counted when we determine this checkbox value
                       if (allShouldBeChecked) {
                         rendererContext.stateManager.refRows
-                            .firstWhereOrNull(
-                              (row) => row.metadata?['id'] == selfId,
-                            )
+                            .firstWhereOrNull((row) => row.objId == selfId)
                             ?.setChecked(false);
                       }
 
@@ -182,3 +180,10 @@ TrinaColumn selectAllRowsColumn({
 final formattedDateColumnType = TrinaColumnType.date(
   format: 'EEE, dd MMM yyyy hh:mm a',
 );
+
+extension TrinaRowExt on TrinaRow {
+  /// returns the id of the object associated with the row
+  int? get objId => metadata?['id'];
+
+  set objId(int? id) => metadata?['id'] = id;
+}
