@@ -16,29 +16,19 @@ class UsersService extends ServiceRepository implements UsersRepository {
 
   @override
   Future<int> deleteUsers(List<int> ids) async {
-    final int count = await stall(
-      (db.delete(db.users)..where((u) => u.id.isIn(ids))).go(),
-    );
+    final op = stall((db.delete(db.users)..where((u) => u.id.isIn(ids))).go());
 
-    if (count > 0) {
-      return count;
-    } else {
-      throw Exception('No se pudieron eliminar los usuarios');
-    }
+    return await ensureMutated(op, 'No se pudieron eliminar los usuarios');
   }
 
   @override
   Future<int> changeUsersRole(UserRole role, List<int> ids) async {
-    final int count = await stall(
+    final op = stall(
       (db.update(
         db.users,
       )..where((u) => u.id.isIn(ids))).write(UsersCompanion(role: Value(role))),
     );
 
-    if (count > 0) {
-      return count;
-    } else {
-      throw Exception('No se pudieron cambiar los roles');
-    }
+    return await ensureMutated(op, 'No se pudieron cambiar los roles');
   }
 }
