@@ -9,10 +9,14 @@ class Guard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (AuthState.instance.of(context).user?.role == role) {
-      return child;
-    } else {
-      return const SizedBox.shrink();
-    }
+    final currentRoleLevel =
+        (AuthState.instance.of(context).user?.role ?? UserRole.supervisor)
+            .level;
+
+    final needRoleLevel = role.level;
+
+    if (currentRoleLevel <= needRoleLevel) return const SizedBox.shrink();
+
+    return child;
   }
 }
