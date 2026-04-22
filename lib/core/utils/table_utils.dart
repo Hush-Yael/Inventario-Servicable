@@ -108,7 +108,7 @@ TrinaColumn selectAllRowsColumn({
   title: '',
   field: kSelectAllRowsColumnField,
   type: .custom(toDisplayString: (value) => ''),
-  disableRowCheckboxWhen: (row) => row.objId == selfId,
+  disableRowCheckboxWhen: (row) => row.$id == selfId,
   width: 60,
   enableContextMenu: false,
   enableSorting: false,
@@ -160,7 +160,7 @@ TrinaColumn selectAllRowsColumn({
                       // 'toggleAllRowChecked' checks all rows even if they are disabled, so we need to manually uncheck them since they are not counted when we determine this checkbox value
                       if (allShouldBeChecked) {
                         rendererContext.stateManager.refRows
-                            .firstWhereOrNull((row) => row.objId == selfId)
+                            .firstWhereOrNull((row) => row.$id == selfId)
                             ?.setChecked(false);
                       }
 
@@ -192,8 +192,10 @@ mixin VmTrinaGridMixin {
 }
 
 extension TrinaRowExt on TrinaRow {
-  /// returns the id of the object associated with the row
-  int? get objId => metadata?['id'];
+  /// returns the id (if provided) of the object associated with the row
+  int? get $id => metadata?['id'];
 
-  set objId(int? id) => metadata?['id'] = id;
+  set $id(int? id) => metadata?['id'] = id;
+
+  T cellValue<T extends dynamic>(String field) => cells[field]?.originalValue;
 }

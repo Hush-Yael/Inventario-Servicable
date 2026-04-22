@@ -26,8 +26,8 @@ mixin ChangeRoleMutationMixin on TableMixin {
           final prevRoles = users
               .map(
                 (row) => (
-                  id: row.objId!,
-                  role: row.cells[UsersTableColumns.role.name]?.value as String,
+                  id: row.$id!,
+                  role: row.cellValue<String>(UsersTableColumns.role.name),
                 ),
               )
               .toList();
@@ -54,7 +54,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
 
         try {
           for (var user in selectedRows) {
-            final int id = user.objId!;
+            final int id = user.$id!;
 
             final int changedUserIndex = prevRoles!.indexWhere(
               (prevUser) => prevUser.id == id,

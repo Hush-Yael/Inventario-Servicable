@@ -95,7 +95,7 @@ class UsersTable extends HookWidget {
                         ) {
                           final row = m.refRows[i];
 
-                          if (i != event.rowIdx && row.objId! != selfId) {
+                          if (i != event.rowIdx && row.$id! != selfId) {
                             row.setChecked(true);
                           }
                         }
@@ -175,7 +175,7 @@ class UsersTable extends HookWidget {
         disabled: (rendererContext) =>
             // When displaying only the current user row, disable the select all checkbox
             rendererContext.stateManager.rows.length == 1 &&
-            rendererContext.stateManager.rows[0].objId == selfId,
+            rendererContext.stateManager.rows[0].$id == selfId,
       ),
   ];
 }
