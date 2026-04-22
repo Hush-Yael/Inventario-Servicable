@@ -9,7 +9,7 @@ TrinaGrid tableLoader(
   required List<TrinaColumn> columns,
 }) => TrinaGrid(
   // Prevent rerendering the loader when it is retrying, but don't show it when it succeeds or not
-  key: query.failureCount < 1 && !query.isFetching ? UniqueKey() : null,
+  key: query.failureCount == 0 && query.isFetching ? UniqueKey() : null,
 
   rows: const [],
 
