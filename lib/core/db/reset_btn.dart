@@ -27,6 +27,9 @@ class WithResetBtn extends StatelessWidget {
 
               print('Resetting database...');
 
+              // Disable foreign key constraints to avoid errors
+              await db.customStatement('PRAGMA foreign_keys = OFF');
+
               await Future.wait(
                 tables.map(
                   (table) => m
@@ -40,6 +43,8 @@ class WithResetBtn extends StatelessWidget {
               );
 
               print('Database was reset successfully');
+
+              await db.customStatement('PRAGMA foreign_keys = ON');
             },
             child: const WindowsIcon(FluentIcons.delete),
           ),
