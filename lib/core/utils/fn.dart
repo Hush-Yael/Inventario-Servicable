@@ -40,3 +40,34 @@ bool hasPerm(BuildContext context, UserRole reqRole) {
 
   return currentLevel >= reqRole.level;
 }
+
+Future<dynamic> confirmDeletion(
+  BuildContext context, {
+  required String title,
+  required String msg,
+  required void Function() onConfirmed,
+  String cancelTxt = 'No, cancelar',
+  String confirmTxt = 'Sí, eliminar',
+}) => showDialog<String>(
+  context: context,
+  builder: (context) => ContentDialog(
+    title: Text(title, style: AppTheme.dialogTitleStyle),
+    content: Text(msg),
+    actions: [
+      Button(
+        onPressed: () => Navigator.pop(context, 'No'),
+        style: ButtonStyle(padding: .all(.all(8))),
+        child: Text(cancelTxt),
+      ),
+
+      Button(
+        style: BtnStyles.dangerButtonStyle.copyWith(padding: .all(.all(8))),
+        onPressed: () {
+          onConfirmed();
+          Navigator.pop(context, 'Si');
+        },
+        child: Text(confirmTxt),
+      ),
+    ],
+  ),
+);

@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
 
@@ -55,32 +56,12 @@ class DeleteBtn extends HookWidget {
 
     if (users.isEmpty) return;
 
-    await showDialog<String>(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: const Text(
-          'Eliminar usuarios',
-          style: AppTheme.dialogTitleStyle,
-        ),
-        content: Text(
+    await confirmDeletion(
+      context,
+      title: 'Eliminar usuarios',
+      msg:
           '¿Realmente quieres eliminar los ${users.length} usuarios seleccionados?',
-        ),
-        actions: [
-          Button(
-            onPressed: () => Navigator.pop(context, 'No'),
-            style: ButtonStyle(padding: .all(.all(8))),
-            child: const Text('No, cancelar'),
-          ),
-          Button(
-            style: BtnStyles.dangerButtonStyle.copyWith(padding: .all(.all(8))),
-            onPressed: () {
-              mutation.mutate(null);
-              Navigator.pop(context, 'Si');
-            },
-            child: const Text('Sí, eliminar'),
-          ),
-        ],
-      ),
+      onConfirmed: () => mutation.mutate(null),
     );
   }
 }
