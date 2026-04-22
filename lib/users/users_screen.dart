@@ -9,7 +9,7 @@ import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
 import 'package:servicable_stock/users/widgets/change_role_btn.dart';
 import 'package:servicable_stock/users/widgets/delete_btn.dart';
-import 'package:servicable_stock/users/widgets/table.dart';
+import 'package:servicable_stock/users/widgets/users_table.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({super.key});
