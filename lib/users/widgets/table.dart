@@ -45,6 +45,7 @@ class UsersTable extends HookWidget {
             if (query.isLoading) {
               return GridCardWrapper(
                 tableLoader(
+                  query,
                   config: gridConfig,
                   columns: getColumns(
                     context: context,
