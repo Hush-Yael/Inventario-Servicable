@@ -4,12 +4,12 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
+import 'package:servicable_stock/shared/widgets/table_loader.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
-import 'package:servicable_stock/users/widgets/fetch_error.dart';
+import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
 import 'package:servicable_stock/users/widgets/grid_card_wrapper.dart';
-import 'package:servicable_stock/users/widgets/loader.dart';
 import 'package:servicable_stock/users/widgets/table_header.dart';
 import 'package:servicable_stock/users/widgets/watch_shift_key.dart';
 import 'package:trina_grid/trina_grid.dart';
@@ -35,24 +35,16 @@ class UsersTable extends HookWidget {
         padding: const .only(bottom: 20, left: 20, right: 20),
         child: Builder(
           builder: (context) {
-            if (query.isError) return FetchError(query);
+            if (query.isError) {
+              return TableFetchError(query, 'Error al obtener los usuarios');
+            }
 
             final gridConfig = getTrinaBaseConfig(context);
 
             if (query.isLoading) {
               return GridCardWrapper(
-                TrinaGrid(
-                  rows: const [],
-
-                  mode: .readOnly,
-
-                  configuration: gridConfig,
-
-                  onLoaded: (event) => event.stateManager.setShowLoading(
-                    true,
-                    customLoadingWidget: const Loader(),
-                  ),
-
+                tableLoader(
+                  config: gridConfig,
                   columns: getColumns(
                     context: context,
                     listLength: 0,

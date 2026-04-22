@@ -1,10 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
-import 'package:servicable_stock/users/users_types.dart';
 
-class FetchError extends StatelessWidget {
-  final UsersQuery query;
-  const FetchError(this.query, {super.key});
+class TableFetchError extends StatelessWidget {
+  final QueryResult query;
+  final String msg;
+  const TableFetchError(this.query, this.msg, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class FetchError extends StatelessWidget {
             ),
 
             Text(
-              'Error al obtener los usuarios',
+              msg,
               style: TextStyle(
                 fontWeight: .bold,
                 color: AppTheme.errorColor(context),

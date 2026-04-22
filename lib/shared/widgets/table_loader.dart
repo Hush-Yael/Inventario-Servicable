@@ -1,8 +1,29 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:trina_grid/trina_grid.dart';
 
-class Loader extends StatelessWidget {
-  const Loader({super.key});
+TrinaGrid tableLoader({
+  required TrinaGridConfiguration config,
+  required List<TrinaColumn> columns,
+}) => TrinaGrid(
+  key: UniqueKey(),
+
+  rows: const [],
+
+  mode: .readOnly,
+
+  configuration: config,
+
+  onLoaded: (event) => event.stateManager.setShowLoading(
+    true,
+    customLoadingWidget: const _Loader(),
+  ),
+
+  columns: columns,
+);
+
+class _Loader extends StatelessWidget {
+  const _Loader();
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +40,7 @@ class Loader extends StatelessWidget {
           children: [
             const ProgressRing(),
 
-            Text(
-              'Cargando usuarios...',
-              style: context.theme.typography.subtitle,
-            ),
+            Text('Cargando...', style: context.theme.typography.subtitle),
           ],
         ),
       ),
