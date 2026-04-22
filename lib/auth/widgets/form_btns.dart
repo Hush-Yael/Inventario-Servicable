@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
-import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/shared/widgets/submit_btn_ring.dart';
 
 class FormBtns extends StatefulWidget {
   const FormBtns({super.key});
@@ -25,15 +25,7 @@ class _FormBtnsState extends State<FormBtns> {
             style: const ButtonStyle(padding: WidgetStatePropertyAll(.all(12))),
             onPressed: vm.isSubmitting.value ? null : vm.submit,
             child: vm.isSubmitting.value
-                ? SizedBox(
-                    height: 16,
-                    width: 16,
-
-                    child: ProgressRing(
-                      strokeWidth: 3.5,
-                      backgroundColor: context.theme.accentColor.withAlpha(90),
-                    ),
-                  )
+                ? const SubmitBtnRing()
                 : Text(isSignIn.value ? 'Ingresar' : 'Crear'),
           ),
 
