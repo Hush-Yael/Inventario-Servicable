@@ -4,6 +4,7 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
+import 'package:servicable_stock/shared/widgets/no_rows.dart';
 import 'package:servicable_stock/shared/widgets/table_loader.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -61,6 +62,8 @@ class UsersTable extends HookWidget {
               onShiftPressed: (pressed) => vm.shiftPressed = pressed,
               child: GridCardWrapper(
                 TrinaGrid(
+                  noRowsWidget: NoRows('usuarios'),
+
                   columns: getColumns(
                     context: context,
                     listLength: usersList.length,
