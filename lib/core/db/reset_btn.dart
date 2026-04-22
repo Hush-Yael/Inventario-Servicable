@@ -3,6 +3,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/core/db/seed.dart';
 
 /// Used to recreate the database applying changes without migrations in dev mode
 class WithResetBtn extends StatelessWidget {
@@ -42,9 +43,12 @@ class WithResetBtn extends StatelessWidget {
                 ),
               );
 
-              print('Database was reset successfully');
+              print('Database was reset successfully. Seeding...');
 
               await db.customStatement('PRAGMA foreign_keys = ON');
+              await seed(db);
+
+              print('Database seeded successfully.');
             },
             child: const WindowsIcon(FluentIcons.delete),
           ),
