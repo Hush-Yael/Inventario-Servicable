@@ -2,9 +2,13 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/users/users_screen.dart';
 
 enum NavigationPages {
-  home(FluentIcons.home, 'Inicio', Text('Index')),
-  inventory(FluentIcons.grid_view_medium, 'Inventario', Text('Inventario')),
-  users(FluentIcons.people, 'Usuarios', UsersScreen());
+  home(FluentIcons.home, 'Inicio', HomeScreen()),
+  users(FluentIcons.people, 'Usuarios', UsersScreen()),
+  categories(
+    FluentIcons.app_icon_default_list,
+    'Categorías',
+    CategoriesScreen(),
+  );
 
   const NavigationPages(this.icon, this.label, this.view);
 

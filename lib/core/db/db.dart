@@ -6,11 +6,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/auth_models.dart';
 import 'package:path/path.dart' as p;
+import 'package:servicable_stock/core/db/seed.dart';
+import 'package:servicable_stock/stock/categories/categories_models.dart';
+import 'package:servicable_stock/stock/products/products_models.dart';
 import 'dart:io';
+import 'package:servicable_stock/stock/units/units_models.dart';
 
 part 'db.g.dart';
 
-@DriftDatabase(tables: [Users])
+@DriftDatabase(tables: [Users, Products, Categories, Units])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
@@ -48,4 +52,11 @@ class AppDatabase extends _$AppDatabase {
   }
 
   static final instance = Provider((context) => AppDatabase());
+}
+
+/// Mixin to add [createdAt] and [updatedAt] columns
+mixin TimeStampedRecord on Table {
+  late final createdAt = dateTime().withDefault(currentDateAndTime)();
+
+  late final updatedAt = dateTime().withDefault(currentDateAndTime)();
 }
