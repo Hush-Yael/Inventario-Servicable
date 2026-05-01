@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/no_rows.dart';
 import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
 import 'package:servicable_stock/shared/widgets/table_loader.dart';
