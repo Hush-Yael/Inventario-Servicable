@@ -49,6 +49,8 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
 
         #menuBackgroundColor: context.theme.menuColor,
 
+        #filterIcon: null,
+
         #filterPopupHeaderColor: context.theme.menuColor,
 
         #rowColor: context.theme.resources.cardBackgroundFillColorDefault,
@@ -73,6 +75,7 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
   );
 }
 
+/// Used to identify the column that contains the index of the row
 const kIndexColumnField = 'index';
 
 /// Returns a column that contains the index of the row, [listLength] is used to calculate the minimum width needed to fit longest number of the list length
