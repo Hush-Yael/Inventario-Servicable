@@ -9,7 +9,7 @@ import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
 import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
-import 'package:servicable_stock/users/widgets/grid_card_wrapper.dart';
+import 'package:servicable_stock/shared/widgets/grid_card_wrapper.dart';
 import 'package:servicable_stock/users/widgets/watch_shift_key.dart';
 import 'package:trina_grid/trina_grid.dart';
 
@@ -29,7 +29,7 @@ class UsersTable extends HookWidget {
     final gridConfig = getTrinaBaseConfig(context);
 
     if (query.isLoading) {
-      return GridCardWrapper(
+      return CardWrapper(
         tableLoader(
           query,
           config: gridConfig,
@@ -47,7 +47,7 @@ class UsersTable extends HookWidget {
 
     return WatchShiftKey(
       onShiftPressed: (pressed) => vm.shiftPressed = pressed,
-      child: GridCardWrapper(
+      child: CardWrapper(
         TrinaGrid(
           noRowsWidget: NoRows('usuarios'),
 
