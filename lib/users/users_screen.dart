@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/guard_widget.dart';
+import 'package:servicable_stock/shared/widgets/table_padding.dart';
 import 'package:servicable_stock/shared/widgets/table_title.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -51,10 +52,7 @@ class _UsersScreen extends HookWidget {
         ),
       ),
 
-      content: Padding(
-        padding: const .only(bottom: 20, left: 20, right: 20),
-        child: UsersTable(query),
-      ),
+      content: TablePadding(UsersTable(query)),
     );
   }
 }
