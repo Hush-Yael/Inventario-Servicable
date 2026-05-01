@@ -6,8 +6,7 @@ import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/no_rows.dart';
-import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
-import 'package:servicable_stock/shared/widgets/table_loader.dart';
+import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/stock/categories/categories_constants.dart';
 import 'package:servicable_stock/stock/categories/view_model/categories_vm.dart';
 import 'package:servicable_stock/stock/categories/categories_types.dart';
@@ -20,55 +19,48 @@ class CategoriesTable extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (query.isError) {
-      return TableFetchError(query, 'Error al obtener las categorías');
-    }
-
     final vm = CategoriesVm.instance.of(context);
 
-    final config = getTrinaBaseConfig(context);
+    return QueryTable(
+      query,
+      errorMsg: 'Error al obtener las categorías',
+      config: getTrinaBaseConfig(context),
+      loaderColumns: getColumns(context, const []),
+      renderGrid: (list) {
+        final canEdit = hasPerm(context, .operator);
 
-    final CategoriesDeleteMutation deleteMutation = vm.createDeleteMutation(
-      context,
-    );
+        final CategoriesDeleteMutation deleteMutation = vm.createDeleteMutation(
+          context,
+        );
 
-    if (query.isLoading) {
-      return tableLoader(
-        query,
-        config: config,
-        columns: getColumns(context, const [], deleteMutation),
-      );
-    }
+        final CategoriesChangeNameMutation changeNameMutation = vm
+            .createChangeNameMutation(context);
 
-    final list = query.data!;
-    final canEdit = hasPerm(context, .operator);
-
-    final CategoriesChangeNameMutation changeNameMutation = vm
-        .createChangeNameMutation(context);
-
-    return TrinaGrid(
-      rows: vm.getRows(list),
-      columns: getColumns(context, list, deleteMutation),
-      onLoaded: (event) => vm.stateManager = event.stateManager,
-      onChanged: (event) {
-        if (event.column.field == CategoryTableColumns.name.name) {
-          changeNameMutation.mutate(event);
-        }
+        return TrinaGrid(
+          rows: vm.getRows(list!),
+          columns: getColumns(context, list, deleteMutation),
+          onLoaded: (event) => vm.stateManager = event.stateManager,
+          onChanged: (event) {
+            if (event.column.field == CategoryTableColumns.name.name) {
+              changeNameMutation.mutate(event);
+            }
+          },
+          onBeforeActiveCellChange: (event) {
+            return (canEdit &&
+                event.newCell.column.field == CategoryTableColumns.name.name);
+          },
+          configuration: getTrinaBaseConfig(context),
+          noRowsWidget: NoRows('categorías'),
+        );
       },
-      onBeforeActiveCellChange: (event) {
-        return (canEdit &&
-            event.newCell.column.field == CategoryTableColumns.name.name);
-      },
-      configuration: config,
-      noRowsWidget: NoRows('categorías'),
     );
   }
 
   List<TrinaColumn> getColumns(
     BuildContext context,
-    CategoriesList list,
-    CategoriesDeleteMutation deleteMutation,
-  ) => [
+    CategoriesList list, [
+    CategoriesDeleteMutation? deleteMutation,
+  ]) => [
     indexColumn(list.length),
 
     TrinaColumn(
@@ -127,7 +119,7 @@ class CategoriesTable extends HookWidget {
         crossAxisAlignment: .center,
         spacing: 8,
         children: [
-          if (isAdmin(context))
+          if (isAdmin(context) && deleteMutation != null)
             IconButton(
               style: BtnStyles.dangerButtonStyle,
               icon: WindowsIcon(FluentIcons.delete),

@@ -4,11 +4,10 @@ import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/widgets/no_rows.dart';
-import 'package:servicable_stock/shared/widgets/table_loader.dart';
+import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_vm.dart';
-import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
 import 'package:servicable_stock/shared/widgets/card_wrapper.dart';
 import 'package:servicable_stock/users/widgets/watch_shift_key.dart';
 import 'package:trina_grid/trina_grid.dart';
@@ -20,107 +19,102 @@ class UsersTable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final vm = UsersVm.instance.of(context);
-    final selfId = AuthState.instance.of(context).user?.id;
 
-    if (query.isError) {
-      return TableFetchError(query, 'Error al obtener los usuarios');
-    }
+    final config = getTrinaBaseConfig(context);
+    final cellPadding = config.style.defaultCellPadding;
 
-    final gridConfig = getTrinaBaseConfig(context);
+    return QueryTable(
+      query,
+      errorMsg: 'Error al obtener los usuarios',
+      loaderColumns: getColumns(
+        context,
+        listLength: 0,
+        selfId: null,
+        cellsPadding: cellPadding,
+      ),
+      config: config,
+      renderGrid: (usersList) {
+        final selfId = AuthState.instance.of(context).user?.id;
 
-    if (query.isLoading) {
-      return CardWrapper(
-        tableLoader(
-          query,
-          config: gridConfig,
-          columns: getColumns(
-            context: context,
-            listLength: 0,
-            selfId: selfId!,
-            cellsPadding: gridConfig.style.defaultCellPadding,
-          ),
-        ),
-      );
-    }
+        return WatchShiftKey(
+          onShiftPressed: (pressed) => vm.shiftPressed = pressed,
+          child: CardWrapper(
+            TrinaGrid(
+              noRowsWidget: NoRows('usuarios'),
 
-    final usersList = query.data!;
+              columns: getColumns(
+                context,
+                listLength: usersList!.length,
+                selfId: selfId!,
+                cellsPadding: cellPadding,
+              ),
 
-    return WatchShiftKey(
-      onShiftPressed: (pressed) => vm.shiftPressed = pressed,
-      child: CardWrapper(
-        TrinaGrid(
-          noRowsWidget: NoRows('usuarios'),
+              configuration: getTrinaBaseConfig(context),
 
-          columns: getColumns(
-            context: context,
-            listLength: usersList.length,
-            selfId: selfId!,
-            cellsPadding: gridConfig.style.defaultCellPadding,
-          ),
+              onLoaded: (event) => vm.stateManager = event.stateManager,
 
-          configuration: gridConfig,
+              onBeforeActiveCellChange: (event) => false,
 
-          onLoaded: (event) => vm.stateManager = event.stateManager,
+              onRowChecked: (event) {
+                final m = vm.stateManager!;
 
-          onBeforeActiveCellChange: (event) => false,
+                if (event.isChecked == true) {
+                  final start = vm.lastSelectedIndex;
+                  final end = event.rowIdx!;
+                  final isRange =
+                      vm.lastSelectedIndex > -1 && (start - end).abs() > 1;
 
-          onRowChecked: (event) {
-            final m = vm.stateManager!;
+                  if (!isRange) {
+                    vm.lastSelectedIndex = event.rowIdx!;
+                  } else {
+                    final isForwards = start > end;
 
-            if (event.isChecked == true) {
-              final start = vm.lastSelectedIndex;
-              final end = event.rowIdx!;
-              final isRange =
-                  vm.lastSelectedIndex > -1 && (start - end).abs() > 1;
+                    for (
+                      int i = start;
+                      isForwards ? i > end : i < end;
+                      isForwards ? i-- : i++
+                    ) {
+                      final row = m.refRows[i];
 
-              if (!isRange) {
-                vm.lastSelectedIndex = event.rowIdx!;
-              } else {
-                final isForwards = start > end;
+                      if (i != event.rowIdx && row.$id! != selfId) {
+                        row.setChecked(true);
+                      }
+                    }
 
-                for (
-                  int i = start;
-                  isForwards ? i > end : i < end;
-                  isForwards ? i-- : i++
-                ) {
-                  final row = m.refRows[i];
-
-                  if (i != event.rowIdx && row.$id! != selfId) {
-                    row.setChecked(true);
+                    vm.lastSelectedIndex = -1;
+                    m.notifyListeners();
                   }
+                } else {
+                  vm.lastSelectedIndex = -1;
                 }
 
-                vm.lastSelectedIndex = -1;
-                m.notifyListeners();
-              }
-            } else {
-              vm.lastSelectedIndex = -1;
-            }
+                final bool noRowsChecked = m.checkedRows.isEmpty;
 
-            final bool noRowsChecked = m.checkedRows.isEmpty;
+                final allSelected =
+                    m.checkedRows.length ==
+                    // subtract 1 so it doesn't include current user row, which is disabled
+                    m.rows.length - 1;
 
-            final allSelected =
-                m.checkedRows.length ==
-                // subtract 1 so it doesn't include current user row, which is disabled
-                m.rows.length - 1;
+                vm.selectAllCheckedValue.value = allSelected
+                    ? true
+                    : noRowsChecked
+                    ? false
+                    : null;
+              },
 
-            vm.selectAllCheckedValue.value = allSelected
-                ? true
-                : noRowsChecked
-                ? false
-                : null;
-          },
-
-          rows: vm.getRows(context, usersList),
-        ),
-      ),
+              rows: vm.getRows(context, usersList),
+            ),
+          ),
+        );
+      },
     );
   }
 
-  List<TrinaColumn> getColumns({
-    required BuildContext context,
+  List<TrinaColumn> getColumns(
+    BuildContext context, {
+
     required int listLength,
-    required int selfId,
+    int? selfId,
     required EdgeInsets cellsPadding,
   }) => [
     indexColumn(listLength),
@@ -153,7 +147,7 @@ class UsersTable extends HookWidget {
       enableEditingMode: false,
     ),
 
-    if (isAdmin(context))
+    if (isAdmin(context) && selfId != null)
       selectAllRowsColumn(
         cellsPadding: cellsPadding,
         selfId: selfId,
