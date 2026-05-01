@@ -16,7 +16,7 @@ class Units extends Table with TimeStampedRecord {
     max: kUnitDetailsMaxLength,
   )();
 
-  late final product = integer().nullable().references(
+  late final productId = integer().nullable().references(
     Products,
     #id,
     onDelete: .setNull,

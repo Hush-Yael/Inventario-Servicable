@@ -16,21 +16,21 @@ class Products extends Table with TimeStampedRecord {
     max: kProductNameMaxLength,
   )();
 
-  late final Column<int> stock = integer()
-      .check(stock.isBiggerOrEqualValue(0))
+  late final Column<int> units = integer()
+      .check(units.isBiggerOrEqualValue(0))
       .withDefault(const Constant(0))();
 
   /// whether the product stock is set manually or it depends on units
   late final usesUnits = boolean().withDefault(const Constant(true))();
 
-  late final category = integer().nullable().references(
-    Categories,
-    #id,
-    onDelete: .setNull,
-  )();
-
   /// label for the unit identifier field (shown as column header)
   late final unitIdentifier = text().withDefault(
     const Constant('identificador'),
+  )();
+
+  late final categoryId = integer().nullable().references(
+    Categories,
+    #id,
+    onDelete: .setNull,
   )();
 }

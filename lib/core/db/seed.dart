@@ -34,10 +34,10 @@ Future<void> seed(AppDatabase db) async {
         name:
             '$cat - ${faker.lorem.word()} ${faker.randomGenerator.string(10)}',
         usesUnits: Value(usesUnits),
-        stock: !usesUnits
+        units: !usesUnits
             ? Value(faker.randomGenerator.integer(100))
             : Value.absent(),
-        category: Value(i + 1),
+        categoryId: Value(i + 1),
       );
     });
 
@@ -53,7 +53,7 @@ Future<void> seed(AppDatabase db) async {
             faker.randomGenerator.integer(10),
             (i) => UnitsCompanion.insert(
               identifier: faker.randomGenerator.string(20),
-              product: Value(i + 1),
+              productId: Value(i + 1),
             ),
           ),
         );
