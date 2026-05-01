@@ -18,6 +18,15 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
       setColumnsTitle: 'Todas',
       setFilter: 'Filtrar',
       resetFilter: 'Limpiar filtro',
+
+      filterType: 'Filtro',
+
+      filterContains: 'contiene',
+      filterEquals: 'es igual a',
+      filterGreaterThan: 'mayor que',
+      filterGreaterThanOrEqualTo: 'mayor o igual que',
+      filterLessThan: 'menor que',
+      filterLessThanOrEqualTo: 'menor o igual que',
     ),
 
     scrollbar: .new(columnShowScrollWidth: false),
