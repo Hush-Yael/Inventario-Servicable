@@ -214,3 +214,11 @@ extension TrinaRowExt on TrinaRow {
 
   T cellValue<T extends dynamic>(String field) => cells[field]?.originalValue;
 }
+
+/// If createdAt and updatedAt are the same, show nothing on the cell
+TrinaCell getUpdatedAtCell(DateTime createdAt, DateTime updatedAt) {
+  return TrinaCell(
+    value: updatedAt,
+    renderer: createdAt.isAtSameMomentAs(updatedAt) ? (ctx) => Text('') : null,
+  );
+}

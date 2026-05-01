@@ -31,16 +31,6 @@ mixin TableMixin on CategoriesBaseVm {
     },
   );
 
-  /// If createdAt and updatedAt are the same, show nothing on the cell
-  TrinaCell getUpdatedAtCell(DateTime createdAt, DateTime updatedAt) {
-    return TrinaCell(
-      value: updatedAt,
-      renderer: createdAt.isAtSameMomentAs(updatedAt)
-          ? (ctx) => Text('')
-          : null,
-    );
-  }
-
   List<TrinaRow> getRows(CategoriesList list) {
     return list.mapIndexed((index, cat) => createRow(index, cat)).toList();
   }
