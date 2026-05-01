@@ -21,7 +21,7 @@ class CategoriesVm extends CategoriesBaseVm
 
   static final instance = Provider((context) {
     final db = AppDatabase.instance.of(context);
-    final service = CategoriesService(db);
+    final service = CategoriesService(db, table: db.categories);
 
     return CategoriesVm(service, isAdmin: utils.isAdmin(context));
   });

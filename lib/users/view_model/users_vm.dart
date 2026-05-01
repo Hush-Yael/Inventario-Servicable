@@ -36,7 +36,7 @@ class UsersVm extends UsersBaseVm
   static final instance = Provider((ctx) {
     final AppDatabase db = AppDatabase.instance.of(ctx);
     final authState = AuthState.instance.of(ctx);
-    final usersService = UsersService(db);
+    final usersService = UsersService(db, table: db.users);
     final bool isAdmin = utils.isAdmin(ctx);
     // final usersService = FakeUsersService();
 

@@ -4,7 +4,7 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/services_repository.dart';
 
 class AuthService extends ServiceRepository {
-  const AuthService(super.db);
+  const AuthService(super.db, {required super.table});
 
   /// Used to verify if a user already exists when signing in/up
   Future<User?> getExistingUser(String username) async {

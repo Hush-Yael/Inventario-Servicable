@@ -7,7 +7,7 @@ import 'package:servicable_stock/users/service/users_repository.dart';
 import 'package:servicable_stock/users/users_types.dart';
 
 class UsersService extends ServiceRepository implements UsersRepository {
-  const UsersService(super.db);
+  const UsersService(super.db, {required super.table});
 
   @override
   Future<UsersList> fetchUsers() async {

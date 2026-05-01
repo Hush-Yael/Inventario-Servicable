@@ -37,12 +37,17 @@ class AuthVm extends AuthBaseVm with StateMixin, FormMixin {
     required super.authState,
   });
 
-  static final instance = Provider.withArgument(
-    (ctx, GlobalKey<FormBuilderState> formKey) => AuthVm(
-      service: AuthService(AppDatabase.instance.of(ctx)),
+  static final instance = Provider.withArgument((
+    ctx,
+    GlobalKey<FormBuilderState> formKey,
+  ) {
+    final db = AppDatabase.instance.of(ctx);
+
+    return AuthVm(
+      service: AuthService(db, table: db.users),
       formKey: formKey,
       authState: AuthState.instance.of(ctx),
       context: ctx,
-    ),
-  );
+    );
+  });
 }

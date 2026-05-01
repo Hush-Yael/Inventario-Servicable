@@ -9,7 +9,7 @@ import 'package:servicable_stock/stock/categories/categories_models.dart';
 import 'package:servicable_stock/stock/categories/categories_types.dart';
 
 class CategoriesService extends ServiceRepository {
-  CategoriesService(super.db);
+  CategoriesService(super.db, {required super.table});
 
   Future<CategoriesList> fetchCategories() async {
     final $categories = db.categories.actualTableName;
@@ -26,12 +26,12 @@ class CategoriesService extends ServiceRepository {
                 c.*,
                 COUNT(p.id) as ${$productCount},
                 CASE
-                  WHEN p.${db.products.usesUnits.$name} = 0 THEN ${db.products.stock.$name}
+                  WHEN p.${db.products.usesUnits.$name} = 0 THEN ${db.products.units.$name}
                   ELSE COUNT(u.id)
                 END as ${$unitCount}
               FROM ${$categories} c
-              LEFT JOIN ${$products} p ON p.${db.products.category.$name} = c.id
-              LEFT JOIN ${$units} u ON u.${db.units.product.$name} = p.id
+              LEFT JOIN ${$products} p ON p.${db.products.categoryId.$name} = c.id
+              LEFT JOIN ${$units} u ON u.${db.units.productId.$name} = p.id
               GROUP BY c.id
             ''',
             readsFrom: {db.categories, db.products, db.units},
@@ -52,11 +52,11 @@ class CategoriesService extends ServiceRepository {
   }
 
   Future<int> deleteCategory(int id) async {
-    final op = (db.delete(
-      db.categories,
-    )..whereSamePrimaryKey(CategoriesCompanion(id: Value(id)))).go();
-
-    return await ensureMutated(op, 'No se pudo eliminar la categoría');
+    return await delete(
+      id,
+      CategoriesCompanion.new,
+      'No se pudo eliminar la categoría',
+    );
   }
 
   String? validateCategoryNameLength(String input) {
