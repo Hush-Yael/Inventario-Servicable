@@ -8,12 +8,14 @@ class TableTitle<T extends QueryResult<List, dynamic>> extends StatelessWidget {
   final T query;
   final String text;
   final TextStyle? style;
+  final bool noCount;
 
   const TableTitle({
     super.key,
     required this.query,
     required this.text,
     this.style,
+    this.noCount = false,
   });
 
   @override
@@ -45,7 +47,7 @@ class TableTitle<T extends QueryResult<List, dynamic>> extends StatelessWidget {
       );
     }
 
-    if (query.data == null) return const SizedBox.shrink();
+    if (query.data == null || noCount) return const SizedBox.shrink();
 
     // total count
     return InfoBadge.informational(
