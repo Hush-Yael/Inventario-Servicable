@@ -36,7 +36,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
             row.cells[UsersTableColumns.role.name]?.value = role.label;
           }
 
-          stateManager!.notifyListeners();
+          getStateManager()!.notifyListeners();
 
           return prevRoles;
         } catch (e) {
@@ -68,7 +68,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
             }
           }
 
-          stateManager!.notifyListeners();
+          getStateManager()!.notifyListeners();
         } catch (e) {
           print(e);
         }

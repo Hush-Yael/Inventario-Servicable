@@ -18,7 +18,7 @@ mixin DeleteMutationMixin on TableMixin {
 
       onMutate: (variables, _) {
         final ids = [...getIdsFromSelected];
-        stateManager!.removeRows(selectedRows);
+        getStateManager()!.removeRows(selectedRows);
 
         selectAllCheckedValue.value = false;
 
@@ -38,9 +38,11 @@ mixin DeleteMutationMixin on TableMixin {
             ctx.client.getQueryData(kUserTableQueryKey),
           );
 
-          stateManager!.refRows.clear();
-          stateManager!.refRows.addAll(prevRows);
-          stateManager!.notifyListeners();
+          final stateManager = getStateManager()!;
+
+          stateManager.refRows.clear();
+          stateManager.refRows.addAll(prevRows);
+          stateManager.notifyListeners();
         } catch (e) {
           print(e);
           rethrow;

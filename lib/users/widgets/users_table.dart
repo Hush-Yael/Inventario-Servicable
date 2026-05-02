@@ -51,12 +51,12 @@ class UsersTable extends HookWidget {
 
               configuration: getTrinaBaseConfig(context),
 
-              onLoaded: (event) => vm.stateManager = event.stateManager,
+              onLoaded: (event) => vm.setStateManager(event.stateManager),
 
               onBeforeActiveCellChange: (event) => false,
 
               onRowChecked: (event) {
-                final m = vm.stateManager!;
+                final m = vm.getStateManager()!;
 
                 if (event.isChecked == true) {
                   final start = vm.lastSelectedIndex;

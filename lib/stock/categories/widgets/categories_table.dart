@@ -39,7 +39,9 @@ class CategoriesTable extends HookWidget {
         return TrinaGrid(
           rows: vm.getRows(list!),
           columns: getColumns(context, list, deleteMutation),
-          onLoaded: (event) => vm.stateManager = event.stateManager,
+          onLoaded: (event) {
+            vm.setStateManager(event.stateManager);
+          },
           onChanged: (event) {
             if (event.column.field == CategoryTableColumns.name.name) {
               changeNameMutation.mutate(event);

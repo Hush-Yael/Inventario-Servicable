@@ -18,7 +18,7 @@ mixin TableMixin on UsersBaseVm {
   );
 
   List<TrinaRow<dynamic>> get selectedRows =>
-      stateManager?.checkedRows ?? const [];
+      getStateManager()?.checkedRows ?? const [];
 
   List<int> get getIdsFromSelected =>
       selectedRows.map((row) => row.$id!).toList();

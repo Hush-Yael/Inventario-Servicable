@@ -199,9 +199,9 @@ final formattedDateColumnType = TrinaColumnType.date(
 mixin VmTrinaGridMixin {
   TrinaGridStateManager? _stateManager;
 
-  TrinaGridStateManager? get stateManager => _stateManager;
+  TrinaGridStateManager? getStateManager() => _stateManager;
 
-  set stateManager(TrinaGridStateManager stateManager) {
+  void setStateManager(TrinaGridStateManager stateManager) {
     _stateManager = stateManager;
   }
 }
