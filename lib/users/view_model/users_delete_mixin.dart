@@ -35,7 +35,7 @@ mixin DeleteMutationMixin on TableMixin {
         try {
           final prevRows = getRows(
             context,
-            ctx.client.getQueryData(kUserTableQueryKey),
+            ctx.client.getQueryData(kUsersQueryKey),
           );
 
           final stateManager = getStateManager()!;
@@ -56,7 +56,7 @@ mixin DeleteMutationMixin on TableMixin {
           severity: .success,
         );
 
-        ctx.client.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
+        ctx.client.setQueryData<UsersList, dynamic>(kUsersQueryKey, (
           usersList,
         ) {
           usersList!.removeWhere((user) {

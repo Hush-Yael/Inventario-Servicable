@@ -29,7 +29,7 @@ class _UsersScreen extends HookWidget {
     final vm = UsersVm.instance.of(context);
 
     final UsersQuery query = useQuery(
-      kUserTableQueryKey,
+      kUsersQueryKey,
       (context) => vm.getUsers(),
     );
 

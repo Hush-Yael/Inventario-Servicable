@@ -81,9 +81,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
           severity: .success,
         );
 
-        ctx.client.setQueryData<UsersList, dynamic>(kUserTableQueryKey, (
-          users,
-        ) {
+        ctx.client.setQueryData<UsersList, dynamic>(kUsersQueryKey, (users) {
           for (var i = 0; i < users!.length; i++) {
             final user = users[i];
 
