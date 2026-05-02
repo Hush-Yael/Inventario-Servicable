@@ -71,14 +71,14 @@ class CategoriesService extends ServiceRepository {
     return null;
   }
 
-  Future<Category> addCategory(String name) async {
+  Future<CategoryWithCounts> addCategory(String name) async {
     final op = stall(
       db
           .into(db.categories)
           .insertReturning(CategoriesCompanion.insert(name: name)),
     );
 
-    return await expectDBError(
+    final newCategory = await expectDBError(
       op,
       'No se pudo crear la categoría',
       onSqliteException: (error) =>
@@ -86,6 +86,8 @@ class CategoriesService extends ServiceRepository {
           ? 'Ya existe una categoría con el mismo nombre'
           : null,
     );
+
+    return CategoryWithCounts.fromCategory(newCategory);
   }
 
   Future<int> updateCategoryName(int id, String newName) async {

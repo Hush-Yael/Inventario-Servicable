@@ -43,4 +43,19 @@ class CategoryWithCounts extends Category {
       unitCount: unitCount ?? this.unitCount,
     );
   }
+
+  factory CategoryWithCounts.fromCategory(
+    Category category, [
+    int productCount = 0,
+    int unitCount = 0,
+  ]) {
+    return CategoryWithCounts(
+      id: category.id,
+      name: category.name,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+      productCount: productCount,
+      unitCount: productCount,
+    );
+  }
 }

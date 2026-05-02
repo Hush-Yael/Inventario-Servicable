@@ -33,8 +33,7 @@ class CategoriesTable extends HookWidget {
           context,
         );
 
-        final CategoriesChangeNameMutation changeNameMutation = vm
-            .createChangeNameMutation(context);
+        final changeNameMutation = vm.createChangeNameMutation(context);
 
         return TrinaGrid(
           rows: vm.getRows(list!),
