@@ -13,6 +13,7 @@ Future<void> showMutationResultMsg({
   return displayInfoBar(
     context,
     duration: const Duration(seconds: 5),
+    alignment: .bottomLeft,
     builder: (context, close) {
       return InfoBar(title: Text(message), severity: severity);
     },
