@@ -58,12 +58,14 @@ Future<dynamic> confirmDeletion(
     actions: [
       Button(
         onPressed: () => Navigator.pop(context, 'No'),
-        style: ButtonStyle(padding: .all(.all(8))),
+        style: BtnStyles.dialogButtonStyle,
         child: Text(cancelTxt),
       ),
 
       Button(
-        style: BtnStyles.dangerButtonStyle.copyWith(padding: .all(.all(8))),
+        style: BtnStyles.dangerButtonStyle.copyWith(
+          padding: BtnStyles.dialogButtonPadding,
+        ),
         onPressed: () {
           onConfirmed();
           Navigator.pop(context, 'Si');
@@ -111,13 +113,15 @@ Future<dynamic> confirmCascadeDeletion(
       actions: [
         Button(
           onPressed: () => Navigator.pop(context, 'No'),
-          style: ButtonStyle(padding: .all(.all(8))),
+          style: BtnStyles.dialogButtonStyle,
           child: Text(cancelTxt),
         ),
 
         SignalBuilder(
           builder: (context, child) => Button(
-            style: BtnStyles.dangerButtonStyle.copyWith(padding: .all(.all(8))),
+            style: BtnStyles.dangerButtonStyle.copyWith(
+              padding: BtnStyles.dialogButtonPadding,
+            ),
             onPressed: !proceed.value
                 ? null
                 : () {

@@ -75,4 +75,11 @@ class BtnStyles {
       return Colors.white;
     }),
   );
+
+  static final WidgetStateProperty<EdgeInsetsGeometry> dialogButtonPadding =
+      .all(.all(8));
+
+  static final ButtonStyle dialogButtonStyle = ButtonStyle(
+    padding: dialogButtonPadding,
+  );
 }
