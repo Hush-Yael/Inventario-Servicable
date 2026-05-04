@@ -42,6 +42,8 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
       return await params.cb(id);
     },
 
+    mutationKey: params.mutationKey,
+
     onMutate: (colCtx, ctx) {
       final rows = params.getStateManager()!.refRows;
       final id = colCtx.row.$id!;

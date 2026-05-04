@@ -11,6 +11,7 @@ class MutationCommonParams<
 > {
   final BuildContext context;
   final List<String> queryKey;
+  final List<String>? mutationKey;
   final TrinaGridStateManager? Function() getStateManager;
 
   /// Singular form of the object name, shown in the unauthorized success message
@@ -46,6 +47,7 @@ class MutationCommonParams<
     required this.objName,
     required this.objPluralName,
     this.successMsgVocal = 'o',
+    this.mutationKey,
     this.onMutate,
     this.onError,
     this.onSuccess,

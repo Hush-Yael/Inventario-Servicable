@@ -36,12 +36,16 @@ createSingleAddMutation<Variables, NewObj extends Object>(
       );
     }
 
-    /* await Future.delayed(const Duration(seconds: 1));
-      return 11; */
+    /* return await Future.delayed(const Duration(seconds: 2), () {
+      return Future.error('error');
+      return 11;
+    }); */
 
     final newObj = await params.cb(variables);
     return (newObj as dynamic).id;
   },
+
+  mutationKey: params.mutationKey,
 
   onMutate: (variables, ctx) {
     try {

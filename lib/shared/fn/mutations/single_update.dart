@@ -44,6 +44,8 @@ SingleUpdateMutation createSingleUpdateMutation(
       return await params.cb(id, newValue, ctx);
     },
 
+    mutationKey: params.mutationKey,
+
     onMutate: (event, ctx) {
       params.getStateManager()?.setEditing(
         false,
