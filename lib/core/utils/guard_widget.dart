@@ -15,7 +15,7 @@ class Guard extends StatelessWidget {
 
     final needRoleLevel = role.level;
 
-    if (currentRoleLevel <= needRoleLevel) return const SizedBox.shrink();
+    if (currentRoleLevel < needRoleLevel) return const SizedBox.shrink();
 
     return child;
   }
