@@ -20,8 +20,8 @@ class Products extends Table with TimeStampedRecord {
       .check(units.isBiggerOrEqualValue(0))
       .withDefault(const Constant(0))();
 
-  /// whether the product stock is set manually or it depends on units
-  late final usesUnits = boolean().withDefault(const Constant(true))();
+  /// whether the product stock depends on individual detailed units or not
+  late final usesDetailedUnits = boolean().withDefault(const Constant(true))();
 
   /// label for the unit identifier field (shown as column header)
   late final unitIdentifier = text().withDefault(

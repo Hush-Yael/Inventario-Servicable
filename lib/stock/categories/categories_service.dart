@@ -26,7 +26,7 @@ class CategoriesService extends ServiceRepository {
                 c.*,
                 COUNT(p.id) as ${$productCount},
                 CASE
-                  WHEN p.${db.products.usesUnits.$name} = 0 THEN ${db.products.units.$name}
+                  WHEN p.${db.products.usesDetailedUnits.$name} = 0 THEN ${db.products.units.$name}
                   ELSE COUNT(u.id)
                 END as ${$unitCount}
               FROM ${$categories} c

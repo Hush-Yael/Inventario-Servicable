@@ -849,11 +849,11 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _usesUnitsMeta = const VerificationMeta(
-    'usesUnits',
+  static const VerificationMeta _usesDetailedUnitsMeta = const VerificationMeta(
+    'usesDetailedUnits',
   );
   @override
-  late final GeneratedColumn<bool> usesUnits = GeneratedColumn<bool>(
+  late final GeneratedColumn<bool> usesDetailedUnits = GeneratedColumn<bool>(
     'uses_units',
     aliasedName,
     false,
@@ -896,7 +896,7 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     code,
     name,
     units,
-    usesUnits,
+    usesDetailedUnits,
     unitIdentifier,
     categoryId,
   ];
@@ -939,8 +939,11 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     }
     if (data.containsKey('uses_units')) {
       context.handle(
-        _usesUnitsMeta,
-        usesUnits.isAcceptableOrUnknown(data['uses_units']!, _usesUnitsMeta),
+        _usesDetailedUnitsMeta,
+        usesDetailedUnits.isAcceptableOrUnknown(
+          data['uses_units']!,
+          _usesDetailedUnitsMeta,
+        ),
       );
     }
     if (data.containsKey('unit_identifier')) {
@@ -983,7 +986,7 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
         DriftSqlType.int,
         data['${effectivePrefix}units'],
       )!,
-      usesUnits: attachedDatabase.typeMapping.read(
+      usesDetailedUnits: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}uses_units'],
       )!,
@@ -1011,7 +1014,7 @@ class Product extends DataClass implements Insertable<Product> {
   final int units;
 
   /// whether the product stock is set manually or it depends on units
-  final bool usesUnits;
+  final bool usesDetailedUnits;
 
   /// label for the unit identifier field (shown as column header)
   final String unitIdentifier;
@@ -1021,7 +1024,7 @@ class Product extends DataClass implements Insertable<Product> {
     required this.code,
     required this.name,
     required this.units,
-    required this.usesUnits,
+    required this.usesDetailedUnits,
     required this.unitIdentifier,
     this.categoryId,
   });
@@ -1032,7 +1035,7 @@ class Product extends DataClass implements Insertable<Product> {
     map['code'] = Variable<String>(code);
     map['name'] = Variable<String>(name);
     map['units'] = Variable<int>(units);
-    map['uses_units'] = Variable<bool>(usesUnits);
+    map['uses_units'] = Variable<bool>(usesDetailedUnits);
     map['unit_identifier'] = Variable<String>(unitIdentifier);
     if (!nullToAbsent || categoryId != null) {
       map['category_id'] = Variable<int>(categoryId);
@@ -1046,7 +1049,7 @@ class Product extends DataClass implements Insertable<Product> {
       code: Value(code),
       name: Value(name),
       units: Value(units),
-      usesUnits: Value(usesUnits),
+      usesDetailedUnits: Value(usesDetailedUnits),
       unitIdentifier: Value(unitIdentifier),
       categoryId: categoryId == null && nullToAbsent
           ? const Value.absent()
@@ -1064,7 +1067,7 @@ class Product extends DataClass implements Insertable<Product> {
       code: serializer.fromJson<String>(json['code']),
       name: serializer.fromJson<String>(json['name']),
       units: serializer.fromJson<int>(json['units']),
-      usesUnits: serializer.fromJson<bool>(json['usesUnits']),
+      usesDetailedUnits: serializer.fromJson<bool>(json['usesDetailedUnits']),
       unitIdentifier: serializer.fromJson<String>(json['unitIdentifier']),
       categoryId: serializer.fromJson<int?>(json['categoryId']),
     );
@@ -1077,7 +1080,7 @@ class Product extends DataClass implements Insertable<Product> {
       'code': serializer.toJson<String>(code),
       'name': serializer.toJson<String>(name),
       'units': serializer.toJson<int>(units),
-      'usesUnits': serializer.toJson<bool>(usesUnits),
+      'usesDetailedUnits': serializer.toJson<bool>(usesDetailedUnits),
       'unitIdentifier': serializer.toJson<String>(unitIdentifier),
       'categoryId': serializer.toJson<int?>(categoryId),
     };
@@ -1088,7 +1091,7 @@ class Product extends DataClass implements Insertable<Product> {
     String? code,
     String? name,
     int? units,
-    bool? usesUnits,
+    bool? usesDetailedUnits,
     String? unitIdentifier,
     Value<int?> categoryId = const Value.absent(),
   }) => Product(
@@ -1096,7 +1099,7 @@ class Product extends DataClass implements Insertable<Product> {
     code: code ?? this.code,
     name: name ?? this.name,
     units: units ?? this.units,
-    usesUnits: usesUnits ?? this.usesUnits,
+    usesDetailedUnits: usesDetailedUnits ?? this.usesDetailedUnits,
     unitIdentifier: unitIdentifier ?? this.unitIdentifier,
     categoryId: categoryId.present ? categoryId.value : this.categoryId,
   );
@@ -1106,7 +1109,9 @@ class Product extends DataClass implements Insertable<Product> {
       code: data.code.present ? data.code.value : this.code,
       name: data.name.present ? data.name.value : this.name,
       units: data.units.present ? data.units.value : this.units,
-      usesUnits: data.usesUnits.present ? data.usesUnits.value : this.usesUnits,
+      usesDetailedUnits: data.usesDetailedUnits.present
+          ? data.usesDetailedUnits.value
+          : this.usesDetailedUnits,
       unitIdentifier: data.unitIdentifier.present
           ? data.unitIdentifier.value
           : this.unitIdentifier,
@@ -1123,7 +1128,7 @@ class Product extends DataClass implements Insertable<Product> {
           ..write('code: $code, ')
           ..write('name: $name, ')
           ..write('units: $units, ')
-          ..write('usesUnits: $usesUnits, ')
+          ..write('usesDetailedUnits: $usesDetailedUnits, ')
           ..write('unitIdentifier: $unitIdentifier, ')
           ..write('categoryId: $categoryId')
           ..write(')'))
@@ -1131,8 +1136,15 @@ class Product extends DataClass implements Insertable<Product> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, code, name, units, usesUnits, unitIdentifier, categoryId);
+  int get hashCode => Object.hash(
+    id,
+    code,
+    name,
+    units,
+    usesDetailedUnits,
+    unitIdentifier,
+    categoryId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1141,7 +1153,7 @@ class Product extends DataClass implements Insertable<Product> {
           other.code == this.code &&
           other.name == this.name &&
           other.units == this.units &&
-          other.usesUnits == this.usesUnits &&
+          other.usesDetailedUnits == this.usesDetailedUnits &&
           other.unitIdentifier == this.unitIdentifier &&
           other.categoryId == this.categoryId);
 }
@@ -1151,7 +1163,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
   final Value<String> code;
   final Value<String> name;
   final Value<int> units;
-  final Value<bool> usesUnits;
+  final Value<bool> usesDetailedUnits;
   final Value<String> unitIdentifier;
   final Value<int?> categoryId;
   const ProductsCompanion({
@@ -1159,7 +1171,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     this.code = const Value.absent(),
     this.name = const Value.absent(),
     this.units = const Value.absent(),
-    this.usesUnits = const Value.absent(),
+    this.usesDetailedUnits = const Value.absent(),
     this.unitIdentifier = const Value.absent(),
     this.categoryId = const Value.absent(),
   });
@@ -1168,7 +1180,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     required String code,
     required String name,
     this.units = const Value.absent(),
-    this.usesUnits = const Value.absent(),
+    this.usesDetailedUnits = const Value.absent(),
     this.unitIdentifier = const Value.absent(),
     this.categoryId = const Value.absent(),
   }) : code = Value(code),
@@ -1178,7 +1190,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     Expression<String>? code,
     Expression<String>? name,
     Expression<int>? units,
-    Expression<bool>? usesUnits,
+    Expression<bool>? usesDetailedUnits,
     Expression<String>? unitIdentifier,
     Expression<int>? categoryId,
   }) {
@@ -1187,7 +1199,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       if (code != null) 'code': code,
       if (name != null) 'name': name,
       if (units != null) 'units': units,
-      if (usesUnits != null) 'uses_units': usesUnits,
+      if (usesDetailedUnits != null) 'uses_units': usesDetailedUnits,
       if (unitIdentifier != null) 'unit_identifier': unitIdentifier,
       if (categoryId != null) 'category_id': categoryId,
     });
@@ -1198,7 +1210,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     Value<String>? code,
     Value<String>? name,
     Value<int>? units,
-    Value<bool>? usesUnits,
+    Value<bool>? usesDetailedUnits,
     Value<String>? unitIdentifier,
     Value<int?>? categoryId,
   }) {
@@ -1207,7 +1219,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       code: code ?? this.code,
       name: name ?? this.name,
       units: units ?? this.units,
-      usesUnits: usesUnits ?? this.usesUnits,
+      usesDetailedUnits: usesDetailedUnits ?? this.usesDetailedUnits,
       unitIdentifier: unitIdentifier ?? this.unitIdentifier,
       categoryId: categoryId ?? this.categoryId,
     );
@@ -1228,8 +1240,8 @@ class ProductsCompanion extends UpdateCompanion<Product> {
     if (units.present) {
       map['units'] = Variable<int>(units.value);
     }
-    if (usesUnits.present) {
-      map['uses_units'] = Variable<bool>(usesUnits.value);
+    if (usesDetailedUnits.present) {
+      map['uses_units'] = Variable<bool>(usesDetailedUnits.value);
     }
     if (unitIdentifier.present) {
       map['unit_identifier'] = Variable<String>(unitIdentifier.value);
@@ -1247,7 +1259,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
           ..write('code: $code, ')
           ..write('name: $name, ')
           ..write('units: $units, ')
-          ..write('usesUnits: $usesUnits, ')
+          ..write('usesDetailedUnits: $usesDetailedUnits, ')
           ..write('unitIdentifier: $unitIdentifier, ')
           ..write('categoryId: $categoryId')
           ..write(')'))
@@ -2224,7 +2236,7 @@ typedef $$ProductsTableCreateCompanionBuilder =
       required String code,
       required String name,
       Value<int> units,
-      Value<bool> usesUnits,
+      Value<bool> usesDetailedUnits,
       Value<String> unitIdentifier,
       Value<int?> categoryId,
     });
@@ -2234,7 +2246,7 @@ typedef $$ProductsTableUpdateCompanionBuilder =
       Value<String> code,
       Value<String> name,
       Value<int> units,
-      Value<bool> usesUnits,
+      Value<bool> usesDetailedUnits,
       Value<String> unitIdentifier,
       Value<int?> categoryId,
     });
@@ -2311,8 +2323,8 @@ class $$ProductsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<bool> get usesUnits => $composableBuilder(
-    column: $table.usesUnits,
+  ColumnFilters<bool> get usesDetailedUnits => $composableBuilder(
+    column: $table.usesDetailedUnits,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2399,8 +2411,8 @@ class $$ProductsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<bool> get usesUnits => $composableBuilder(
-    column: $table.usesUnits,
+  ColumnOrderings<bool> get usesDetailedUnits => $composableBuilder(
+    column: $table.usesDetailedUnits,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2454,8 +2466,10 @@ class $$ProductsTableAnnotationComposer
   GeneratedColumn<int> get units =>
       $composableBuilder(column: $table.units, builder: (column) => column);
 
-  GeneratedColumn<bool> get usesUnits =>
-      $composableBuilder(column: $table.usesUnits, builder: (column) => column);
+  GeneratedColumn<bool> get usesDetailedUnits => $composableBuilder(
+    column: $table.usesDetailedUnits,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get unitIdentifier => $composableBuilder(
     column: $table.unitIdentifier,
@@ -2543,7 +2557,7 @@ class $$ProductsTableTableManager
                 Value<String> code = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<int> units = const Value.absent(),
-                Value<bool> usesUnits = const Value.absent(),
+                Value<bool> usesDetailedUnits = const Value.absent(),
                 Value<String> unitIdentifier = const Value.absent(),
                 Value<int?> categoryId = const Value.absent(),
               }) => ProductsCompanion(
@@ -2551,7 +2565,7 @@ class $$ProductsTableTableManager
                 code: code,
                 name: name,
                 units: units,
-                usesUnits: usesUnits,
+                usesDetailedUnits: usesDetailedUnits,
                 unitIdentifier: unitIdentifier,
                 categoryId: categoryId,
               ),
@@ -2561,7 +2575,7 @@ class $$ProductsTableTableManager
                 required String code,
                 required String name,
                 Value<int> units = const Value.absent(),
-                Value<bool> usesUnits = const Value.absent(),
+                Value<bool> usesDetailedUnits = const Value.absent(),
                 Value<String> unitIdentifier = const Value.absent(),
                 Value<int?> categoryId = const Value.absent(),
               }) => ProductsCompanion.insert(
@@ -2569,7 +2583,7 @@ class $$ProductsTableTableManager
                 code: code,
                 name: name,
                 units: units,
-                usesUnits: usesUnits,
+                usesDetailedUnits: usesDetailedUnits,
                 unitIdentifier: unitIdentifier,
                 categoryId: categoryId,
               ),

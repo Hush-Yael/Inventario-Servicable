@@ -27,14 +27,14 @@ Future<void> seed(AppDatabase db) async {
 
     final productsList = List.generate(defaultCategories.length, (i) {
       final cat = defaultCategories[i];
-      final usesUnits = faker.randomGenerator.boolean();
+      final usesDetailedUnits = faker.randomGenerator.boolean();
 
       return ProductsCompanion.insert(
         code: faker.randomGenerator.string(10),
         name:
             '$cat - ${faker.lorem.word()} ${faker.randomGenerator.string(10)}',
-        usesUnits: Value(usesUnits),
-        units: !usesUnits
+        usesDetailedUnits: Value(usesDetailedUnits),
+        units: !usesDetailedUnits
             ? Value(faker.randomGenerator.integer(100))
             : Value.absent(),
         categoryId: Value(i + 1),
@@ -46,7 +46,7 @@ Future<void> seed(AppDatabase db) async {
     for (var i = 0; i < productsList.length; i++) {
       final product = productsList[i];
 
-      if (product.usesUnits.value == true) {
+      if (product.usesDetailedUnits.value == true) {
         batch.insertAll(
           db.units,
           List.generate(
