@@ -33,7 +33,7 @@ class AppTheme {
   static const TextStyle dialogTitleStyle = TextStyle(fontSize: 20);
 
   static Color errorColor(BuildContext context) =>
-      MediaQuery.of(context).platformBrightness == Brightness.dark
+      context.theme.brightness == Brightness.dark
       ? Colors.red.lightest
       : Colors.red.darkest;
 }
@@ -50,7 +50,7 @@ class BtnStyles {
     textStyle: WidgetStatePropertyAll(AppTheme.fixedTextHeightStyle),
   );
 
-  static ButtonStyle dangerButtonStyle = ButtonStyle(
+  static final ButtonStyle dangerButtonStyle = ButtonStyle(
     backgroundColor: .resolveWith((states) {
       if (states.contains(WidgetState.disabled)) {
         return Colors.red.withAlpha(128);
