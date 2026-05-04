@@ -10,7 +10,7 @@ mixin MutationsMixin on TableMixin {
       createSingleAddMutation(
         _params(context, service.addCategory),
         createRow: createRow,
-        createNewObj: (name) {
+        createNewObj: (name, ctx) {
           final now = DateTime.now();
 
           return CategoryWithCounts(

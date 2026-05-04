@@ -25,7 +25,8 @@ createSingleAddMutation<Variables, NewObj extends Object>(
     SingleAddMutationSideEffect
   >
   params, {
-  required NewObj Function(Variables variables) createNewObj,
+  required NewObj Function(Variables variables, MutationFunctionContext ctx)
+  createNewObj,
   required TrinaRow Function(int rowsLength, NewObj newObj) createRow,
 }) => useMutation(
   (Variables variables, _) async {
@@ -46,7 +47,7 @@ createSingleAddMutation<Variables, NewObj extends Object>(
     try {
       final state = params.getStateManager()!;
 
-      final newObj = createNewObj(variables);
+      final newObj = createNewObj(variables, ctx);
 
       final newRow = createRow(state.refRows.length, newObj);
 
