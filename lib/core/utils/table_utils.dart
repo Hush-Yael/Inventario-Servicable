@@ -21,12 +21,12 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
 
       filterType: 'Filtro',
 
-      filterContains: 'contiene',
-      filterEquals: 'es igual a',
-      filterGreaterThan: 'mayor que',
-      filterGreaterThanOrEqualTo: 'mayor o igual que',
-      filterLessThan: 'menor que',
-      filterLessThanOrEqualTo: 'menor o igual que',
+      filterContains: 'Contiene',
+      filterEquals: 'Es igual a',
+      filterGreaterThan: 'Mayor que',
+      filterGreaterThanOrEqualTo: 'Mayor o igual que',
+      filterLessThan: 'Menor que',
+      filterLessThanOrEqualTo: 'Menor o igual que',
     ),
 
     scrollbar: .new(columnShowScrollWidth: false),
