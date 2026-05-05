@@ -3,7 +3,9 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/stock/categories/categories_models.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 
-class Products extends Table with TimeStampedRecord {
+const kProductUnitIdentifierDefault = 'identificador';
+
+class Products extends Table {
   late final id = integer().autoIncrement()();
 
   late final code = text().unique().withLength(
@@ -25,7 +27,7 @@ class Products extends Table with TimeStampedRecord {
 
   /// label for the unit identifier field (shown as column header)
   late final unitIdentifier = text().withDefault(
-    const Constant('identificador'),
+    const Constant(kProductUnitIdentifierDefault),
   )();
 
   late final categoryId = integer().nullable().references(
