@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/shared/fn/mutations/index.dart'
@@ -36,9 +37,10 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
 
       final id = ctx.row.$id!;
 
-      /* return await Future.delayed(const Duration(seconds: 1), () {
-        return Future.error('');
+      /*  return await Future.delayed(const Duration(seconds: 1), () {
+        return Random().nextBool() ? Future.error('error') : id;
       }); */
+
       return await params.cb(id);
     },
 
@@ -84,7 +86,8 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
     onSuccess: (_, columnCtx, _, ctx) {
       utils.showMutationResultMsg(
         context: params.context,
-        message: '${params.objName} eliminad${params.successMsgVocal}',
+        message:
+            '${params.objName.uppercaseFirst()} eliminad${params.successMsgVocal}',
         severity: .success,
       );
 

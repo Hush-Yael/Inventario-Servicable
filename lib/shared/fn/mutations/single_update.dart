@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
@@ -94,7 +95,8 @@ SingleUpdateMutation createSingleUpdateMutation(
     onSuccess: (_, event, _, ctx) {
       showMutationResultMsg(
         context: params.context,
-        message: '${params.objName} actualizad${params.successMsgVocal}',
+        message:
+            '${params.objName.uppercaseFirst()} actualizad${params.successMsgVocal}',
         severity: .success,
       );
 

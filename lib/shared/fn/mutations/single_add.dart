@@ -1,3 +1,4 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
@@ -71,7 +72,8 @@ createSingleAddMutation<Variables, NewObj extends Object>(
   onSuccess: (addedId, variables, returned, ctx) {
     showMutationResultMsg(
       context: params.context,
-      message: '${params.objName} añadid${params.successMsgVocal}',
+      message:
+          '${params.objName.uppercaseFirst()} añadid${params.successMsgVocal}',
       severity: .success,
     );
 
