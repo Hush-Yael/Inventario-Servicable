@@ -36,3 +36,60 @@ class Products extends Table {
     onDelete: .setNull,
   )();
 }
+
+class ProductWithDetails extends Product {
+  final String? categoryName;
+
+  ProductWithDetails({
+    required this.categoryName,
+    required super.id,
+    required super.code,
+    required super.name,
+    required super.units,
+    required super.usesDetailedUnits,
+    super.unitIdentifier = kProductUnitIdentifierDefault,
+    super.categoryId,
+  });
+
+  @override
+  ProductWithDetails copyWith({
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? id,
+    String? code,
+    String? name,
+    int? units,
+    bool? usesDetailedUnits,
+    String? unitIdentifier,
+    Value<int?> categoryId = const Value.absent(),
+    String? categoryName,
+    int? unitsCount,
+  }) {
+    return ProductWithDetails(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      name: name ?? this.name,
+      units: units ?? this.units,
+      usesDetailedUnits: usesDetailedUnits ?? this.usesDetailedUnits,
+      unitIdentifier: unitIdentifier ?? this.unitIdentifier,
+      categoryId: categoryId.present ? categoryId.value : this.categoryId,
+      categoryName: categoryName ?? this.categoryName,
+    );
+  }
+
+  factory ProductWithDetails.fromProduct(
+    Product product, {
+    String? categoryName,
+  }) {
+    return ProductWithDetails(
+      id: product.id,
+      code: product.code,
+      name: product.name,
+      units: product.units,
+      usesDetailedUnits: product.usesDetailedUnits,
+      unitIdentifier: product.unitIdentifier,
+      categoryId: product.categoryId,
+      categoryName: categoryName,
+    );
+  }
+}

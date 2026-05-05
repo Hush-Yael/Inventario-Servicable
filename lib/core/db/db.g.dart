@@ -854,13 +854,13 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
   );
   @override
   late final GeneratedColumn<bool> usesDetailedUnits = GeneratedColumn<bool>(
-    'uses_units',
+    'uses_detailed_units',
     aliasedName,
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("uses_units" IN (0, 1))',
+      'CHECK ("uses_detailed_units" IN (0, 1))',
     ),
     defaultValue: const Constant(true),
   );
@@ -874,7 +874,7 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-    defaultValue: const Constant('identificador'),
+    defaultValue: const Constant(kProductUnitIdentifierDefault),
   );
   static const VerificationMeta _categoryIdMeta = const VerificationMeta(
     'categoryId',
@@ -937,11 +937,11 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
         units.isAcceptableOrUnknown(data['units']!, _unitsMeta),
       );
     }
-    if (data.containsKey('uses_units')) {
+    if (data.containsKey('uses_detailed_units')) {
       context.handle(
         _usesDetailedUnitsMeta,
         usesDetailedUnits.isAcceptableOrUnknown(
-          data['uses_units']!,
+          data['uses_detailed_units']!,
           _usesDetailedUnitsMeta,
         ),
       );
@@ -988,7 +988,7 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       )!,
       usesDetailedUnits: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
-        data['${effectivePrefix}uses_units'],
+        data['${effectivePrefix}uses_detailed_units'],
       )!,
       unitIdentifier: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -1013,7 +1013,7 @@ class Product extends DataClass implements Insertable<Product> {
   final String name;
   final int units;
 
-  /// whether the product stock is set manually or it depends on units
+  /// whether the product stock depends on individual detailed units or not
   final bool usesDetailedUnits;
 
   /// label for the unit identifier field (shown as column header)
@@ -1035,7 +1035,7 @@ class Product extends DataClass implements Insertable<Product> {
     map['code'] = Variable<String>(code);
     map['name'] = Variable<String>(name);
     map['units'] = Variable<int>(units);
-    map['uses_units'] = Variable<bool>(usesDetailedUnits);
+    map['uses_detailed_units'] = Variable<bool>(usesDetailedUnits);
     map['unit_identifier'] = Variable<String>(unitIdentifier);
     if (!nullToAbsent || categoryId != null) {
       map['category_id'] = Variable<int>(categoryId);
@@ -1199,7 +1199,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       if (code != null) 'code': code,
       if (name != null) 'name': name,
       if (units != null) 'units': units,
-      if (usesDetailedUnits != null) 'uses_units': usesDetailedUnits,
+      if (usesDetailedUnits != null) 'uses_detailed_units': usesDetailedUnits,
       if (unitIdentifier != null) 'unit_identifier': unitIdentifier,
       if (categoryId != null) 'category_id': categoryId,
     });
@@ -1241,7 +1241,7 @@ class ProductsCompanion extends UpdateCompanion<Product> {
       map['units'] = Variable<int>(units.value);
     }
     if (usesDetailedUnits.present) {
-      map['uses_units'] = Variable<bool>(usesDetailedUnits.value);
+      map['uses_detailed_units'] = Variable<bool>(usesDetailedUnits.value);
     }
     if (unitIdentifier.present) {
       map['unit_identifier'] = Variable<String>(unitIdentifier.value);
@@ -1334,6 +1334,16 @@ class $UnitsTable extends Units with TableInfo<$UnitsTable, Unit> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _soldToMeta = const VerificationMeta('soldTo');
+  @override
+  late final GeneratedColumn<String> soldTo = GeneratedColumn<String>(
+    'sold_to',
+    aliasedName,
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _productIdMeta = const VerificationMeta(
     'productId',
   );
@@ -1355,6 +1365,7 @@ class $UnitsTable extends Units with TableInfo<$UnitsTable, Unit> {
     id,
     identifier,
     details,
+    soldTo,
     productId,
   ];
   @override
@@ -1398,6 +1409,12 @@ class $UnitsTable extends Units with TableInfo<$UnitsTable, Unit> {
         details.isAcceptableOrUnknown(data['details']!, _detailsMeta),
       );
     }
+    if (data.containsKey('sold_to')) {
+      context.handle(
+        _soldToMeta,
+        soldTo.isAcceptableOrUnknown(data['sold_to']!, _soldToMeta),
+      );
+    }
     if (data.containsKey('product_id')) {
       context.handle(
         _productIdMeta,
@@ -1433,6 +1450,10 @@ class $UnitsTable extends Units with TableInfo<$UnitsTable, Unit> {
         DriftSqlType.string,
         data['${effectivePrefix}details'],
       ),
+      soldTo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sold_to'],
+      ),
       productId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}product_id'],
@@ -1452,6 +1473,7 @@ class Unit extends DataClass implements Insertable<Unit> {
   final int id;
   final String identifier;
   final String? details;
+  final String? soldTo;
   final int? productId;
   const Unit({
     required this.createdAt,
@@ -1459,6 +1481,7 @@ class Unit extends DataClass implements Insertable<Unit> {
     required this.id,
     required this.identifier,
     this.details,
+    this.soldTo,
     this.productId,
   });
   @override
@@ -1470,6 +1493,9 @@ class Unit extends DataClass implements Insertable<Unit> {
     map['identifier'] = Variable<String>(identifier);
     if (!nullToAbsent || details != null) {
       map['details'] = Variable<String>(details);
+    }
+    if (!nullToAbsent || soldTo != null) {
+      map['sold_to'] = Variable<String>(soldTo);
     }
     if (!nullToAbsent || productId != null) {
       map['product_id'] = Variable<int>(productId);
@@ -1486,6 +1512,9 @@ class Unit extends DataClass implements Insertable<Unit> {
       details: details == null && nullToAbsent
           ? const Value.absent()
           : Value(details),
+      soldTo: soldTo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(soldTo),
       productId: productId == null && nullToAbsent
           ? const Value.absent()
           : Value(productId),
@@ -1503,6 +1532,7 @@ class Unit extends DataClass implements Insertable<Unit> {
       id: serializer.fromJson<int>(json['id']),
       identifier: serializer.fromJson<String>(json['identifier']),
       details: serializer.fromJson<String?>(json['details']),
+      soldTo: serializer.fromJson<String?>(json['soldTo']),
       productId: serializer.fromJson<int?>(json['productId']),
     );
   }
@@ -1515,6 +1545,7 @@ class Unit extends DataClass implements Insertable<Unit> {
       'id': serializer.toJson<int>(id),
       'identifier': serializer.toJson<String>(identifier),
       'details': serializer.toJson<String?>(details),
+      'soldTo': serializer.toJson<String?>(soldTo),
       'productId': serializer.toJson<int?>(productId),
     };
   }
@@ -1525,6 +1556,7 @@ class Unit extends DataClass implements Insertable<Unit> {
     int? id,
     String? identifier,
     Value<String?> details = const Value.absent(),
+    Value<String?> soldTo = const Value.absent(),
     Value<int?> productId = const Value.absent(),
   }) => Unit(
     createdAt: createdAt ?? this.createdAt,
@@ -1532,6 +1564,7 @@ class Unit extends DataClass implements Insertable<Unit> {
     id: id ?? this.id,
     identifier: identifier ?? this.identifier,
     details: details.present ? details.value : this.details,
+    soldTo: soldTo.present ? soldTo.value : this.soldTo,
     productId: productId.present ? productId.value : this.productId,
   );
   Unit copyWithCompanion(UnitsCompanion data) {
@@ -1543,6 +1576,7 @@ class Unit extends DataClass implements Insertable<Unit> {
           ? data.identifier.value
           : this.identifier,
       details: data.details.present ? data.details.value : this.details,
+      soldTo: data.soldTo.present ? data.soldTo.value : this.soldTo,
       productId: data.productId.present ? data.productId.value : this.productId,
     );
   }
@@ -1555,14 +1589,22 @@ class Unit extends DataClass implements Insertable<Unit> {
           ..write('id: $id, ')
           ..write('identifier: $identifier, ')
           ..write('details: $details, ')
+          ..write('soldTo: $soldTo, ')
           ..write('productId: $productId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(createdAt, updatedAt, id, identifier, details, productId);
+  int get hashCode => Object.hash(
+    createdAt,
+    updatedAt,
+    id,
+    identifier,
+    details,
+    soldTo,
+    productId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1572,6 +1614,7 @@ class Unit extends DataClass implements Insertable<Unit> {
           other.id == this.id &&
           other.identifier == this.identifier &&
           other.details == this.details &&
+          other.soldTo == this.soldTo &&
           other.productId == this.productId);
 }
 
@@ -1581,6 +1624,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
   final Value<int> id;
   final Value<String> identifier;
   final Value<String?> details;
+  final Value<String?> soldTo;
   final Value<int?> productId;
   const UnitsCompanion({
     this.createdAt = const Value.absent(),
@@ -1588,6 +1632,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
     this.id = const Value.absent(),
     this.identifier = const Value.absent(),
     this.details = const Value.absent(),
+    this.soldTo = const Value.absent(),
     this.productId = const Value.absent(),
   });
   UnitsCompanion.insert({
@@ -1596,6 +1641,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
     this.id = const Value.absent(),
     required String identifier,
     this.details = const Value.absent(),
+    this.soldTo = const Value.absent(),
     this.productId = const Value.absent(),
   }) : identifier = Value(identifier);
   static Insertable<Unit> custom({
@@ -1604,6 +1650,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
     Expression<int>? id,
     Expression<String>? identifier,
     Expression<String>? details,
+    Expression<String>? soldTo,
     Expression<int>? productId,
   }) {
     return RawValuesInsertable({
@@ -1612,6 +1659,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
       if (id != null) 'id': id,
       if (identifier != null) 'identifier': identifier,
       if (details != null) 'details': details,
+      if (soldTo != null) 'sold_to': soldTo,
       if (productId != null) 'product_id': productId,
     });
   }
@@ -1622,6 +1670,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
     Value<int>? id,
     Value<String>? identifier,
     Value<String?>? details,
+    Value<String?>? soldTo,
     Value<int?>? productId,
   }) {
     return UnitsCompanion(
@@ -1630,6 +1679,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
       id: id ?? this.id,
       identifier: identifier ?? this.identifier,
       details: details ?? this.details,
+      soldTo: soldTo ?? this.soldTo,
       productId: productId ?? this.productId,
     );
   }
@@ -1652,6 +1702,9 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
     if (details.present) {
       map['details'] = Variable<String>(details.value);
     }
+    if (soldTo.present) {
+      map['sold_to'] = Variable<String>(soldTo.value);
+    }
     if (productId.present) {
       map['product_id'] = Variable<int>(productId.value);
     }
@@ -1666,6 +1719,7 @@ class UnitsCompanion extends UpdateCompanion<Unit> {
           ..write('id: $id, ')
           ..write('identifier: $identifier, ')
           ..write('details: $details, ')
+          ..write('soldTo: $soldTo, ')
           ..write('productId: $productId')
           ..write(')'))
         .toString();
@@ -2673,6 +2727,7 @@ typedef $$UnitsTableCreateCompanionBuilder =
       Value<int> id,
       required String identifier,
       Value<String?> details,
+      Value<String?> soldTo,
       Value<int?> productId,
     });
 typedef $$UnitsTableUpdateCompanionBuilder =
@@ -2682,6 +2737,7 @@ typedef $$UnitsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> identifier,
       Value<String?> details,
+      Value<String?> soldTo,
       Value<int?> productId,
     });
 
@@ -2737,6 +2793,11 @@ class $$UnitsTableFilterComposer extends Composer<_$AppDatabase, $UnitsTable> {
 
   ColumnFilters<String> get details => $composableBuilder(
     column: $table.details,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get soldTo => $composableBuilder(
+    column: $table.soldTo,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2798,6 +2859,11 @@ class $$UnitsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get soldTo => $composableBuilder(
+    column: $table.soldTo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$ProductsTableOrderingComposer get productId {
     final $$ProductsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -2847,6 +2913,9 @@ class $$UnitsTableAnnotationComposer
 
   GeneratedColumn<String> get details =>
       $composableBuilder(column: $table.details, builder: (column) => column);
+
+  GeneratedColumn<String> get soldTo =>
+      $composableBuilder(column: $table.soldTo, builder: (column) => column);
 
   $$ProductsTableAnnotationComposer get productId {
     final $$ProductsTableAnnotationComposer composer = $composerBuilder(
@@ -2905,6 +2974,7 @@ class $$UnitsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> identifier = const Value.absent(),
                 Value<String?> details = const Value.absent(),
+                Value<String?> soldTo = const Value.absent(),
                 Value<int?> productId = const Value.absent(),
               }) => UnitsCompanion(
                 createdAt: createdAt,
@@ -2912,6 +2982,7 @@ class $$UnitsTableTableManager
                 id: id,
                 identifier: identifier,
                 details: details,
+                soldTo: soldTo,
                 productId: productId,
               ),
           createCompanionCallback:
@@ -2921,6 +2992,7 @@ class $$UnitsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String identifier,
                 Value<String?> details = const Value.absent(),
+                Value<String?> soldTo = const Value.absent(),
                 Value<int?> productId = const Value.absent(),
               }) => UnitsCompanion.insert(
                 createdAt: createdAt,
@@ -2928,6 +3000,7 @@ class $$UnitsTableTableManager
                 id: id,
                 identifier: identifier,
                 details: details,
+                soldTo: soldTo,
                 productId: productId,
               ),
           withReferenceMapper: (p0) => p0
