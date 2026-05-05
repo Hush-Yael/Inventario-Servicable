@@ -14,10 +14,10 @@ class Validators {
   static FormFieldValidator<String> maxLength(int length) =>
       FormBuilderValidators.maxLength(
         length,
-        errorText: 'Se aceptan $length caracteres o menos',
+        errorText: 'No se aceptan más de $length caracteres',
       );
 
-  static FormFieldValidator<String> numeric(BuildContext context) =>
+  static FormFieldValidator<String> numeric() =>
       FormBuilderValidators.numeric(errorText: 'El valor debe ser numérico');
 
   static FormFieldValidator<String> min(int min) => FormBuilderValidators.min(
