@@ -29,6 +29,21 @@ class NavigationScreen extends StatelessWidget {
   }
 
   List<NavigationPaneItem> get paneItems => [
+    PaneItemWidgetAdapter(
+      child: Padding(
+        padding: const .only(top: 5.0),
+        child: Column(
+          spacing: 5,
+          mainAxisAlignment: .center,
+          crossAxisAlignment: .center,
+          children: [Image.asset('assets/logo.png', width: 140, fit: .cover)],
+        ),
+      ),
+      applyPadding: false,
+    ),
+
+    PaneItemSeparator(),
+
     PaneItemWidgetAdapter(child: const Account(), applyPadding: false),
 
     PaneItemWidgetAdapter(child: const ThemeSelector(), applyPadding: false),
