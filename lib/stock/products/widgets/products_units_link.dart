@@ -19,7 +19,7 @@ class UnitsLink extends StatelessWidget {
         child: HyperlinkButton(
           style: .new(
             shape: .all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             ),
             padding: .all(
               .symmetric(
@@ -33,7 +33,9 @@ class UnitsLink extends StatelessWidget {
           child: Row(
             children: [
               Text(text),
+
               const Spacer(),
+
               WindowsIcon(
                 FluentIcons.chevron_right,
                 size: 14,

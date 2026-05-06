@@ -14,7 +14,7 @@ class SignInUpThemeSelector extends StatelessWidget {
       right: 20,
       child: DropDownButton(
         style: ButtonStyle(
-          padding: .all(.symmetric(vertical: 7, horizontal: 6)),
+          padding: .all(const .symmetric(vertical: 7, horizontal: 6)),
         ),
         title: WindowsIcon(themeModeState.state.value.icon),
         trailing: null,

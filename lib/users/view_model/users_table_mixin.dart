@@ -40,10 +40,11 @@ mixin TableMixin on UsersBaseVm {
                     spacing: 7,
                     children: [
                       Text(ctx.cell.value),
-                      InfoBadge.informational(
+
+                      const InfoBadge.informational(
                         source: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: const Text(
+                          padding: .symmetric(horizontal: 3.0),
+                          child: Text(
                             'Tú',
                             style: TextStyle(fontWeight: .w600),
                           ),

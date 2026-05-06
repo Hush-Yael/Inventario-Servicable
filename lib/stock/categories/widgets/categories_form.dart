@@ -34,7 +34,9 @@ class CategoriesForm extends HookWidget {
 
         FilledButton(
           onPressed: mutation.isPending ? null : cb,
-          style: .new(padding: .all(.symmetric(vertical: 10, horizontal: 8))),
+          style: .new(
+            padding: .all(const .symmetric(vertical: 10, horizontal: 8)),
+          ),
           child: mutation.isPending
               ? const SubmitBtnRing()
               : const WindowsIcon(FluentIcons.add),
