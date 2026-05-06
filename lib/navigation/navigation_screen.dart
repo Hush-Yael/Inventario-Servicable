@@ -1,30 +1,36 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/navigation/navigation_pages.dart';
 import 'package:servicable_stock/navigation/widgets/account.dart';
 import 'package:servicable_stock/navigation/widgets/theme_selector.dart';
 
 class NavigationScreen extends StatelessWidget {
-  const NavigationScreen({super.key});
+  final GoRouterState state;
+  final Widget currentView;
+
+  const NavigationScreen({
+    super.key,
+    required this.state,
+    required this.currentView,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final paneIndex = Signal(NavigationPages.home);
+    final currentIndex = MainNavigationPages.values.firstWhere(
+      (page) => page.path == state.topRoute!.path,
+    );
 
-    return SignalBuilder(
-      builder: (context, child) {
-        return NavigationView(
-          pane: NavigationPane(
-            indicator: const StickyNavigationIndicator(indicatorSize: 5),
-            selected: paneIndex.value.index,
-            onChanged: (index) =>
-                paneIndex.value = NavigationPages.values[index],
-            size: const .new(openWidth: 250),
-            toggleButton: null,
-            items: paneItems,
-          ),
-        );
-      },
+    return NavigationView(
+      paneBodyBuilder: (item, body) => currentView,
+      pane: NavigationPane(
+        indicator: const StickyNavigationIndicator(indicatorSize: 5),
+        selected: currentIndex.index,
+        size: const .new(openWidth: 250),
+        onChanged: (index) =>
+            GoRouter.of(context).go(MainNavigationPages.values[index].path),
+        toggleButton: null,
+        items: paneItems,
+      ),
     );
   }
 
@@ -50,6 +56,6 @@ class NavigationScreen extends StatelessWidget {
 
     PaneItemSeparator(),
 
-    ...navigationPages,
+    ...MainNavigationPages.values.map((page) => page.paneItem),
   ];
 }

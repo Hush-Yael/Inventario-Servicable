@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:servicable_stock/core/router/routes.dart';
+import 'package:servicable_stock/navigation/navigation_pages.dart';
 
 class NotFound extends StatelessWidget {
   const NotFound({super.key});
@@ -37,7 +37,7 @@ class NotFound extends StatelessWidget {
                   children: [Icon(FluentIcons.home), Text('Ir al inicio')],
                 ),
               ),
-              onPressed: () => context.go(AppRoutes.navigation.path),
+              onPressed: () => context.go(MainNavigationPages.home.path),
             ),
           ],
         ),
