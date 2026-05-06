@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/core/utils/fn.dart' show showMutationResultMsg;
+import 'package:servicable_stock/core/utils/fn.dart' show showMsg;
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
@@ -26,7 +26,7 @@ mixin DeleteMutationMixin on TableMixin {
       },
 
       onError: (error, variables, deletedIds, ctx) {
-        showMutationResultMsg(
+        showMsg(
           context: context,
           message: 'Error al eliminar los usuarios',
           severity: .error,
@@ -50,7 +50,7 @@ mixin DeleteMutationMixin on TableMixin {
       },
 
       onSuccess: (data, variables, deletedIds, ctx) {
-        showMutationResultMsg(
+        showMsg(
           context: context,
           message: 'Usuarios eliminados',
           severity: .success,

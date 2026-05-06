@@ -70,7 +70,7 @@ createSingleAddMutation<Variables, NewObj extends Object>(
   },
 
   onSuccess: (addedId, variables, returned, ctx) {
-    showMutationResultMsg(
+    showMsg(
       context: params.context,
       message:
           '${params.objName.uppercaseFirst()} añadid${params.successMsgVocal}',
@@ -92,7 +92,7 @@ createSingleAddMutation<Variables, NewObj extends Object>(
   },
 
   onError: (error, variables, returned, ctx) {
-    showMutationResultMsg(
+    showMsg(
       context: params.context,
       message: error.toString(),
       severity: .error,

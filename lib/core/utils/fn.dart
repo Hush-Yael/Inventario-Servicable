@@ -1,19 +1,21 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
 
-/// Displays a info bar with [message] and [severity] after mutation result
-Future<void> showMutationResultMsg({
+Future<void> showMsg({
   required BuildContext context,
   required String message,
   required InfoBarSeverity severity,
+  Duration duration = const Duration(seconds: 5),
+  Alignment alignment = .bottomLeft,
 }) {
   return displayInfoBar(
     context,
-    duration: const Duration(seconds: 5),
-    alignment: .bottomLeft,
+    duration: duration,
+    alignment: alignment,
     builder: (context, close) {
       return InfoBar(title: Text(message), severity: severity);
     },
@@ -135,6 +137,16 @@ Future<dynamic> confirmCascadeDeletion(
       ],
     ),
   );
+}
+
+void useAutoOpenModal(VoidCallback handler) {
+  useEffect(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handler();
+    });
+
+    return null;
+  }, []);
 }
 
 extension PluralExtension on int {

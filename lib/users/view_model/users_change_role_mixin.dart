@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/core/utils/fn.dart' show showMutationResultMsg;
+import 'package:servicable_stock/core/utils/fn.dart' show showMsg;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/users/users_constants.dart';
 import 'package:servicable_stock/users/users_types.dart';
@@ -46,7 +46,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
       },
 
       onError: (error, role, prevRoles, _) {
-        showMutationResultMsg(
+        showMsg(
           context: context,
           message: 'No se pudieron cambiar los roles',
           severity: .error,
@@ -75,7 +75,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
       },
 
       onSuccess: (data, role, prevRoles, ctx) {
-        showMutationResultMsg(
+        showMsg(
           context: context,
           message: 'Roles cambiados',
           severity: .success,

@@ -68,7 +68,7 @@ SingleUpdateMutation createSingleUpdateMutation(
     },
 
     onError: (error, event, previousUpdatedAt, ctx) {
-      showMutationResultMsg(
+      showMsg(
         context: params.context,
         message: error.toString(),
         severity: .error,
@@ -93,7 +93,7 @@ SingleUpdateMutation createSingleUpdateMutation(
     },
 
     onSuccess: (_, event, _, ctx) {
-      showMutationResultMsg(
+      showMsg(
         context: params.context,
         message:
             '${params.objName.uppercaseFirst()} actualizad${params.successMsgVocal}',

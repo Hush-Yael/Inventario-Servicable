@@ -56,11 +56,7 @@ class CategoriesForm extends HookWidget {
     final errorMsg = vm.service.validateCategoryNameLength(text);
 
     if (errorMsg != null) {
-      showMutationResultMsg(
-        context: context,
-        message: errorMsg,
-        severity: .error,
-      );
+      showMsg(context: context, message: errorMsg, severity: .error);
 
       return;
     }

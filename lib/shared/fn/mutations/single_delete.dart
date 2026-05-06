@@ -65,7 +65,7 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
     },
 
     onError: (error, columnCtx, beforeIndex, ctx) {
-      utils.showMutationResultMsg(
+      utils.showMsg(
         context: params.context,
         message: error.toString(),
         severity: .error,
@@ -84,7 +84,7 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
     },
 
     onSuccess: (_, columnCtx, _, ctx) {
-      utils.showMutationResultMsg(
+      utils.showMsg(
         context: params.context,
         message:
             '${params.objName.uppercaseFirst()} eliminad${params.successMsgVocal}',
