@@ -33,6 +33,8 @@ TrinaGridConfiguration getTrinaBaseConfig(BuildContext context) {
 
     columnSize: .new(autoSizeMode: .equal),
 
+    columnFilter: .new(debounceMilliseconds: 500),
+
     style: Function.apply(
       context.theme.brightness == Brightness.dark
           ? TrinaGridStyleConfig.dark

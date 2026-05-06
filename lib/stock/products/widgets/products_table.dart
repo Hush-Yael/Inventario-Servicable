@@ -49,9 +49,7 @@ class ProductsTable extends HookWidget {
         return CardWrapper(
           TrinaGrid(
             key: vm.gridKey,
-            configuration: config.copyWith(
-              columnFilter: .new(debounceMilliseconds: 500),
-            ),
+            configuration: config,
             columns: vm.getColumns(
               context,
               deleteMutation,
