@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
+import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
@@ -19,6 +20,7 @@ class ProductsTable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final vm = ProductsVm.instance.of(context);
+    final routerState = GoRouterState.of(context);
 
     final categoryNamesQuery = useQuery(
       kCategoryNamesQueryKey,
@@ -46,7 +48,6 @@ class ProductsTable extends HookWidget {
 
         return CardWrapper(
           TrinaGrid(
-            key: vm.gridKey,
             configuration: config,
             columns: vm.getColumns(
               context,
@@ -56,8 +57,21 @@ class ProductsTable extends HookWidget {
             ),
             rows: vm.getRows(data!),
             onLoaded: (event) {
-              vm.setStateManager(event.stateManager);
+              final stateManager = event.stateManager;
+              vm.setStateManager(stateManager);
+
               event.stateManager.setShowColumnFilter(true);
+
+              final categoryName =
+                  routerState.uri.queryParameters['categoryName'];
+
+              if (categoryName != null) {
+                stateManager.setColumnFilter(
+                  columnField: ProductTableColumns.category.name,
+                  filterType: TrinaFilterTypeEquals(),
+                  filterValue: categoryName,
+                );
+              }
             },
             onChanged: (event) {
               final field = ProductTableColumns.values.byName(

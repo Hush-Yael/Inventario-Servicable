@@ -51,6 +51,18 @@ class CategoriesService extends ServiceRepository {
     }).toList();
   }
 
+  Future<String?> getCategoryName(int id) async {
+    final op = db.selectOnly(db.categories)
+      ..addColumns([db.categories.name])
+      ..limit(1)
+      // ..map((r) => r.read(db.categories.name)!)
+      ..where(db.categories.id.equals(id));
+
+    final row = await stall(op.getSingleOrNull());
+
+    return row?.read(db.categories.name);
+  }
+
   Future<int> deleteCategory(int id) async {
     return await delete(
       id,

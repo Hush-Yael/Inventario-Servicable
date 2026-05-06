@@ -10,6 +10,7 @@ import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/stock/categories/categories_constants.dart';
 import 'package:servicable_stock/stock/categories/view_model/categories_vm.dart';
 import 'package:servicable_stock/stock/categories/categories_types.dart';
+import 'package:servicable_stock/stock/categories/widgets/categories_see_btn.dart';
 import 'package:trina_grid/trina_grid.dart';
 
 class CategoriesTable extends HookWidget {
@@ -154,22 +155,7 @@ class CategoriesTable extends HookWidget {
               },
             ),
 
-          DropDownButton(
-            title: WindowsIcon(FluentIcons.view, size: 15),
-            style: .new(padding: .all(.symmetric(horizontal: 5, vertical: 6))),
-            trailing: null,
-            placement: .bottomRight,
-            items: [
-              MenuFlyoutItem(
-                text: const Text('Ver productos'),
-                onPressed: () {},
-              ),
-              MenuFlyoutItem(
-                text: const Text('Ver unidades'),
-                onPressed: () {},
-              ),
-            ],
-          ),
+          SeeBtn(columnCtx),
         ],
       ),
       title: 'Acciones',
