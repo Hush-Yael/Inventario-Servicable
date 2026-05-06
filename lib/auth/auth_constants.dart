@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:servicable_stock/core/utils/validators.dart';
 
 enum UserRole {
   admin('Admin', 3),
@@ -10,6 +12,33 @@ enum UserRole {
 
   const UserRole(this.label, this.level);
 }
+
+final nameValidators = FormBuilderValidators.compose([
+  Validators.required,
+  FormBuilderValidators.match(
+    RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
+    errorText: 'El nombre solo puede contener letras y espacios',
+  ),
+  Validators.minLength(kNameMinLength),
+  Validators.maxLength(kNameMaxLength),
+]);
+
+final usernameValidators = FormBuilderValidators.compose([
+  Validators.required,
+  Validators.minLength(kUsernameMinLength),
+  Validators.maxLength(kUsernameMaxLength),
+  FormBuilderValidators.match(
+    RegExp(r'^[a-zA-Z0-9_]+$'),
+    errorText:
+        'El nombre de usuario solo puede contener letras, números y pisos',
+  ),
+]);
+
+final passwordValidators = FormBuilderValidators.compose([
+  Validators.required,
+  Validators.minLength(kPasswordMinLength),
+  Validators.maxLength(kPasswordMaxLength),
+]);
 
 const kNameMinLength = 3;
 const kNameMaxLength = 64;

@@ -1,38 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
 import 'package:servicable_stock/auth/widgets/external_error.dart';
-import 'package:servicable_stock/core/utils/validators.dart';
-
-final nameValidators = FormBuilderValidators.compose([
-  Validators.required,
-  FormBuilderValidators.match(
-    RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
-    errorText: 'El nombre solo puede contener letras y espacios',
-  ),
-  Validators.minLength(kNameMinLength),
-  Validators.maxLength(kNameMaxLength),
-]);
-
-final usernameValidators = FormBuilderValidators.compose([
-  Validators.required,
-  Validators.minLength(kUsernameMinLength),
-  Validators.maxLength(kUsernameMaxLength),
-  FormBuilderValidators.match(
-    RegExp(r'^[a-zA-Z0-9_]+$'),
-    errorText:
-        'El nombre de usuario solo puede contener letras, números y pisos',
-  ),
-]);
-
-final passwordValidators = FormBuilderValidators.compose([
-  Validators.required,
-  Validators.minLength(kPasswordMinLength),
-  Validators.maxLength(kPasswordMaxLength),
-]);
+import 'package:servicable_stock/shared/widgets/field.dart';
 
 class FormFields extends StatelessWidget {
   const FormFields({super.key});
