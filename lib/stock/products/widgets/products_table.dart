@@ -25,10 +25,12 @@ class ProductsTable extends HookWidget {
       (_) => vm.service.fetchCategoryNames(),
     );
 
+    final config = getTrinaBaseConfig(context);
+
     return QueryTable(
       query,
       errorMsg: 'Error al obtener los productos',
-      config: getTrinaBaseConfig(context),
+      config: config,
       loaderColumns: vm.getColumns(
         context,
         null,
@@ -46,9 +48,10 @@ class ProductsTable extends HookWidget {
 
         return CardWrapper(
           TrinaGrid(
-            configuration: getTrinaBaseConfig(
-              context,
-            ).copyWith(columnFilter: .new(debounceMilliseconds: 500)),
+            key: vm.gridKey,
+            configuration: config.copyWith(
+              columnFilter: .new(debounceMilliseconds: 500),
+            ),
             columns: vm.getColumns(
               context,
               deleteMutation,

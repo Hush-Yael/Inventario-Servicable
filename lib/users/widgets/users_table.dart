@@ -49,8 +49,8 @@ class UsersTable extends HookWidget {
                 cellsPadding: cellPadding,
               ),
 
-              configuration: getTrinaBaseConfig(context),
-
+              configuration: config,
+              
               onLoaded: (event) => vm.setStateManager(event.stateManager),
 
               onBeforeActiveCellChange: (event) => false,

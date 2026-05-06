@@ -21,10 +21,12 @@ class CategoriesTable extends HookWidget {
   Widget build(BuildContext context) {
     final vm = CategoriesVm.instance.of(context);
 
+    final config = getTrinaBaseConfig(context);
+
     return QueryTable(
       query,
       errorMsg: 'Error al obtener las categorías',
-      config: getTrinaBaseConfig(context),
+      config: config,
       loaderColumns: getColumns(context, const []),
       renderGrid: (list) {
         final canEdit = hasPerm(context, .operator);
@@ -50,7 +52,7 @@ class CategoriesTable extends HookWidget {
             return (canEdit &&
                 event.newCell.column.field == CategoryTableColumns.name.name);
           },
-          configuration: getTrinaBaseConfig(context),
+          configuration: config,
           noRowsWidget: NoRows('categorías'),
         );
       },
