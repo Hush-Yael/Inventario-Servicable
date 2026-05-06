@@ -10,7 +10,7 @@ class QueryTable<T> extends HookWidget {
   final String errorMsg;
   final TrinaGridConfiguration config;
   final List<TrinaColumn> loaderColumns;
-  final Widget Function(T? data) renderGrid;
+  final Widget Function(T? data, TrinaGridConfiguration config) renderGrid;
 
   const QueryTable(
     this.query, {
@@ -31,6 +31,6 @@ class QueryTable<T> extends HookWidget {
       return tableLoader(query, config: config, columns: loaderColumns);
     }
 
-    return renderGrid(query.data);
+    return renderGrid(query.data, config);
   }
 }

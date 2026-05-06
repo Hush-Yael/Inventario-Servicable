@@ -21,14 +21,12 @@ class CategoriesTable extends HookWidget {
   Widget build(BuildContext context) {
     final vm = CategoriesVm.instance.of(context);
 
-    final config = getTrinaBaseConfig(context);
-
     return QueryTable(
       query,
       errorMsg: 'Error al obtener las categorías',
-      config: config,
+      config: getTrinaBaseConfig(context),
       loaderColumns: getColumns(context, const []),
-      renderGrid: (list) {
+      renderGrid: (list, config) {
         final canEdit = hasPerm(context, .operator);
 
         final CategoriesDeleteMutation deleteMutation = vm.createDeleteMutation(

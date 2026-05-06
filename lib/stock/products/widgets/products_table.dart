@@ -25,19 +25,17 @@ class ProductsTable extends HookWidget {
       (_) => vm.service.fetchCategoryNames(),
     );
 
-    final config = getTrinaBaseConfig(context);
-
     return QueryTable(
       query,
       errorMsg: 'Error al obtener los productos',
-      config: config,
+      config: getTrinaBaseConfig(context),
       loaderColumns: vm.getColumns(
         context,
         null,
         listLength: 0,
         categoryNames: const [],
       ),
-      renderGrid: (data) {
+      renderGrid: (data, config) {
         final canEdit = utils.hasPerm(context, .operator);
 
         final deleteMutation = vm.createDeleteMutation(context);
