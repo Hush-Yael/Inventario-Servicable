@@ -19,45 +19,49 @@ class FormFields extends StatelessWidget {
       children: [
         Show(
           when: () => !isSignIn.value,
-          builder: (context) => Column(
-            crossAxisAlignment: .stretch,
-            children: [
-              const Text('Nombre personal'),
-              const SizedBox(height: 8),
-              FormBuilderField(
-                name: 'name',
-                builder: (field) => SignalBuilder(
-                  builder: (context, child) => TextFormBox(
-                    enabled: !isSubmitting.value,
-                    validator: nameValidators,
-                    onChanged: field.didChange,
-                    onFieldSubmitted: vm.fieldSubmit,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 22),
-            ],
-          ),
+          builder: (context) {
+            return Field(
+              'name',
+              label: 'Nombre personal',
+              childBuilder: (field) {
+                return Column(
+                  crossAxisAlignment: .stretch,
+                  children: [
+                    SignalBuilder(
+                      builder: (context, child) => TextFormBox(
+                        autovalidateMode: .onUserInteraction,
+                        enabled: !isSubmitting.value,
+                        validator: nameValidators,
+                        onChanged: field.didChange,
+                        onFieldSubmitted: vm.fieldSubmit,
+                      ),
+                    ),
+                    const SizedBox(height: 22),
+                  ],
+                );
+              },
+            );
+          },
         ),
 
-        const Text('Nombre de usuario'),
-        const SizedBox(height: 8),
-
-        FormBuilderField(
-          name: 'username',
-          autovalidateMode: .always,
-          builder: (field) => SignalBuilder(
-            builder: (context, child) => TextFormBox(
-              enabled: !isSubmitting.value,
-              validator: (t) {
-                vm.invalidUsernameMsg.value = null;
-                final String? error = usernameValidators(t);
-                return error;
-              },
-              onChanged: field.didChange,
-              onFieldSubmitted: vm.fieldSubmit,
-            ),
-          ),
+        Field(
+          'username',
+          label: 'Nombre de usuario',
+          childBuilder: (field) {
+            return SignalBuilder(
+              builder: (context, child) => TextFormBox(
+                autovalidateMode: .onUserInteraction,
+                enabled: !isSubmitting.value,
+                validator: (t) {
+                  vm.invalidUsernameMsg.value = null;
+                  final String? error = usernameValidators(t);
+                  return error;
+                },
+                onChanged: field.didChange,
+                onFieldSubmitted: vm.fieldSubmit,
+              ),
+            );
+          },
         ),
 
         Show(
@@ -69,25 +73,26 @@ class FormFields extends StatelessWidget {
 
         const SizedBox(height: 22),
 
-        const Text('Contraseña'),
-        const SizedBox(height: 8),
-
-        FormBuilderField(
-          name: 'password',
-          builder: (field) => SignalBuilder(
-            builder: (context, child) => PasswordFormBox(
-              enabled: !isSubmitting.value,
-              revealMode: .peekAlways,
-              // no "onChanged", so use validator instead
-              validator: (t) {
-                vm.invalidPasswordMsg.value = null;
-                final String? error = passwordValidators(t);
-                field.didChange(t);
-                return error;
-              },
-              onFieldSubmitted: vm.fieldSubmit,
-            ),
-          ),
+        Field(
+          'password',
+          label: 'Contraseña',
+          childBuilder: (field) {
+            return SignalBuilder(
+              builder: (context, child) => PasswordFormBox(
+                autovalidateMode: .onUserInteraction,
+                enabled: !isSubmitting.value,
+                onFieldSubmitted: vm.fieldSubmit,
+                revealMode: .peekAlways,
+                // no "onChanged", so use validator instead
+                validator: (t) {
+                  vm.invalidPasswordMsg.value = null;
+                  final String? error = passwordValidators(t);
+                  field.didChange(t);
+                  return error;
+                },
+              ),
+            );
+          },
         ),
 
         Show(
