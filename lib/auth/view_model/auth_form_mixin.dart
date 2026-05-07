@@ -1,65 +1,53 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_state_mixin.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 
+typedef Field = FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>;
 mixin FormMixin on StateMixin {
-  /// Callback for when a field is submitted through the keyboard
-  Future<dynamic>? fieldSubmit(String value) =>
-      isSubmitting.value ? null : submit();
+  Field get username =>
+      formKey.currentState!.fields[AuthFormFields.username.name]!;
+  Field get name => formKey.currentState!.fields[AuthFormFields.name.name]!;
+  Field get password =>
+      formKey.currentState!.fields[AuthFormFields.password.name]!;
 
-  String get username => formKey.currentState?.fields['username']?.value ?? '';
-  String get name => formKey.currentState?.fields['username']?.value ?? '';
-  String get password => formKey.currentState?.fields['password']?.value ?? '';
-
-  Future<void> submit() async {
-    if (isSubmitting.value) {
-      return;
-    }
-
-    clearAsyncErrors();
-
-    if (formKey.currentState?.validate() != true) {
-      return;
-    }
+  Future submit([dynamic fieldValue]) async {
+    if (isSubmitting.value || invalid) return;
 
     isSubmitting.value = true;
 
     final User? existingUser = await stall(
-      service.getExistingUser(username),
+      service.getExistingUser(username.value),
       const Duration(milliseconds: 250),
     );
 
-    final String? result = await stall(
+    final bool fine = await stall(
       (isSignIn.value ? signIn(existingUser) : signUp(existingUser))
           .whenComplete(() => isSubmitting.value = false),
-      const Duration(milliseconds: 250),
+      const .new(milliseconds: 250),
     );
 
-    if (result == null && context.mounted) {
-      displayInfoBar(
-        context,
-        duration: const Duration(seconds: 5),
-        builder: (context, close) {
-          return InfoBar(
-            title: Text(isSignIn.value ? 'Bienvenido' : 'Cuenta creada'),
-            severity: InfoBarSeverity.success,
-          );
-        },
+    if (fine && context.mounted) {
+      showMsg(
+        context: context,
+        message: isSignIn.value ? 'Bienvenido' : 'Cuenta creada',
+        severity: .success,
       );
     }
   }
 
-  Future<String?> signIn(User? existingUser) async {
+  Future<bool> signIn(User? existingUser) async {
     if (existingUser == null) {
-      return invalidUsernameMsg.value = 'El usuario no existe';
+      username.invalidate('El usuario no existe');
+      return false;
     }
 
     final secretPassToCompare = await algorithm.deriveKeyFromPassword(
-      password: password,
+      password: password.value,
       nonce: base64Decode(existingUser.salt),
     );
 
@@ -70,41 +58,51 @@ mixin FormMixin on StateMixin {
     final String storedHash = existingUser.password;
 
     if (hashToCompare != storedHash) {
-      return invalidPasswordMsg.value = 'La contraseña es incorrecta';
+      if (context.mounted) {
+        showMsg(
+          context: context,
+          message: 'La contraseña es incorrecta',
+          severity: .error,
+          alignment: .bottomCenter,
+        );
+      }
+
+      return false;
     }
 
     await service.updateCurrentUserLastLogin(existingUser.id);
 
     authState.setUser(existingUser);
 
-    return null;
+    return true;
   }
 
-  Future<String?> signUp(User? existingUser) async {
+  Future<bool> signUp(User? existingUser) async {
     if (existingUser != null) {
-      return invalidUsernameMsg.value = 'El usuario ya existe';
+      username.invalidate('El usuario ya existe');
+      return false;
     }
 
-    var random = Random.secure();
+    final random = Random.secure();
 
-    var newSalt = Uint8List.fromList(
+    final newSalt = Uint8List.fromList(
       List.generate(32, (_) => random.nextInt(256)),
     );
 
     final secretPass = await algorithm.deriveKeyFromPassword(
-      password: password,
+      password: password.value,
       nonce: newSalt,
     );
 
     final User newUser = await service.signupNewUser(
-      name: name,
-      username: username,
+      name: name.value,
+      username: username.value,
       password: base64Encode(await secretPass.extractBytes()),
       salt: base64Encode(newSalt),
     );
 
     authState.setUser(newUser);
 
-    return null;
+    return true;
   }
 }

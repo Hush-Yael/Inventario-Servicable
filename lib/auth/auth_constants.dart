@@ -13,32 +13,36 @@ enum UserRole {
   const UserRole(this.label, this.level);
 }
 
-final nameValidators = FormBuilderValidators.compose([
-  Validators.required,
-  FormBuilderValidators.match(
-    RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
-    errorText: 'El nombre solo puede contener letras y espacios',
-  ),
-  Validators.minLength(kNameMinLength),
-  Validators.maxLength(kNameMaxLength),
-]);
+enum AuthFormFields { name, username, password }
 
-final usernameValidators = FormBuilderValidators.compose([
-  Validators.required,
-  Validators.minLength(kUsernameMinLength),
-  Validators.maxLength(kUsernameMaxLength),
-  FormBuilderValidators.match(
-    RegExp(r'^[a-zA-Z0-9_]+$'),
-    errorText:
-        'El nombre de usuario solo puede contener letras, números y pisos',
-  ),
-]);
+class AuthValidators {
+  static final nameValidators = FormBuilderValidators.compose([
+    Validators.required,
+    FormBuilderValidators.match(
+      RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
+      errorText: 'El nombre solo puede contener letras y espacios',
+    ),
+    Validators.minLength(kNameMinLength),
+    Validators.maxLength(kNameMaxLength),
+  ]);
 
-final passwordValidators = FormBuilderValidators.compose([
-  Validators.required,
-  Validators.minLength(kPasswordMinLength),
-  Validators.maxLength(kPasswordMaxLength),
-]);
+  static final usernameValidators = FormBuilderValidators.compose([
+    Validators.required,
+    Validators.minLength(kUsernameMinLength),
+    Validators.maxLength(kUsernameMaxLength),
+    FormBuilderValidators.match(
+      RegExp(r'^[a-zA-Z0-9_]+$'),
+      errorText:
+          'El nombre de usuario solo puede contener letras, números y pisos',
+    ),
+  ]);
+
+  static final passwordValidators = FormBuilderValidators.compose([
+    Validators.required,
+    Validators.minLength(kPasswordMinLength),
+    Validators.maxLength(kPasswordMaxLength),
+  ]);
+}
 
 const kNameMinLength = 3;
 const kNameMaxLength = 64;

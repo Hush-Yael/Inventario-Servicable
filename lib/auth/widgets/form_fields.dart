@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
-import 'package:servicable_stock/auth/widgets/external_error.dart';
 import 'package:servicable_stock/shared/widgets/field.dart';
 
 class FormFields extends StatelessWidget {
@@ -11,17 +10,15 @@ class FormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthVm vm = AuthVm.instance.of(context);
-    final isSignIn = vm.isSignIn;
-    final isSubmitting = vm.isSubmitting;
 
     return Column(
       crossAxisAlignment: .stretch,
       children: [
         Show(
-          when: () => !isSignIn.value,
+          when: () => !vm.isSignIn.value,
           builder: (context) {
-            return Field(
-              'name',
+            return Field<String>(
+              AuthFormFields.name.name,
               label: 'Nombre personal',
               childBuilder: (field) {
                 return Column(
@@ -30,10 +27,11 @@ class FormFields extends StatelessWidget {
                     SignalBuilder(
                       builder: (context, child) => TextFormBox(
                         autovalidateMode: .onUserInteraction,
-                        enabled: !isSubmitting.value,
-                        validator: nameValidators,
+                        initialValue: field.value,
+                        enabled: vm.enabled,
+                        validator: AuthValidators.nameValidators,
                         onChanged: field.didChange,
-                        onFieldSubmitted: vm.fieldSubmit,
+                        onFieldSubmitted: vm.submit,
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -44,61 +42,43 @@ class FormFields extends StatelessWidget {
           },
         ),
 
-        Field(
-          'username',
+        Field<String>(
+          AuthFormFields.username.name,
           label: 'Nombre de usuario',
           childBuilder: (field) {
             return SignalBuilder(
               builder: (context, child) => TextFormBox(
+                initialValue: field.value,
                 autovalidateMode: .onUserInteraction,
-                enabled: !isSubmitting.value,
-                validator: (t) {
-                  vm.invalidUsernameMsg.value = null;
-                  final String? error = usernameValidators(t);
-                  return error;
-                },
-                onChanged: field.didChange,
-                onFieldSubmitted: vm.fieldSubmit,
+                enabled: vm.enabled,
+                validator: (value) => vm.fieldSyncAndAsyncValidation(
+                  field,
+                  validator: AuthValidators.usernameValidators,
+                ),
+                onChanged: (v) => vm.changeAndClearAsyncError(v, field),
+                onFieldSubmitted: vm.submit,
               ),
             );
-          },
-        ),
-
-        Show(
-          when: () => vm.invalidUsernameMsg.value != null,
-          builder: (context) {
-            return ExternalError(text: vm.invalidUsernameMsg.value!);
           },
         ),
 
         const SizedBox(height: 22),
 
-        Field(
-          'password',
+        Field<String>(
+          AuthFormFields.password.name,
           label: 'Contraseña',
           childBuilder: (field) {
             return SignalBuilder(
               builder: (context, child) => PasswordFormBox(
+                initialValue: field.value,
                 autovalidateMode: .onUserInteraction,
-                enabled: !isSubmitting.value,
-                onFieldSubmitted: vm.fieldSubmit,
+                enabled: vm.enabled,
+                onFieldSubmitted: vm.submit,
                 revealMode: .peekAlways,
-                // no "onChanged", so use validator instead
-                validator: (t) {
-                  vm.invalidPasswordMsg.value = null;
-                  final String? error = passwordValidators(t);
-                  field.didChange(t);
-                  return error;
-                },
+                onSaved: field.didChange,
+                validator: AuthValidators.passwordValidators,
               ),
             );
-          },
-        ),
-
-        Show(
-          when: () => vm.invalidPasswordMsg.value != null,
-          builder: (context) {
-            return ExternalError(text: vm.invalidPasswordMsg.value!);
           },
         ),
       ],

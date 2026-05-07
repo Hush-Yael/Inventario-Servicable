@@ -1,22 +1,20 @@
 import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:servicable_stock/auth/auth_service.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/auth/view_model/auth_state_mixin.dart';
 import 'package:servicable_stock/auth/view_model/auth_form_mixin.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/shared/form_with_async_validation.dart';
 
-class AuthBaseVm {
+class AuthBaseVm extends FormWithAsyncValidation {
   final AuthService service;
   final BuildContext context;
-  final GlobalKey<FormBuilderState> formKey;
   final AuthState authState;
 
   AuthBaseVm({
     required this.service,
-    required this.formKey,
     required this.context,
     required this.authState,
   });
@@ -32,20 +30,15 @@ class AuthBaseVm {
 class AuthVm extends AuthBaseVm with StateMixin, FormMixin {
   AuthVm({
     required super.service,
-    required super.formKey,
     required super.context,
     required super.authState,
   });
 
-  static final instance = Provider.withArgument((
-    ctx,
-    GlobalKey<FormBuilderState> formKey,
-  ) {
+  static final instance = Provider((ctx) {
     final db = AppDatabase.instance.of(ctx);
 
     return AuthVm(
       service: AuthService(db, table: db.users),
-      formKey: formKey,
       authState: AuthState.instance.of(ctx),
       context: ctx,
     );

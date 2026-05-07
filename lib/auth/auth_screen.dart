@@ -24,7 +24,12 @@ class AuthScreen extends StatelessWidget {
                     minHeight: constraints.maxHeight,
                     maxHeight: double.infinity,
                   ),
-                  child: Center(child: Form()),
+                  child: Center(
+                    child: ProviderScope(
+                      providers: [AuthVm.instance],
+                      child: const _Form(),
+                    ),
+                  ),
                 ),
               ),
               const SignInUpThemeSelector(),
@@ -36,71 +41,65 @@ class AuthScreen extends StatelessWidget {
   }
 }
 
-class Form extends StatelessWidget {
-  Form({super.key});
-
-  final _formKey = GlobalKey<FormBuilderState>();
+class _Form extends StatelessWidget {
+  const _Form();
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      providers: [AuthVm.instance(_formKey)],
-      child: FormBuilder(
-        key: _formKey,
-        child: Center(
-          child: Padding(
-            padding: const .all(20),
-            child: Column(
-              mainAxisAlignment: .center,
-              spacing: 30,
-              children: [
-                Image.asset('assets/logo.png', width: 300),
+    final vm = AuthVm.instance.of(context);
+    return FormBuilder(
+      key: vm.formKey,
+      child: Center(
+        child: Padding(
+          padding: const .all(20),
+          child: Column(
+            mainAxisAlignment: .center,
+            spacing: 30,
+            children: [
+              Image.asset('assets/logo.png', width: 300),
 
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 400,
-                    minHeight: 350,
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                  minHeight: 350,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: context.theme.cardColor,
+                    borderRadius: .circular(10),
+
+                    border: .all(
+                      color: context.theme.resources.cardStrokeColorDefault,
+                    ),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.theme.cardColor,
-                      borderRadius: .circular(10),
+                  padding: const .symmetric(horizontal: 20, vertical: 15),
+                  child: Column(
+                    crossAxisAlignment: .stretch,
+                    mainAxisAlignment: .spaceBetween,
+                    spacing: 20,
+                    children: [
+                      SignalBuilder(
+                        builder: (context, child) {
+                          final isSignIn = AuthVm.instance.of(context).isSignIn;
 
-                      border: .all(
-                        color: context.theme.resources.cardStrokeColorDefault,
+                          return Text(
+                            isSignIn.value
+                                ? 'Ingresar al sistema'
+                                : 'Crear cuenta',
+                            style: context.theme.typography.title,
+                            textAlign: .center,
+                          );
+                        },
                       ),
-                    ),
-                    padding: const .symmetric(horizontal: 20, vertical: 15),
-                    child: Column(
-                      crossAxisAlignment: .stretch,
-                      mainAxisAlignment: .spaceBetween,
-                      spacing: 20,
-                      children: [
-                        SignalBuilder(
-                          builder: (context, child) {
-                            final isSignIn = AuthVm.instance
-                                .of(context)
-                                .isSignIn;
 
-                            return Text(
-                              isSignIn.value
-                                  ? 'Ingresar al sistema'
-                                  : 'Crear cuenta',
-                              style: context.theme.typography.title,
-                              textAlign: .center,
-                            );
-                          },
-                        ),
+                      FormFields(),
 
-                        FormFields(),
-
-                        FormBtns(),
-                      ],
-                    ),
+                      FormBtns(),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
