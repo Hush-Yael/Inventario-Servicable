@@ -18,7 +18,6 @@ mixin FormMixin on AuthBaseVm {
   Future submit([dynamic fieldValue]) async {
     if (isSubmitting.value || invalid) return;
 
-    formKey.currentState!.save();
     isSubmitting.value = true;
 
     final User? existingUser = await stall(

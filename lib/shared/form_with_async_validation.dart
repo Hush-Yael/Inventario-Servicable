@@ -7,7 +7,7 @@ class FormWithAsyncValidation {
   final isSubmitting = Signal(false);
 
   bool get enabled => !isSubmitting.value;
-  bool get invalid => formKey.currentState!.validate() != true;
+  bool get invalid => formKey.currentState!.saveAndValidate() != true;
 
   /// To show async errors, fields are manually invalidated. Those errors are then shown using field.errorText
   String? fieldSyncAndAsyncValidation<T extends FormFieldState<String?>>(
