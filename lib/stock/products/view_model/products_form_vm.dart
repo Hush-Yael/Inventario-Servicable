@@ -77,6 +77,8 @@ class ProductsFormVm extends ProductsFormBaseVm with Validation {
         units: getValue('units'),
         usesDetailedUnits: getValue('usesDetailedUnits'),
       ));
+
+      if (modalContext.mounted) Navigator.of(modalContext).pop();
     } catch (e) {
       //
     } finally {

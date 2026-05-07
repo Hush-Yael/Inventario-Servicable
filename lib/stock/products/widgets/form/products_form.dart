@@ -73,8 +73,7 @@ class ProductsForm extends HookWidget {
                       asyncErrorMsg: 'El nombre ya existe',
                     ),
                     onChanged: field.didChange,
-
-                    onFieldSubmitted: formVm.submit,
+                    onFieldSubmitted: (v) => formVm.submit(context),
                   ),
                 ),
 
@@ -95,7 +94,7 @@ class ProductsForm extends HookWidget {
                         asyncErrorMsg: 'El código debe ser único',
                       ),
                       onChanged: field.didChange,
-                      onFieldSubmitted: formVm.submit,
+                      onFieldSubmitted: (v) => formVm.submit(context),
                     ),
                   ),
                 ),

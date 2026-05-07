@@ -16,10 +16,6 @@ mixin AddMixin on TableMixin {
           objName: 'producto',
           objPluralName: 'productos',
           cb: service.addProduct,
-          onSuccess: (variables, record) {
-            // close the dialog
-            Navigator.of(context).pop();
-          },
         ),
         createRow: createRow,
         createNewObj: (variables, ctx) {
