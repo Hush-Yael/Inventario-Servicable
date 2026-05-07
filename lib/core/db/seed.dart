@@ -1,8 +1,38 @@
+import 'dart:convert';
+
+import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:drift/drift.dart';
+import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:faker/faker.dart';
 
 Future<void> seed(AppDatabase db) async {
+  final algorithm = Argon2id(
+    memory: 10 * 1000, // 10 MB
+    parallelism: 2, //  two CPU cores.
+    iterations: 1,
+    hashLength: 32,
+  );
+
+  final salt = Uint8List(8);
+  final pass = await algorithm.deriveKeyFromPassword(
+    password: 'admin',
+    nonce: salt,
+  );
+
+  await db
+      .into(db.users)
+      .insert(
+        UsersCompanion.insert(
+          role: UserRole.admin,
+          name: 'Administrador',
+          username: 'admin',
+          password: base64Encode(await pass.extractBytes()),
+          salt: base64Encode(salt),
+          lastLogin: Value(DateTime.now()),
+        ),
+      );
+
   const List<String> defaultCategories = [
     'Router',
     'ONU',
