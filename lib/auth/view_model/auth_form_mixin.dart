@@ -3,12 +3,12 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
-import 'package:servicable_stock/auth/view_model/auth_state_mixin.dart';
+import 'package:servicable_stock/auth/view_model/auth_vm.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 
 typedef Field = FormBuilderFieldState<FormBuilderField<dynamic>, dynamic>;
-mixin FormMixin on StateMixin {
+mixin FormMixin on AuthBaseVm {
   Field get username =>
       formKey.currentState!.fields[AuthFormFields.username.name]!;
   Field get name => formKey.currentState!.fields[AuthFormFields.name.name]!;

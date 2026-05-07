@@ -3,7 +3,7 @@ import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/auth/auth_service.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
-import 'package:servicable_stock/auth/view_model/auth_state_mixin.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/view_model/auth_form_mixin.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/shared/form_with_async_validation.dart';
@@ -25,9 +25,20 @@ class AuthBaseVm extends FormWithAsyncValidation {
     iterations: 1,
     hashLength: 32,
   );
+
+  final isSignIn = Signal(true);
+
+  void toggleIsSignIn() {
+    if (isSubmitting.value) {
+      return;
+    }
+
+    isSignIn.value = !isSignIn.value;
+    formKey.currentState?.reset();
+  }
 }
 
-class AuthVm extends AuthBaseVm with StateMixin, FormMixin {
+class AuthVm extends AuthBaseVm with FormMixin {
   AuthVm({
     required super.service,
     required super.context,
