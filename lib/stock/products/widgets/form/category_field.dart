@@ -11,12 +11,12 @@ import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart
 import 'package:servicable_stock/stock/products/view_model/products_vm.dart';
 
 class CategoryField extends HookWidget {
-  final BuildContext outerContext;
-  const CategoryField(this.outerContext, {super.key});
+  const CategoryField({super.key});
 
   @override
-  Widget build(_) {
-    final vm = ProductsVm.instance.of(outerContext);
+  Widget build(BuildContext context) {
+    final vm = ProductsVm.instance.of(context);
+
     final queryClient = useQueryClient();
 
     final categories = Resource(
@@ -27,8 +27,11 @@ class CategoryField extends HookWidget {
     );
 
     return SignalBuilder(
-      builder: (context, child) =>
-          categories.state.when(error: error, loading: loader, ready: builder),
+      builder: (context, child) => categories.state.when(
+        error: (error, trace) => errorWidget(error, trace, context),
+        loading: loader,
+        ready: (categories) => builder(categories, context),
+      ),
     );
   }
 
@@ -41,8 +44,8 @@ class CategoryField extends HookWidget {
     ),
   );
 
-  Widget builder(ProductCategoryOptions categories) {
-    final formVm = ProductsFormVm.instance.of(outerContext);
+  Widget builder(ProductCategoryOptions categories, BuildContext context) {
+    final formVm = ProductsFormVm.instance.of(context);
 
     return Field(
       'categoryId',
@@ -64,8 +67,8 @@ class CategoryField extends HookWidget {
     );
   }
 
-  Widget error(Object error, StackTrace? trace) {
-    final errorColor = AppTheme.errorColor(outerContext);
+  Widget errorWidget(Object error, StackTrace? trace, BuildContext context) {
+    final errorColor = AppTheme.errorColor(context);
 
     return Tooltip(
       message: error.toString(),

@@ -1,3 +1,4 @@
+import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
@@ -26,47 +27,55 @@ class ProductsFormBtn extends HookWidget {
     );
   }
 
-  /// [outerContext] is the context of the parent widget, it has to be used instead of builder one, because the latter can't access the providers
   Future<Object?> handler(BuildContext outerContext) {
     final formVm = ProductsFormVm.instance.of(outerContext);
 
     return showDialog(
       context: outerContext,
       dismissWithEsc: false,
-      builder: (_) {
-        return ContentDialog(
-          title: const Text(
-            'Añadir producto',
-            style: AppTheme.dialogTitleStyle,
-          ),
-          content: ProductsForm(outerContext),
-          constraints: kDefaultContentDialogConstraints.copyWith(
-            maxWidth: 600,
-            maxHeight: 450,
-          ),
-          actions: [
-            SignalBuilder(
-              builder: (context, child) => Button(
-                style: BtnStyles.dialogButtonStyle,
-                onPressed: formVm.isSubmitting.value
-                    ? null
-                    : () => Navigator.pop(outerContext),
-                child: const Text('Descartar'),
-              ),
+      builder: (context) {
+        return ProviderScopePortal(
+          mainContext: outerContext,
+          child: ContentDialog(
+            title: const Text(
+              'Añadir producto',
+              style: AppTheme.dialogTitleStyle,
             ),
-
-            SignalBuilder(
-              builder: (context, child) => FilledButton(
-                onPressed: formVm.isSubmitting.value ? null : formVm.submit,
-                style: BtnStyles.dialogButtonStyle,
-                child: formVm.isSubmitting.value
-                    ? const SubmitBtnRing()
-                    : const Text('Guardar'),
-              ),
+            content: ProductsForm(),
+            constraints: kDefaultContentDialogConstraints.copyWith(
+              maxWidth: 600,
+              maxHeight: 450,
             ),
-          ],
+            actions: getActions(formVm),
+          ),
         );
       },
     );
+  }
+
+  List<Widget> getActions(ProductsFormVm formVm) {
+    return [
+      SignalBuilder(
+        builder: (context, child) => Button(
+          style: BtnStyles.dialogButtonStyle,
+          onPressed: formVm.isSubmitting.value
+              ? null
+              : () => Navigator.pop(context),
+          child: const Text('Descartar'),
+        ),
+      ),
+
+      SignalBuilder(
+        builder: (context, child) => FilledButton(
+          onPressed: formVm.isSubmitting.value
+              ? null
+              : () => formVm.submit(context),
+          style: BtnStyles.dialogButtonStyle,
+          child: formVm.isSubmitting.value
+              ? const SubmitBtnRing()
+              : const Text('Guardar'),
+        ),
+      ),
+    ];
   }
 }

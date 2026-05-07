@@ -6,12 +6,11 @@ import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
 
 class UsesDetailedUnitsField extends StatelessWidget {
-  final BuildContext outerContext;
-  const UsesDetailedUnitsField(this.outerContext, {super.key});
+  const UsesDetailedUnitsField({super.key});
 
   @override
-  Widget build(_) {
-    final formVm = ProductsFormVm.instance.of(outerContext);
+  Widget build(context) {
+    final formVm = ProductsFormVm.instance.of(context);
     final checked = formVm.usesDetailedUnits;
 
     return FormBuilderField(

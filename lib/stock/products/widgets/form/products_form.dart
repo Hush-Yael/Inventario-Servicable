@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/shared/widgets/field.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
@@ -9,14 +10,13 @@ import 'package:servicable_stock/stock/products/widgets/form/category_field.dart
 import 'package:servicable_stock/stock/products/widgets/form/uses_d_units_field.dart';
 
 class ProductsForm extends HookWidget {
-  final BuildContext outerContext;
-  const ProductsForm(this.outerContext, {super.key});
-
-  bool escapeHandler(KeyEvent event) => _escapeHandler(event, outerContext);
+  const ProductsForm({super.key});
 
   @override
-  Widget build(_) {
-    final formVm = ProductsFormVm.instance.of(outerContext);
+  Widget build(BuildContext context) {
+    bool escapeHandler(KeyEvent event) => _escapeHandler(event, context);
+    final formVm = ProductsFormVm.instance.of(context);
+
     final formKey = formVm.formKey;
 
     final enabled = formVm.enabled;
@@ -100,7 +100,7 @@ class ProductsForm extends HookWidget {
                   ),
                 ),
 
-                CategoryField(outerContext),
+                CategoryField(),
 
                 Field(
                   ProductFormFields.units.name,
@@ -131,7 +131,7 @@ class ProductsForm extends HookWidget {
             ),
           ),
 
-          UsesDetailedUnitsField(outerContext),
+          UsesDetailedUnitsField(),
         ],
       ),
     );
