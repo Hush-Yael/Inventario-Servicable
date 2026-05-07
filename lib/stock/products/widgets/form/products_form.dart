@@ -82,19 +82,21 @@ class ProductsForm extends HookWidget {
                   ProductFormFields.code.name,
                   label: 'Código',
                   valueTransformer: (value) => value?.trim(),
-                  childBuilder: (field) => TextFormBox(
-                    enabled: enabled,
-                    controller: codeController,
-                    autovalidateMode: .onUnfocus,
-                    validator: (v) => formVm.validateWithAsync(
-                      v,
-                      validator: ProductValidators.code,
-                      check: formVm.checkCodeExists,
-                      errorRef: formVm.codeExists,
-                      asyncErrorMsg: 'El código debe ser único',
+                  childBuilder: (field) => SignalBuilder(
+                    builder: (context, child) => TextFormBox(
+                      enabled: formVm.enabled,
+                      controller: codeController,
+                      autovalidateMode: .onUserInteraction,
+                      validator: (v) => formVm.validateWithAsync(
+                        v,
+                        validator: ProductValidators.code,
+                        check: formVm.checkCodeExists,
+                        errorRef: formVm.codeExists,
+                        asyncErrorMsg: 'El código debe ser único',
+                      ),
+                      onChanged: field.didChange,
+                      onFieldSubmitted: formVm.submit,
                     ),
-                    onChanged: field.didChange,
-                    onFieldSubmitted: formVm.submit,
                   ),
                 ),
 
@@ -106,21 +108,22 @@ class ProductsForm extends HookWidget {
                   valueTransformer: (v) => int.tryParse(v as String),
                   initialValue: 0,
                   childBuilder: (field) {
-                    return NumberFormBox(
-                      min: 0,
-                      mode: .inline,
-                      value: field.value,
-                      initialValue: field.value.toString(),
-                      onSaved: formVm.submit,
-                      autovalidateMode: .onUnfocus,
-                      validator: (value) {
-                        if (usesDetailedUnits.value) return null;
+                    return SignalBuilder(
+                      builder: (context, child) => NumberFormBox(
+                        min: 0,
+                        mode: .inline,
+                        value: field.value,
+                        initialValue: field.value.toString(),
+                        autovalidateMode: .onUserInteraction,
+                        validator: (value) {
+                          if (usesDetailedUnits.value) return null;
 
-                        return ProductValidators.units(value);
-                      },
-                      onChanged: usesDetailedUnits.value || !enabled
-                          ? null
-                          : field.didChange,
+                          return ProductValidators.units(value);
+                        },
+                        onChanged: usesDetailedUnits.value || !enabled
+                            ? null
+                            : field.didChange,
+                      ),
                     );
                   },
                 ),

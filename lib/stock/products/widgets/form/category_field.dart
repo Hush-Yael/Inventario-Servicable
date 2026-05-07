@@ -49,14 +49,16 @@ class CategoryField extends HookWidget {
       label: 'Categoría',
       initialValue: categories.first?.id,
       childBuilder: (field) {
-        return ComboboxFormField<ProductCategoryOption>(
-          style: AppTheme.fixedTextHeightStyle,
-          value: categories.firstWhereOrNull((c) => c!.id == field.value),
-          validator: (v) => ProductValidators.categoryId(v?.id.toString()),
-          items: categories
-              .map((c) => ComboBoxItem(value: c, child: Text(c!.name)))
-              .toList(),
-          onChanged: !formVm.enabled ? null : (v) => field.didChange(v!.id),
+        return SignalBuilder(
+          builder: (context, child) => ComboboxFormField<ProductCategoryOption>(
+            style: AppTheme.fixedTextHeightStyle,
+            value: categories.firstWhereOrNull((c) => c!.id == field.value),
+            validator: (v) => ProductValidators.categoryId(v?.id.toString()),
+            items: categories
+                .map((c) => ComboBoxItem(value: c, child: Text(c!.name)))
+                .toList(),
+            onChanged: !formVm.enabled ? null : (v) => field.didChange(v!.id),
+          ),
         );
       },
     );

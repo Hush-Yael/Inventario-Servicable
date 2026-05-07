@@ -20,38 +20,39 @@ class UsesDetailedUnitsField extends StatelessWidget {
       builder: (field) {
         return Transform.translate(
           offset: const Offset(0, -5),
-          child: Checkbox(
-            checked: checked.value,
+          child: SignalBuilder(
+            builder: (context, child) => Checkbox(
+              checked: checked.value,
+              onChanged: !formVm.enabled
+                  ? null
+                  : (c) {
+                      checked.value = c ?? false;
+                      field.didChange(c);
+                    },
+              content: Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Column(
+                  spacing: 4,
+                  crossAxisAlignment: .start,
+                  children: [
+                    const Text(
+                      'Usa unidades detalladas',
+                      style: AppTheme.fixedTextHeightStyle,
+                    ),
 
-            onChanged: !formVm.enabled
-                ? null
-                : (c) {
-                    checked.value = c ?? false;
-                    field.didChange(c);
-                  },
-            content: Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: Column(
-                spacing: 4,
-                crossAxisAlignment: .start,
-                children: [
-                  const Text(
-                    'Usa unidades detalladas',
-                    style: AppTheme.fixedTextHeightStyle,
-                  ),
-
-                  SignalBuilder(
-                    builder: (context, child) => Text(
-                      !checked.value
-                          ? 'la cantidad se ingresa directamente'
-                          : 'cada una se ingresa individualmente',
-                      style: .new(
-                        fontSize: 13,
-                        color: context.theme.resources.textFillColorTertiary,
+                    SignalBuilder(
+                      builder: (context, child) => Text(
+                        !checked.value
+                            ? 'la cantidad se ingresa directamente'
+                            : 'cada una se ingresa individualmente',
+                        style: .new(
+                          fontSize: 13,
+                          color: context.theme.resources.textFillColorTertiary,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
