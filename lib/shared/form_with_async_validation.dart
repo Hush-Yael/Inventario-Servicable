@@ -5,8 +5,13 @@ import 'package:flutter_solidart/flutter_solidart.dart' hide Debouncer;
 import 'package:servicable_stock/shared/debouncer.dart';
 
 class FormWithAsyncValidation {
+  final bool isModal;
+
+  FormWithAsyncValidation({this.isModal = false});
+
   final formKey = GlobalKey<FormBuilderState>();
-  final isSubmitting = Signal(false);
+
+  late final isSubmitting = Signal(false, autoDispose: !isModal);
 
   bool get enabled => !isSubmitting.value;
   bool get invalid => formKey.currentState!.saveAndValidate() != true;
@@ -47,5 +52,21 @@ class FormWithAsyncValidation {
     }, [controller]);
 
     return controller;
+  }
+}
+
+class ModalFormWithAsyncValidation extends FormWithAsyncValidation {
+  ModalFormWithAsyncValidation({super.isModal = true});
+
+  /// Used signals must be disposed manually to prevent crashing when using them when modal is opened again
+  void disposeSignals() {
+    isSubmitting.dispose();
+  }
+
+  /// Dispose signals when the widget that shows  is disposed
+  void useSignalsDispose() {
+    useEffect(() {
+      return disposeSignals;
+    }, []);
   }
 }

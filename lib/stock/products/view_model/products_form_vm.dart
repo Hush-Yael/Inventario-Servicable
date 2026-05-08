@@ -1,4 +1,5 @@
 import 'package:disco/disco.dart';
+import 'package:drift/drift.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/db/db.dart';
@@ -7,7 +8,7 @@ import 'package:servicable_stock/shared/form_with_async_validation.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 
-class ProductsFormBaseVm extends FormWithAsyncValidation {
+class ProductsFormBaseVm extends ModalFormWithAsyncValidation {
   final AppDatabase db;
 
   ProductsFormBaseVm(this.db);
@@ -16,13 +17,10 @@ class ProductsFormBaseVm extends FormWithAsyncValidation {
 
   final usesDetailedUnits = Signal(false, autoDispose: false);
 
-  void useAutoDispose() {
-    useEffect(() {
-      return () {
-        isSubmitting.dispose();
-        usesDetailedUnits.dispose();
-      };
-    }, []);
+  @override
+  disposeSignals() {
+    super.disposeSignals();
+    usesDetailedUnits.dispose();
   }
 
   dynamic getValue(String key) {

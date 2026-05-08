@@ -19,7 +19,7 @@ class ProductsFormBtn extends HookWidget {
 
     // useAutoOpenModal(() => handler(context));
 
-    formVm.useAutoDispose();
+    formVm.useSignalsDispose();
 
     return FilledButton(
       onPressed: () => handler(context),
