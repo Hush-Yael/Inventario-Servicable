@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_table_mixin.dart';

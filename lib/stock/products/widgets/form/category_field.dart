@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/field.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';

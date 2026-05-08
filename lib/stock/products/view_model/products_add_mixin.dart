@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
