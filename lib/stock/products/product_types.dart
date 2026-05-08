@@ -23,7 +23,3 @@ typedef ProductsDeleteMutation =
     MutationResult<dynamic, Object?, TrinaColumnRendererContext, int>;
 
 typedef ProductCountsByCategory = ({int noCategory, int withCategory});
-
-typedef ProductCategoryOption = ({String name, int id});
-
-typedef ProductCategoryOptions = List<ProductCategoryOption?>;

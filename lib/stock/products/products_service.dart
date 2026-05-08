@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/services_repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
 
@@ -63,13 +64,13 @@ class ProductsService extends ServiceRepository {
   }
 
   /// Fetches the names of all categories to use in the select widget
-  Future<ProductCategoryOptions> fetchCategoryNames() async {
+  Future<TableForeignKeyOptions> fetchCategoryNames() async {
     return await (db.selectOnly(db.categories)
           ..addColumns([db.categories.name, db.categories.id])
           ..orderBy([OrderingTerm.asc(db.categories.name)]))
         .map(
           (row) => (
-            name: row.read(db.categories.name)!,
+            label: row.read(db.categories.name)!,
             id: row.read(db.categories.id)!,
           ),
         )

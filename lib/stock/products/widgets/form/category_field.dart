@@ -5,8 +5,8 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/field.dart';
-import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
 import 'package:servicable_stock/stock/products/view_model/products_vm.dart';
@@ -21,7 +21,7 @@ class CategoryField extends HookWidget {
     final queryClient = useQueryClient();
 
     final categories = Resource(
-      () => queryClient.ensureQueryData<ProductCategoryOptions, dynamic>(
+      () => queryClient.ensureQueryData<TableForeignKeyOptions, dynamic>(
         kCategoryNamesQueryKey,
         (_) => vm.service.fetchCategoryNames(),
       ),
@@ -45,7 +45,7 @@ class CategoryField extends HookWidget {
     ),
   );
 
-  Widget builder(ProductCategoryOptions categories, BuildContext context) {
+  Widget builder(TableForeignKeyOptions categories, BuildContext context) {
     final formVm = ProductsFormVm.instance.of(context);
 
     return Field(
@@ -54,12 +54,12 @@ class CategoryField extends HookWidget {
       initialValue: categories.first?.id,
       childBuilder: (field) {
         return SignalBuilder(
-          builder: (context, child) => ComboboxFormField<ProductCategoryOption>(
+          builder: (context, child) => ComboboxFormField<TableForeignKeyOption>(
             style: AppTheme.fixedTextHeightStyle,
             value: categories.firstWhereOrNull((c) => c!.id == field.value),
             validator: (v) => ProductValidators.categoryId(v?.id.toString()),
             items: categories
-                .map((c) => ComboBoxItem(value: c, child: Text(c!.name)))
+                .map((cat) => ComboBoxItem(value: cat, child: Text(cat!.label)))
                 .toList(),
             onChanged: !formVm.enabled ? null : (v) => field.didChange(v!.id),
           ),

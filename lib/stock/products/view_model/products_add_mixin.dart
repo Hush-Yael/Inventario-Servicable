@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
@@ -29,13 +30,13 @@ mixin AddMixin on TableMixin {
             :categoryId,
           ) = variables;
 
-          final categoryNames = ctx.client.getQueryData<ProductCategoryOptions>(
+          final categoryNames = ctx.client.getQueryData<TableForeignKeyOptions>(
             kCategoryNamesQueryKey,
           );
 
           final categoryName = categoryNames
               ?.firstWhere((c) => c!.id == categoryId)!
-              .name;
+              .label;
 
           return ProductWithDetails(
             id: -1,

@@ -4,6 +4,7 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_table_mixin.dart';
@@ -72,11 +73,11 @@ mixin UpdateMutationsMixin on TableMixin {
   }
 
   int _getCategoryId(MutationFunctionContext ctx, String categoryName) {
-    final categoryNames = ctx.client.getQueryData<ProductCategoryOptions>(
+    final categoryNames = ctx.client.getQueryData<TableForeignKeyOptions>(
       kCategoryNamesQueryKey,
     );
 
-    return categoryNames!.firstWhere((opt) => opt!.name == categoryName)!.id;
+    return categoryNames!.firstWhere((opt) => opt!.label == categoryName)!.id;
   }
 
   SingleUpdateMutation createChangeCodeMutation(BuildContext context) =>

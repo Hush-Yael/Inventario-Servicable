@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/filter_field/index.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
@@ -18,7 +19,7 @@ mixin TableMixin on ProductsBaseVm {
     BuildContext context,
     ProductsDeleteMutation? deleteMutation, {
     required int listLength,
-    required ProductCategoryOptions categoryNames,
+    required TableForeignKeyOptions categoryNames,
   }) {
     final isAdmin = utils.isAdmin(context);
 
@@ -44,7 +45,7 @@ mixin TableMixin on ProductsBaseVm {
       ),
 
       .new(
-        type: .select<String>(categoryNames.map((opt) => opt!.name).toList()),
+        type: .select<String>(categoryNames.map((opt) => opt!.label).toList()),
         title: 'Categoría',
         field: ProductTableColumns.category.name,
         filterWidgetDelegate: fieldWithFilterType(
