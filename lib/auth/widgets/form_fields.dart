@@ -16,6 +16,20 @@ class FormFields extends HookWidget {
       vm.checkUsername,
     );
 
+    final passwordController = useTextEditingController();
+
+    void changePass() {
+      final value = (passwordController.text);
+
+      vm.changeAndClearAsyncError(value, vm.password);
+    }
+
+    useEffect(() {
+      passwordController.addListener(changePass);
+
+      return () => passwordController.removeListener(changePass);
+    }, [passwordController]);
+
     return Column(
       crossAxisAlignment: .stretch,
       children: [
@@ -75,13 +89,16 @@ class FormFields extends HookWidget {
           childBuilder: (field) {
             return SignalBuilder(
               builder: (context, child) => PasswordFormBox(
-                initialValue: field.value,
+                controller: passwordController,
                 autovalidateMode: .onUserInteraction,
                 enabled: vm.enabled,
                 onFieldSubmitted: vm.submit,
                 revealMode: .peekAlways,
                 onSaved: field.didChange,
-                validator: AuthValidators.passwordValidators,
+                validator: (value) => vm.fieldSyncAndAsyncValidation(
+                  field,
+                  validator: AuthValidators.passwordValidators,
+                ),
               ),
             );
           },

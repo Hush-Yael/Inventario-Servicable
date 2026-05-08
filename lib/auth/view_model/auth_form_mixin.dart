@@ -15,6 +15,9 @@ mixin FormMixin on AuthBaseVm {
   Field get password =>
       formKey.currentState!.fields[AuthFormFields.password.name]!;
 
+  final usernameTakenMsg = 'El usuario ya existe';
+  final userNotFoundMsg = 'El usuario no existe';
+
   Future submit([dynamic fieldValue]) async {
     if (isSubmitting.value || invalid) return;
 
@@ -40,29 +43,9 @@ mixin FormMixin on AuthBaseVm {
     }
   }
 
-  Future<bool> checkUsername(String value) async {
-    final User? existingUser = await stall(
-      service.getExistingUser(value),
-      const Duration(milliseconds: 250),
-    );
-
-    final exists = existingUser != null;
-
-    if (!exists && isSignIn.value) {
-      username.invalidate(userNotFoundMsg, shouldFocus: false);
-    } else if (exists && !isSignIn.value) {
-      username.invalidate(usernameTakenMsg, shouldFocus: false);
-    }
-
-    return isSignIn.value ? !exists : exists;
-  }
-
-  final usernameTakenMsg = 'El usuario ya existe';
-  final userNotFoundMsg = 'El usuario no existe';
-
   Future<bool> signIn(User? existingUser) async {
     if (existingUser == null) {
-      username.invalidate(userNotFoundMsg);
+      username.invalidate(userNotFoundMsg, shouldFocus: false);
       return false;
     }
 
@@ -79,12 +62,7 @@ mixin FormMixin on AuthBaseVm {
 
     if (hashToCompare != storedHash) {
       if (context.mounted) {
-        showMsg(
-          context: context,
-          message: 'La contraseña es incorrecta',
-          severity: .error,
-          alignment: .bottomCenter,
-        );
+        password.invalidate('La contraseña es incorrecta', shouldFocus: false);
       }
 
       return false;
@@ -99,7 +77,7 @@ mixin FormMixin on AuthBaseVm {
 
   Future<bool> signUp(User? existingUser) async {
     if (existingUser != null) {
-      username.invalidate(usernameTakenMsg);
+      username.invalidate(usernameTakenMsg, shouldFocus: false);
       return false;
     }
 
@@ -124,5 +102,19 @@ mixin FormMixin on AuthBaseVm {
     authState.setUser(newUser);
 
     return true;
+  }
+
+  Future<bool> checkUsername(String value) async {
+    final User? existingUser = await service.getExistingUser(value);
+
+    final exists = existingUser != null;
+
+    if (!exists && isSignIn.value) {
+      username.invalidate(userNotFoundMsg, shouldFocus: false);
+    } else if (exists && !isSignIn.value) {
+      username.invalidate(usernameTakenMsg, shouldFocus: false);
+    }
+
+    return isSignIn.value ? !exists : exists;
   }
 }
