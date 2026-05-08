@@ -19,17 +19,14 @@ class ProductsForm extends HookWidget {
 
     final formKey = formVm.formKey;
 
-    final enabled = formVm.enabled;
     final usesDetailedUnits = formVm.usesDetailedUnits;
 
-    final nameController = formVm.useAsyncValidation(
+    final nameController = formVm.useAsyncValidationController(
       formVm.checkNameExists,
-      ProductFormFields.name.name,
     );
 
-    final codeController = formVm.useAsyncValidation(
+    final codeController = formVm.useAsyncValidationController(
       formVm.checkCodeExists,
-      ProductFormFields.code.name,
     );
 
     useEffect(() {
@@ -61,19 +58,19 @@ class ProductsForm extends HookWidget {
                   ProductFormFields.name.name,
                   label: 'Nombre',
                   valueTransformer: (value) => value?.trim(),
-                  childBuilder: (field) => TextFormBox(
-                    enabled: enabled,
-                    controller: nameController,
-                    autovalidateMode: .onUnfocus,
-                    validator: (v) => formVm.validateWithAsync(
-                      v,
-                      validator: ProductValidators.name,
-                      check: formVm.checkNameExists,
-                      errorRef: formVm.nameExists,
-                      asyncErrorMsg: 'El nombre ya existe',
+                  childBuilder: (field) => SignalBuilder(
+                    builder: (context, child) => TextFormBox(
+                      enabled: formVm.enabled,
+                      controller: nameController,
+                      autovalidateMode: .onUserInteraction,
+                      validator: (v) => formVm.fieldSyncAndAsyncValidation(
+                        field,
+                        validator: ProductValidators.name,
+                      ),
+                      onChanged: (v) =>
+                          formVm.changeAndClearAsyncError(v, field),
+                      onFieldSubmitted: (v) => formVm.submit(context),
                     ),
-                    onChanged: field.didChange,
-                    onFieldSubmitted: (v) => formVm.submit(context),
                   ),
                 ),
 
@@ -86,14 +83,12 @@ class ProductsForm extends HookWidget {
                       enabled: formVm.enabled,
                       controller: codeController,
                       autovalidateMode: .onUserInteraction,
-                      validator: (v) => formVm.validateWithAsync(
-                        v,
+                      validator: (v) => formVm.fieldSyncAndAsyncValidation(
+                        field,
                         validator: ProductValidators.code,
-                        check: formVm.checkCodeExists,
-                        errorRef: formVm.codeExists,
-                        asyncErrorMsg: 'El código debe ser único',
                       ),
-                      onChanged: field.didChange,
+                      onChanged: (v) =>
+                          formVm.changeAndClearAsyncError(v, field),
                       onFieldSubmitted: (v) => formVm.submit(context),
                     ),
                   ),
@@ -119,7 +114,7 @@ class ProductsForm extends HookWidget {
 
                           return ProductValidators.units(value);
                         },
-                        onChanged: usesDetailedUnits.value || !enabled
+                        onChanged: usesDetailedUnits.value || !formVm.enabled
                             ? null
                             : field.didChange,
                       ),

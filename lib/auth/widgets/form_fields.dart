@@ -1,15 +1,20 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
 import 'package:servicable_stock/shared/widgets/field.dart';
 
-class FormFields extends StatelessWidget {
+class FormFields extends HookWidget {
   const FormFields({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AuthVm vm = AuthVm.instance.of(context);
+
+    final usernameController = vm.useAsyncValidationController(
+      vm.checkUsername,
+    );
 
     return Column(
       crossAxisAlignment: .stretch,
@@ -48,7 +53,7 @@ class FormFields extends StatelessWidget {
           childBuilder: (field) {
             return SignalBuilder(
               builder: (context, child) => TextFormBox(
-                initialValue: field.value,
+                controller: usernameController,
                 autovalidateMode: .onUserInteraction,
                 enabled: vm.enabled,
                 validator: (value) => vm.fieldSyncAndAsyncValidation(

@@ -40,9 +40,29 @@ mixin FormMixin on AuthBaseVm {
     }
   }
 
+  Future<bool> checkUsername(String value) async {
+    final User? existingUser = await stall(
+      service.getExistingUser(value),
+      const Duration(milliseconds: 250),
+    );
+
+    final exists = existingUser != null;
+
+    if (!exists && isSignIn.value) {
+      username.invalidate(userNotFoundMsg, shouldFocus: false);
+    } else if (exists && !isSignIn.value) {
+      username.invalidate(usernameTakenMsg, shouldFocus: false);
+    }
+
+    return isSignIn.value ? !exists : exists;
+  }
+
+  final usernameTakenMsg = 'El usuario ya existe';
+  final userNotFoundMsg = 'El usuario no existe';
+
   Future<bool> signIn(User? existingUser) async {
     if (existingUser == null) {
-      username.invalidate('El usuario no existe');
+      username.invalidate(userNotFoundMsg);
       return false;
     }
 
@@ -79,7 +99,7 @@ mixin FormMixin on AuthBaseVm {
 
   Future<bool> signUp(User? existingUser) async {
     if (existingUser != null) {
-      username.invalidate('El usuario ya existe');
+      username.invalidate(usernameTakenMsg);
       return false;
     }
 

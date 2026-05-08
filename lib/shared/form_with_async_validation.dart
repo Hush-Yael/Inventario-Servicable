@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_solidart/flutter_solidart.dart' hide Debouncer;
+import 'package:servicable_stock/shared/debouncer.dart';
 
 class FormWithAsyncValidation {
   final formKey = GlobalKey<FormBuilderState>();
@@ -22,5 +24,28 @@ class FormWithAsyncValidation {
   void changeAndClearAsyncError<T>(T value, FormFieldState<T> field) {
     if (field.errorText != null) field.validate();
     field.didChange(value);
+  }
+
+  TextEditingController useAsyncValidationController(
+    Future<bool> Function(String text) check,
+  ) {
+    final timer = Debouncer(700);
+    final controller = useTextEditingController();
+
+    listener() {
+      final text = controller.text.trim();
+      if (text.isNotEmpty) timer.run(() => check(text));
+    }
+
+    useEffect(() {
+      controller.addListener(listener);
+
+      return () {
+        timer.dispose();
+        controller.removeListener(listener);
+      };
+    }, [controller]);
+
+    return controller;
   }
 }

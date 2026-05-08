@@ -116,14 +116,13 @@ class ProductsService extends ServiceRepository {
               categoryId: Value(data.categoryId),
             ),
           ),
+      const .new(milliseconds: 250),
     );
 
     final product = await expectDBError(
       op,
       'No se pudo crear el producto',
       onSqliteException: (error) {
-        print(error.explanation);
-
         return error.extendedResultCode == ServiceRepository.uniqueConflict
             ? 'Ya existe un producto con ese código'
             : null;

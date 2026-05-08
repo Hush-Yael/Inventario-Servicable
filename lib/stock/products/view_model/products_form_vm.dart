@@ -1,9 +1,9 @@
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/shared/form_with_async_validation.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 
@@ -13,8 +13,6 @@ class ProductsFormBaseVm extends FormWithAsyncValidation {
   ProductsFormBaseVm(this.db);
 
   ProductsAddMutation? mutation;
-  bool nameExists = false;
-  bool codeExists = false;
 
   final usesDetailedUnits = Signal(false, autoDispose: false);
 
@@ -44,7 +42,7 @@ class ProductsFormVm extends ProductsFormBaseVm with Validation {
     return ProductsFormVm(db);
   });
 
-  Future<void> submit([dynamic fieldValue]) async {
+  Future<dynamic> submit(BuildContext modalContext) async {
     if (isSubmitting.value || invalid) return;
 
     isSubmitting.value = true;
@@ -52,13 +50,12 @@ class ProductsFormVm extends ProductsFormBaseVm with Validation {
     final name = getValue(ProductFormFields.name.name);
     final code = getValue(ProductFormFields.code.name);
 
-    await Future.wait([checkNameExists(name), checkCodeExists(code)]);
+    final errors = await stall(
+      Future.wait([checkNameExists(name), checkCodeExists(code)]),
+      const .new(milliseconds: 250),
+    );
 
-    // check again to catch async errors
-    if (invalid) {
-      isSubmitting.value = false;
-      return;
-    }
+    if (errors.any((e) => e)) return isSubmitting.value = false;
 
     try {
       await mutation!.mutateAsync((
@@ -81,66 +78,41 @@ class ProductsFormVm extends ProductsFormBaseVm with Validation {
 
 mixin Validation on ProductsFormBaseVm {
   Future<bool> checkNameExists(String name) async {
-    final product =
-        await (db.select(db.products)
-              ..limit(1)
-              ..where((p) => db.products.name.equals(name)))
-            .getSingleOrNull();
-
-    return nameExists = product != null;
+    return await _checkProduct(
+      (p) => db.products.name.equals(name),
+      ProductFormFields.name.name,
+      'Ya existe un producto con ese nombre',
+    );
   }
 
   Future<bool> checkCodeExists(String code) async {
+    return _checkProduct(
+      (p) => db.products.code.equals(code),
+      ProductFormFields.code.name,
+      'El código debe ser único',
+    );
+  }
+
+  Future<bool> _checkProduct(
+    Expression<bool> Function($ProductsTable) filter,
+    String field,
+    String errorMsg,
+  ) async {
     final product =
         await (db.select(db.products)
               ..limit(1)
-              ..where((p) => db.products.code.equals(code)))
+              ..where(filter))
             .getSingleOrNull();
 
-    return codeExists = product != null;
-  }
+    final isError = product != null;
 
-  TextEditingController useAsyncValidation(
-    Future<bool> Function(String text) check,
-    String field,
-  ) {
-    final controller = useTextEditingController();
-
-    listener() {
-      final text = controller.text.trim();
-      if (text.isNotEmpty) {
-        check(text).then((exists) {
-          if (exists) {
-            formKey.currentState!.fields[field]?.validate();
-          }
-        });
-      }
+    if (isError) {
+      formKey.currentState!.fields[field]!.invalidate(
+        errorMsg,
+        shouldFocus: false,
+      );
     }
 
-    useEffect(() {
-      controller.addListener(listener);
-
-      return () {
-        controller.removeListener(listener);
-      };
-    }, [controller]);
-
-    return controller;
-  }
-
-  String? validateWithAsync(
-    String? value, {
-    required String? Function(String?) validator,
-    required Future<bool> Function(String) check,
-    required bool errorRef,
-    required String? asyncErrorMsg,
-  }) {
-    final error = validator(value);
-
-    if (error != null) return error;
-
-    if (errorRef) return asyncErrorMsg;
-
-    return null;
+    return isError;
   }
 }
