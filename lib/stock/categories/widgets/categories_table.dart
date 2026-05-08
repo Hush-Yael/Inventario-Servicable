@@ -25,7 +25,7 @@ class CategoriesTable extends HookWidget {
       query,
       errorMsg: 'Error al obtener las categorías',
       config: getTrinaBaseConfig(context),
-      loaderColumns: getColumns(context, const []),
+      loaderColumns: getColumns(context, 0),
       renderGrid: (list, config) {
         final canEdit = hasPerm(context, .operator);
 
@@ -37,7 +37,7 @@ class CategoriesTable extends HookWidget {
 
         return TrinaGrid(
           rows: vm.getRows(list!),
-          columns: getColumns(context, list, deleteMutation),
+          columns: getColumns(context, list.length, deleteMutation),
           onLoaded: (event) {
             vm.setStateManager(event.stateManager);
           },
@@ -59,10 +59,10 @@ class CategoriesTable extends HookWidget {
 
   List<TrinaColumn> getColumns(
     BuildContext context,
-    CategoriesList list, [
+    int listLength, [
     CategoriesDeleteMutation? deleteMutation,
   ]) => [
-    indexColumn(list.length),
+    indexColumn(listLength),
 
     TrinaColumn(
       field: CategoryTableColumns.name.name,
@@ -155,16 +155,6 @@ class CategoriesTable extends HookWidget {
           SeeBtn(columnCtx),
         ],
       ),
-      title: 'Acciones',
-      titleTextAlign: .center,
-      minWidth: 90,
-      width: 90,
-      suppressedAutoSize: true,
-      enableSorting: false,
-      enableEditingMode: false,
-      enableColumnDrag: false,
-      enableContextMenu: false,
-      enableDropToResize: false,
     ),
   ];
 }

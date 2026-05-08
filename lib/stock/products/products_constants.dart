@@ -11,7 +11,6 @@ enum CategoryFilterValue { all, withCategory, withoutCategory }
 
 const kProductsQueryKey = ['products'];
 const kProductCountsQueryKey = ['productsCounts'];
-const kCategoryNamesQueryKey = ['categoryNames'];
 
 class ProductValidators {
   static final code = FormBuilderValidators.compose([
