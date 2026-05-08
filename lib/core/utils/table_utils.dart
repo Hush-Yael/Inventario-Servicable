@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/no_filter_field.dart';
 import 'package:trina_grid/trina_grid.dart';
 
@@ -111,6 +112,29 @@ TrinaColumn indexColumn(int listLength) {
     enableContextMenu: false,
     enableDropToResize: false,
     filterWidgetDelegate: noFilterField(),
+  );
+}
+
+TrinaColumn actionsColumn({
+  double width = 90,
+  required Widget Function(TrinaColumnRendererContext)? renderer,
+}) {
+  return .new(
+    title: 'Acciones',
+    field: kActionsColumnName,
+    titleTextAlign: .center,
+    type: .custom(),
+    width: width,
+    minWidth: width,
+    suppressedAutoSize: true,
+    enableSorting: false,
+    enableEditingMode: false,
+    enableColumnDrag: false,
+    enableContextMenu: false,
+    enableDropToResize: false,
+    enableFilterMenuItem: false,
+    filterWidgetDelegate: noFilterField(),
+    renderer: renderer,
   );
 }
 

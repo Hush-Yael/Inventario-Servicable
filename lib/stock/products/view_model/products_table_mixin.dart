@@ -5,7 +5,6 @@ import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/filter_field/index.dart';
-import 'package:servicable_stock/shared/widgets/no_filter_field.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
@@ -80,20 +79,7 @@ mixin TableMixin on ProductsBaseVm {
         },
       ),
 
-      .new(
-        title: 'Acciones',
-        field: kActionsColumnName,
-        titleTextAlign: .center,
-        type: .custom(),
-        width: 90,
-        suppressedAutoSize: true,
-        enableSorting: false,
-        enableEditingMode: false,
-        enableColumnDrag: false,
-        enableContextMenu: false,
-        enableDropToResize: false,
-        enableFilterMenuItem: false,
-        filterWidgetDelegate: noFilterField(),
+      actionsColumn(
         renderer: !isAdmin || deleteMutation == null
             ? null
             : (columnCtx) => DeleteBtn(columnCtx, deleteMutation),
