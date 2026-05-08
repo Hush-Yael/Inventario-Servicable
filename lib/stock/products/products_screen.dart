@@ -2,7 +2,7 @@ import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
-import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/shared/widgets/row_vertical_separator.dart';
 import 'package:servicable_stock/shared/widgets/table_padding.dart';
 import 'package:servicable_stock/shared/widgets/table_title.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
@@ -60,17 +60,7 @@ class _ProductsScreen extends HookWidget {
                   children: [
                     CategoryFilters(countsQuery: countsQuery),
 
-                    if (isAdmin)
-                      Container(
-                        width: 1,
-                        height: 16,
-                        color: context.theme.brightness == Brightness.dark
-                            ? Colors.grey[140]
-                            : context
-                                  .theme
-                                  .resources
-                                  .cardStrokeColorDefaultSolid,
-                      ),
+                    if (isAdmin) RowVerticalSeparator(),
 
                     if (isAdmin) const ProductsFormBtn(),
                   ],
