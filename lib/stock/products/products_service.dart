@@ -76,7 +76,7 @@ class ProductsService extends ServiceRepository {
         .get();
   }
 
-  Future<ProductsCountsByCategory> fetchProductsCountsByCategory() async {
+  Future<ProductCountsByCategory> fetchProductsCountsByCategory() async {
     final $products = db.products.actualTableName;
     final $$categoryId = db.products.categoryId.$name;
 

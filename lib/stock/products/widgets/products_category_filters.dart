@@ -9,7 +9,7 @@ import 'package:trina_grid/trina_grid.dart';
 class CategoryFilters extends StatefulWidget {
   const CategoryFilters({super.key, required this.countsQuery});
 
-  final QueryResult<ProductsCountsByCategory, dynamic> countsQuery;
+  final QueryResult<ProductCountsByCategory, dynamic> countsQuery;
 
   @override
   State<CategoryFilters> createState() => _CategoryFiltersState();

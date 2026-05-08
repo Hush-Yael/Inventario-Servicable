@@ -22,7 +22,7 @@ typedef AddProductInput = ({
 typedef ProductsDeleteMutation =
     MutationResult<dynamic, Object?, TrinaColumnRendererContext, int>;
 
-typedef ProductsCountsByCategory = ({int noCategory, int withCategory});
+typedef ProductCountsByCategory = ({int noCategory, int withCategory});
 
 typedef ProductCategoryOption = ({String name, int id});
 

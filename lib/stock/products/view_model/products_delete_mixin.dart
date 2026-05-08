@@ -32,7 +32,7 @@ mixin DeleteMutationMixin on ProductsBaseVm {
     final hasCategory =
         columnCtx.row.metadata?[ProductMetaKeys.categoryId.name] != null;
 
-    ctx.client.setQueryData<ProductsCountsByCategory, dynamic>(
+    ctx.client.setQueryData<ProductCountsByCategory, dynamic>(
       kProductCountsQueryKey,
       (prev) {
         if (prev != null) {
