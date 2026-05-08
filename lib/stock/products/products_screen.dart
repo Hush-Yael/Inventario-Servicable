@@ -1,6 +1,5 @@
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
@@ -53,9 +52,7 @@ class _ProductsScreen extends HookWidget {
             TableTitle(query: query, text: 'Productos', noCount: true),
 
             ProviderScope(
-              providers: [
-                ProductsFormVm.instance(GlobalKey<FormBuilderState>()),
-              ],
+              providers: [ProductsFormVm.instance],
               child: Expanded(
                 child: Row(
                   spacing: 14,

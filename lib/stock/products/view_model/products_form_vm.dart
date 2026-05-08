@@ -7,20 +7,15 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 
-class ProductsFormBaseVm {
+class ProductsFormBaseVm extends FormWithAsyncValidation {
   final AppDatabase db;
-  final GlobalKey<FormBuilderState> formKey;
 
-  ProductsFormBaseVm(this.db, this.formKey);
+  ProductsFormBaseVm(this.db);
 
   ProductsAddMutation? mutation;
   bool nameExists = false;
   bool codeExists = false;
 
-  bool get enabled => !isSubmitting.value;
-  bool get invalid => formKey.currentState!.validate() != true;
-
-  final isSubmitting = Signal(false, autoDispose: false);
   final usesDetailedUnits = Signal(false, autoDispose: false);
 
   void useAutoDispose() {
@@ -42,14 +37,11 @@ class ProductsFormBaseVm {
 }
 
 class ProductsFormVm extends ProductsFormBaseVm with Validation {
-  ProductsFormVm(super.db, super.formKey);
+  ProductsFormVm(super.db);
 
-  static final instance = Provider.withArgument((
-    ctx,
-    GlobalKey<FormBuilderState> formKey,
-  ) {
+  static final instance = Provider((ctx) {
     final db = AppDatabase.instance.of(ctx);
-    return ProductsFormVm(db, formKey);
+    return ProductsFormVm(db);
   });
 
   Future<void> submit([dynamic fieldValue]) async {
