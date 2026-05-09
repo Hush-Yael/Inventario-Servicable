@@ -52,6 +52,8 @@ SingleUpdateMutation createSingleUpdateMutation(
         false,
       ); // important! prevents crashing
 
+      params.onMutate?.call(event, ctx);
+
       if (params.timestamped) {
         final field = 'updatedAt';
 
@@ -61,8 +63,6 @@ SingleUpdateMutation createSingleUpdateMutation(
 
         return previousUpdatedAt;
       }
-
-      params.onMutate?.call(event, ctx);
 
       return null;
     },
