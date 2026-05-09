@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/shared/widgets/table_fetch_error.dart';
 import 'package:servicable_stock/shared/widgets/table_loader.dart';
 import 'package:trina_grid/trina_grid.dart';
@@ -10,7 +11,8 @@ class QueryTable<T> extends HookWidget {
   final String errorMsg;
   final TrinaGridConfiguration config;
   final List<TrinaColumn> loaderColumns;
-  final Widget Function(T? data, TrinaGridConfiguration config) renderGrid;
+  final Widget Function(T? data, TrinaGridConfiguration config, bool canEdit)
+  renderGrid;
 
   const QueryTable(
     this.query, {
@@ -31,6 +33,8 @@ class QueryTable<T> extends HookWidget {
       return tableLoader(query, config: config, columns: loaderColumns);
     }
 
-    return renderGrid(query.data, config);
+    final canEdit = hasPerm(context, .operator);
+
+    return renderGrid(query.data, config, canEdit);
   }
 }

@@ -33,7 +33,7 @@ class UsersTable extends HookWidget {
         cellsPadding: cellPadding,
       ),
       config: config,
-      renderGrid: (usersList, config) {
+      renderGrid: (usersList, config, canEdit) {
         final selfId = AuthState.instance.of(context).user?.id;
 
         return WatchShiftKey(

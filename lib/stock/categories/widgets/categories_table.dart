@@ -26,9 +26,7 @@ class CategoriesTable extends HookWidget {
       errorMsg: 'Error al obtener las categorías',
       config: getTrinaBaseConfig(context),
       loaderColumns: getColumns(context, 0),
-      renderGrid: (list, config) {
-        final canEdit = hasPerm(context, .operator);
-
+      renderGrid: (list, config, canEdit) {
         final CategoriesDeleteMutation deleteMutation = vm.createDeleteMutation(
           context,
         );

@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:go_router/go_router.dart';
-import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/table.dart';
@@ -37,9 +36,7 @@ class ProductsTable extends HookWidget {
         listLength: 0,
         categoryNames: const [],
       ),
-      renderGrid: (data, config) {
-        final canEdit = utils.hasPerm(context, .operator);
-
+      renderGrid: (data, config, canEdit) {
         final deleteMutation = vm.createDeleteMutation(context);
         final renameMutation = vm.createRenameMutation(context);
         final changeCategoryMutation = vm.createChangeCategoryMutation(context);
@@ -53,7 +50,7 @@ class ProductsTable extends HookWidget {
               context,
               deleteMutation,
               listLength: 0,
-              categoryNames: categoryNamesQuery.data ?? [],
+              categoryNames: categoryNamesQuery.data ?? const [],
             ),
             rows: vm.getRows(data!),
             onLoaded: (event) {
