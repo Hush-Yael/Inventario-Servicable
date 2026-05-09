@@ -27,6 +27,7 @@ mixin UpdateMutationsMixin on TableMixin {
       successMsgVocal: msgPropNameVocal,
       cb: updateFn,
       timestamped: false,
+      onSuccess: onSuccess,
     ),
     propName: prop,
   );
