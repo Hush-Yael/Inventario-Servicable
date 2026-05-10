@@ -16,6 +16,11 @@ class Units extends Table {
     max: kUnitDetailsMaxLength,
   )();
 
+  late final soldTo = text().nullable().withLength(
+    min: kSoldToMinLength,
+    max: kSoldToMaxLength,
+  )();
+
   late final productId = integer().nullable().references(
     Products,
     #id,
