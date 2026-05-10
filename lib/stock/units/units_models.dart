@@ -27,3 +27,53 @@ class Units extends Table {
     onDelete: .setNull,
   )();
 }
+
+class UnitWithDetails extends Unit {
+  final String? categoryName;
+  final String? productName;
+
+  UnitWithDetails({
+    required super.id,
+    required super.identifier,
+    super.details,
+    super.soldTo,
+    super.productId,
+    this.categoryName,
+    this.productName,
+  });
+
+  UnitWithDetails.fromUnit(
+    Unit unit, {
+    String? categoryName,
+    String? productName,
+  }) : this(
+         id: unit.id,
+         identifier: unit.identifier,
+         details: unit.details,
+         soldTo: unit.soldTo,
+         productId: unit.productId,
+         categoryName: categoryName,
+         productName: productName,
+       );
+
+  @override
+  Unit copyWith({
+    int? id,
+    String? identifier,
+    Value<String?> details = const Value.absent(),
+    Value<String?> soldTo = const Value.absent(),
+    Value<int?> productId = const Value.absent(),
+    String? categoryName,
+    String? productName,
+  }) {
+    return UnitWithDetails(
+      id: id ?? this.id,
+      identifier: identifier ?? this.identifier,
+      details: details.present ? details.value : this.details,
+      soldTo: soldTo.present ? soldTo.value : this.soldTo,
+      productId: productId.present ? productId.value : this.productId,
+      categoryName: categoryName ?? this.categoryName,
+      productName: productName ?? this.productName,
+    );
+  }
+}

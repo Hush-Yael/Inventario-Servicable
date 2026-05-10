@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/home/home_screen.dart';
 import 'package:servicable_stock/stock/categories/categories_screen.dart';
 import 'package:servicable_stock/stock/products/products_screen.dart';
+import 'package:servicable_stock/stock/units/units_screen.dart';
 import 'package:servicable_stock/users/users_screen.dart';
 
 enum MainNavigationPages<View extends StatelessWidget Function()> {
@@ -33,7 +34,7 @@ enum MainNavigationPages<View extends StatelessWidget Function()> {
     'Unidades',
     path: '/units',
     icon: FluentIcons.product_list,
-    view: Placeholder.new,
+    view: UnitsScreen.new,
   );
 
   const MainNavigationPages(
