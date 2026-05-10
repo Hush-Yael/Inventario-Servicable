@@ -65,16 +65,18 @@ class UnitsService extends ServiceRepository {
   Future<ProductForeignKeyOptions> getProductNames([
     QueryFunctionContext? ctx,
   ]) async {
-    final result = db.selectOnly(db.products)
-      ..addColumns([db.products.id, db.products.name, db.categories.name])
-      ..join([
-        leftOuterJoin(
-          db.categories,
-          db.products.id.equalsExp(db.categories.id),
-          useColumns: false,
-        ),
-      ])
-      ..groupBy([db.categories.id, db.products.id]);
+    final result =
+        (db.selectOnly(db.products)
+            ..addColumns([db.products.id, db.products.name, db.categories.name])
+            ..join([
+              leftOuterJoin(
+                db.categories,
+                db.products.id.equalsExp(db.categories.id),
+                useColumns: false,
+              ),
+            ])
+            ..groupBy([db.categories.id, db.products.id]))
+          ..where(db.products.usesDetailedUnits.equals(true));
 
     return await result
         .asyncMap(
