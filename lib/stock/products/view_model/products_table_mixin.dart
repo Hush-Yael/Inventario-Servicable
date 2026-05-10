@@ -76,6 +76,9 @@ mixin TableMixin on ProductsBaseVm {
               : UnitsLink(
                   text: ctx.cell.value.toString(),
                   rowHeight: ctx.row.height ?? TrinaGridSettings.rowHeight,
+                  productName: ctx.row.cellValue<String>(
+                    ProductTableColumns.name.name,
+                  ),
                 );
         },
       ),

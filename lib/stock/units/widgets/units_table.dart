@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
+import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/card_wrapper.dart';
@@ -17,6 +18,7 @@ class UnitsTable extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final vm = UnitsVm.instance.of(context);
+    final routerState = GoRouterState.of(context);
 
     final productNames = useQuery(
       kProductNamesQueryKey,
@@ -51,6 +53,17 @@ class UnitsTable extends HookWidget {
               final stateManager = event.stateManager;
               vm.setStateManager(stateManager);
               stateManager.setShowColumnFilter(true);
+
+              final productName =
+                  routerState.uri.queryParameters['productName'];
+
+              if (productName != null) {
+                stateManager.setColumnFilter(
+                  columnField: UnitsTableColumns.product.name,
+                  filterType: TrinaFilterTypeEquals(),
+                  filterValue: productName,
+                );
+              }
             },
             onBeforeActiveCellChange: (event) {
               if (!canEdit) return false;

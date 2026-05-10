@@ -1,12 +1,20 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/navigation/navigation_pages.dart';
 import 'package:trina_grid/trina_grid.dart';
 
 class UnitsLink extends StatelessWidget {
-  const UnitsLink({super.key, required this.rowHeight, required this.text});
-
   final String text;
+  final String productName;
   final double rowHeight;
+
+  const UnitsLink({
+    super.key,
+    required this.rowHeight,
+    required this.text,
+    required this.productName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,12 @@ class UnitsLink extends StatelessWidget {
             ),
             foregroundColor: .all(context.theme.resources.textFillColorPrimary),
           ),
-          onPressed: () {},
+          onPressed: () {
+            context.goNamed(
+              MainNavigationPages.units.name,
+              queryParameters: {'productName': productName},
+            );
+          },
           child: Row(
             children: [
               Text(text),
