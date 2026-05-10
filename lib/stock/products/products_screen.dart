@@ -10,7 +10,7 @@ import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
 import 'package:servicable_stock/stock/products/view_model/products_vm.dart';
 import 'package:servicable_stock/stock/products/widgets/products_category_filters.dart';
-import 'package:servicable_stock/stock/products/widgets/form/products_form_btn.dart';
+import 'package:servicable_stock/stock/products/widgets/form/products_form.dart';
 import 'package:servicable_stock/stock/products/widgets/products_table.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       providers: [ProductsVm.instance],
-      child: _ProductsScreen(),
+      child: const _ProductsScreen(),
     );
   }
 }
@@ -44,6 +44,8 @@ class _ProductsScreen extends HookWidget {
 
     final isAdmin = vm.isAdmin;
 
+    final formProvider = ProductsFormVm.instance;
+
     return ScaffoldPage(
       header: PageHeader(
         title: Row(
@@ -52,7 +54,7 @@ class _ProductsScreen extends HookWidget {
             TableTitle(query: query, text: 'Productos', noCount: true),
 
             ProviderScope(
-              providers: [ProductsFormVm.instance],
+              providers: [formProvider],
               child: Expanded(
                 child: Row(
                   spacing: 14,
@@ -62,7 +64,17 @@ class _ProductsScreen extends HookWidget {
 
                     if (isAdmin) RowVerticalSeparator(),
 
-                    if (isAdmin) const ProductsFormBtn(),
+                    if (isAdmin)
+                      ProductsFormBtn(
+                        title: 'Añadir producto',
+                        createAddMutation: vm.createAddMutation,
+                        formVmProvider: formProvider,
+                        constraints: const BoxConstraints(
+                          maxWidth: 600,
+                          maxHeight: 450,
+                        ),
+                        child: ProductsForm(formVmProvider: formProvider),
+                      ),
                   ],
                 ),
               ),
