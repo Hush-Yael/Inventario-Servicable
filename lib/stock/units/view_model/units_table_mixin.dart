@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/filter_field/index.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
@@ -17,7 +18,8 @@ mixin TableMixin on UnitsBaseVm {
     BuildContext context,
     int listLength,
     ProductsDeleteMutation? deleteMutation, {
-    required ProductForeignKeyOptions productNames,
+    required ProductForeignKeyOptions productOptions,
+    required TableForeignKeyOptions categoryOptions,
   }) {
     final isAdmin = utils.isAdmin(context);
 
@@ -36,7 +38,7 @@ mixin TableMixin on UnitsBaseVm {
       .new(
         title: 'Producto',
         field: UnitsTableColumns.product.name,
-        type: .select<String>(productNames.map((opt) => opt.label).toList()),
+        type: .select<String>(productOptions.map((opt) => opt.label).toList()),
         filterWidgetDelegate: fieldWithFilterType(
           column: UnitsTableColumns.product.name,
         ),
@@ -45,7 +47,9 @@ mixin TableMixin on UnitsBaseVm {
       .new(
         title: 'Categoría',
         field: UnitsTableColumns.category.name,
-        type: .text(),
+        type: .select<String>(
+          categoryOptions.map((opt) => opt!.label).toList(),
+        ),
         enableEditingMode: false,
         filterWidgetDelegate: fieldWithFilterType(
           column: UnitsTableColumns.category.name,

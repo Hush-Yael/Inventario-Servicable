@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/card_wrapper.dart';
 import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
@@ -19,18 +20,30 @@ class UnitsTable extends HookWidget {
     final vm = UnitsVm.instance.of(context);
     final routerState = GoRouterState.of(context);
 
-    final productNames = useQuery(
+    final productOptions = useQuery(
       kUnitsProductOptionsQueryKey,
       vm.service.getProductNames,
     );
 
+    final categoryOptions = useQuery(
+      kUnitsCategoryOptionsQueryKey,
+      vm.service.getCategoryOptions,
+    );
+
     const ProductForeignKeyOptions emptyList = [];
+    const TableForeignKeyOptions emptyList2 = [];
 
     return QueryTable(
       query,
       errorMsg: 'Error al obtener las unidades',
       config: getTrinaBaseConfig(context),
-      loaderColumns: vm.getColumns(context, 0, null, productNames: emptyList),
+      loaderColumns: vm.getColumns(
+        context,
+        0,
+        null,
+        productOptions: emptyList,
+        categoryOptions: emptyList2,
+      ),
       renderGrid: (list, config, canEdit) {
         final deleteMutation = vm.createDeleteMutation(context);
         final changeIdentifierMutation = vm.createChangeIdentifier(context);
@@ -45,7 +58,8 @@ class UnitsTable extends HookWidget {
               context,
               list.length,
               deleteMutation,
-              productNames: productNames.data ?? emptyList,
+              productOptions: productOptions.data ?? emptyList,
+              categoryOptions: categoryOptions.data ?? emptyList2,
             ),
             configuration: config,
             onLoaded: (event) {

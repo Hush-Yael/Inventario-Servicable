@@ -28,34 +28,36 @@ mixin UpdateMutationsMixin on TableMixin {
         propName: UnitsTableColumns.soldTo.name,
       );
 
-  SingleUpdateMutation createChangeProduct(
-    BuildContext context,
-  ) => createSingleUpdateMutation(
-    sharedMutParams(
-      context,
-      msgSuccessName: 'producto asociado',
-      cb: (id, newPrice, [ctx]) => service.changeUnitProduct(id, newPrice),
-      // update category name as well
-      onSuccess: (event, ctx) {
-        final productNames = ctx.client.getQueryData<ProductForeignKeyOptions>(
-          kUnitsProductOptionsQueryKey,
-        );
+  SingleUpdateMutation createChangeProduct(BuildContext context) =>
+      createSingleUpdateMutation(
+        sharedMutParams(
+          context,
+          msgSuccessName: 'producto asociado',
+          cb: (id, newPrice, [ctx]) => service.changeUnitProduct(id, newPrice),
+          // update category name as well
+          onSuccess: (event, ctx) {
+            final productOptions = ctx.client
+                .getQueryData<ProductForeignKeyOptions>(
+                  kUnitsProductOptionsQueryKey,
+                );
 
-        if (productNames == null || productNames.isEmpty) return;
+            if (productOptions == null || productOptions.isEmpty) return;
 
-        final newProduct = event.value;
+            final newProduct = event.value;
 
-        final product = productNames.firstWhere((p) => p.label == newProduct);
+            final product = productOptions.firstWhere(
+              (p) => p.label == newProduct,
+            );
 
-        event.row.metadata![UnitsMetaKeys.productId.name] = product.id;
+            event.row.metadata![UnitsMetaKeys.productId.name] = product.id;
 
-        event.row.cells[UnitsTableColumns.category.name] = TrinaCell(
-          value: product.categoryName ?? '',
-        );
-      },
-    ),
-    propName: UnitsTableColumns.product.name,
-  );
+            event.row.cells[UnitsTableColumns.category.name] = TrinaCell(
+              value: product.categoryName ?? '',
+            );
+          },
+        ),
+        propName: UnitsTableColumns.product.name,
+      );
 
   SingleUpdateMutation createChangeDetails(BuildContext context) =>
       createSingleUpdateMutation(

@@ -3,6 +3,7 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/services_repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/units/units_models.dart';
 import 'package:servicable_stock/stock/units/units_types.dart';
 
@@ -65,18 +66,19 @@ class UnitsService extends ServiceRepository {
   Future<ProductForeignKeyOptions> getProductNames([
     QueryFunctionContext? ctx,
   ]) async {
-    final result =
-        (db.selectOnly(db.products)
-            ..addColumns([db.products.id, db.products.name, db.categories.name])
-            ..join([
-              leftOuterJoin(
-                db.categories,
-                db.products.id.equalsExp(db.categories.id),
-                useColumns: false,
-              ),
-            ])
-            ..groupBy([db.categories.id, db.products.id]))
-          ..where(db.products.usesDetailedUnits.equals(true));
+    final result = (db.selectOnly(db.products)
+      ..addColumns([db.products.id, db.products.name, db.categories.name])
+      ..join([
+        leftOuterJoin(
+          db.categories,
+          db.products.id.equalsExp(db.categories.id),
+          useColumns: false,
+        ),
+      ])
+      ..groupBy([
+        db.categories.id,
+        db.products.id,
+      ], having: db.products.usesDetailedUnits.equals(true)));
 
     return await result
         .asyncMap(
@@ -84,6 +86,34 @@ class UnitsService extends ServiceRepository {
             id: row.read<int>(db.products.id)!,
             label: row.read<String>(db.products.name)!,
             categoryName: row.read<String>(db.categories.name),
+          ),
+        )
+        .get();
+  }
+
+  Future<TableForeignKeyOptions> getCategoryOptions(
+    QueryFunctionContext context,
+  ) async {
+    final result =
+        ((db.selectOnly(db.categories)
+            ..addColumns([db.categories.name, db.categories.id])
+            ..orderBy([OrderingTerm.asc(db.categories.name)]))
+          ..join([
+            innerJoin(
+              db.products,
+              db.products.categoryId.equalsExp(db.categories.id),
+              useColumns: false,
+            ),
+          ])
+          ..groupBy([
+            db.categories.id,
+          ], having: db.products.usesDetailedUnits.equals(true)));
+
+    return await result
+        .asyncMap(
+          (row) => (
+            label: row.read<String>(db.categories.name)!,
+            id: row.read<int>((db.categories as dynamic).id)!,
           ),
         )
         .get();
