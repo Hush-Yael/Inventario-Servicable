@@ -12,6 +12,10 @@ class SeeBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoryName = columnCtx.row.cellValue<String>(
+      CategoryTableColumns.name.name,
+    );
+
     return DropDownButton(
       title: const WindowsIcon(FluentIcons.view, size: 15),
       style: .new(padding: .all(const .symmetric(horizontal: 5, vertical: 6))),
@@ -20,20 +24,33 @@ class SeeBtn extends StatelessWidget {
       items: [
         MenuFlyoutItem(
           text: const Text('Ver productos'),
-          onPressed: () async {
-            final categoryName = columnCtx.row.cellValue<String>(
-              CategoryTableColumns.name.name,
-            );
-
-            context.goNamed(
-              MainNavigationPages.products.name,
-              queryParameters: {'categoryName': categoryName},
-            );
-          },
+          onPressed: () => go(
+            context,
+            categoryName,
+            destination: MainNavigationPages.products.name,
+          ),
         ),
 
-        MenuFlyoutItem(text: const Text('Ver unidades'), onPressed: () {}),
+        MenuFlyoutItem(
+          text: const Text('Ver unidades'),
+          onPressed: () => go(
+            context,
+            categoryName,
+            destination: MainNavigationPages.units.name,
+          ),
+        ),
       ],
+    );
+  }
+
+  void go(
+    BuildContext context,
+    String categoryName, {
+    required String destination,
+  }) {
+    context.goNamed(
+      destination,
+      queryParameters: {'categoryName': categoryName},
     );
   }
 }

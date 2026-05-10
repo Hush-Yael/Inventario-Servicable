@@ -64,6 +64,17 @@ class UnitsTable extends HookWidget {
                   filterValue: productName,
                 );
               }
+
+              final categoryName =
+                  routerState.uri.queryParameters['categoryName'];
+
+              if (categoryName != null) {
+                stateManager.setColumnFilter(
+                  columnField: UnitsTableColumns.category.name,
+                  filterType: TrinaFilterTypeEquals(),
+                  filterValue: categoryName,
+                );
+              }
             },
             onBeforeActiveCellChange: (event) {
               if (!canEdit) return false;
