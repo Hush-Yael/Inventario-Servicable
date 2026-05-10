@@ -43,6 +43,29 @@ class FilterWidget extends StatelessWidget {
       );
     }
 
+    if (type.isSelect) {
+      final options = (type as TrinaColumnTypeSelect).items as List<String>;
+
+      return AutoSuggestBox(
+        controller: controller,
+        placeholder: placeholder,
+        onChanged: (text, reason) => handleOnChanged(text),
+        foregroundDecoration: foregroundDecoration,
+        decoration: resolveDecoration,
+        noResultsFoundBuilder: (context) => SizedBox.shrink(),
+        items: options.map((opt) {
+          return AutoSuggestBoxItem(
+            value: opt,
+            label: opt,
+            child: Tooltip(
+              message: opt,
+              child: Text(opt, maxLines: 1, overflow: .ellipsis),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
     return TextBox(
       focusNode: focusNode,
       placeholder: placeholder,
