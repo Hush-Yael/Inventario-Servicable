@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
@@ -137,16 +136,6 @@ Future<dynamic> confirmCascadeDeletion(
       ],
     ),
   );
-}
-
-void useAutoOpenModal(VoidCallback handler) {
-  useEffect(() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      handler();
-    });
-
-    return null;
-  }, []);
 }
 
 extension PluralExtension on int {
