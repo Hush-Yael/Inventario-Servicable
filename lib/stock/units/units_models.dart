@@ -3,7 +3,7 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
 
-class Units extends Table with TimeStampedRecord {
+class Units extends Table {
   late final id = integer().autoIncrement()();
 
   late final identifier = text().unique().withLength(

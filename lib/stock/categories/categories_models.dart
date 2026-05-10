@@ -3,13 +3,17 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/stock/categories/categories_constants.dart';
 
 @DataClassName('Category')
-class Categories extends Table with TimeStampedRecord {
+class Categories extends Table {
   late final id = integer().autoIncrement()();
 
   late final name = text().unique().withLength(
     min: kCategoryNameMinLength,
     max: kCategoryNameMaxLength,
   )();
+
+  late final createdAt = dateTime().withDefault(currentDateAndTime)();
+
+  late final updatedAt = dateTime().withDefault(currentDateAndTime)();
 }
 
 class CategoryWithCounts extends Category {

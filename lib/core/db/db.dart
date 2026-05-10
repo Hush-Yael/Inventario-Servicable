@@ -55,10 +55,3 @@ class AppDatabase extends _$AppDatabase {
 
   static final instance = Provider((context) => AppDatabase());
 }
-
-/// Mixin to add [createdAt] and [updatedAt] columns
-mixin TimeStampedRecord on Table {
-  late final createdAt = dateTime().withDefault(currentDateAndTime)();
-
-  late final updatedAt = dateTime().withDefault(currentDateAndTime)();
-}
