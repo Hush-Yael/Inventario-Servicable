@@ -34,7 +34,7 @@ SingleUpdateMutation createSingleUpdateMutation(
     (event, ctx) async {
       if (!hasPerm(params.context, .operator)) {
         return Future.error(
-          'No tienes permiso para editar $params.objPluralName',
+          'No tienes permiso para editar $params.unauthPluralName',
         );
       }
 
@@ -96,7 +96,7 @@ SingleUpdateMutation createSingleUpdateMutation(
       showMsg(
         context: params.context,
         message:
-            '${params.objName.uppercaseFirst()} actualizad${params.successMsgVocal}',
+            '${params.successName.uppercaseFirst()} actualizad${params.successMsgVocal}',
         severity: .success,
       );
 

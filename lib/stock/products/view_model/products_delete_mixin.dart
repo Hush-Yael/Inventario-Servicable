@@ -13,8 +13,8 @@ mixin DeleteMutationMixin on ProductsBaseVm {
         .new(
           context,
           cb: service.deleteProduct,
-          objName: 'producto',
-          objPluralName: 'productos',
+          successName: 'producto',
+          unauthPluralName: 'productos',
           queryKey: kProductsQueryKey,
           getStateManager: getStateManager,
           onMutate: (columnCtx, ctx) => _changeCounts(columnCtx, ctx, false),

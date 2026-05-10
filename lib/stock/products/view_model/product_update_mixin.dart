@@ -21,8 +21,8 @@ mixin UpdateMutationsMixin on TableMixin {
     .new(
       context,
       queryKey: kProductsQueryKey,
-      objName: msgPropName,
-      objPluralName: 'productos',
+      successName: msgPropName,
+      unauthPluralName: 'productos',
       getStateManager: getStateManager,
       successMsgVocal: msgPropNameVocal,
       cb: updateFn,

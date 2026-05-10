@@ -31,7 +31,7 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
     (ctx, _) async {
       if (!isAdmin) {
         return Future.error(
-          'No tienes permiso para eliminar $params.objPluralName',
+          'No tienes permiso para eliminar $params.unauthPluralName',
         );
       }
 
@@ -87,7 +87,7 @@ SingleDeleteMutation createSingleDeleteMutation<TListData extends List>(
       utils.showMsg(
         context: params.context,
         message:
-            '${params.objName.uppercaseFirst()} eliminad${params.successMsgVocal}',
+            '${params.successName.uppercaseFirst()} eliminad${params.successMsgVocal}',
         severity: .success,
       );
 

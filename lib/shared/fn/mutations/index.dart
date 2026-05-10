@@ -14,11 +14,11 @@ class MutationCommonParams<
   final List<String>? mutationKey;
   final TrinaGridStateManager? Function() getStateManager;
 
-  /// Singular form of the object name, shown in the unauthorized success message
-  final String objName;
+  /// Name to be shown in the success message
+  final String successName;
 
-  /// Plural form of [objName], shown in the unauthorized error message
-  final String objPluralName;
+  /// Plural form of the object name, shown in the unauthorized error message
+  final String unauthPluralName;
 
   /// Suffix added to the performed action word next to the object name in the success message
   final String successMsgVocal;
@@ -44,8 +44,8 @@ class MutationCommonParams<
     required this.timestamped,
     required this.cb,
     required this.getStateManager,
-    required this.objName,
-    required this.objPluralName,
+    required this.successName,
+    required this.unauthPluralName,
     this.successMsgVocal = 'o',
     this.mutationKey,
     this.onMutate,

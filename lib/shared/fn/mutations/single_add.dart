@@ -33,7 +33,7 @@ createSingleAddMutation<Variables, NewObj extends Object>(
   (Variables variables, _) async {
     if (!hasPerm(params.context, .operator)) {
       return Future.error(
-        'No tienes permiso para añadir ${params.objPluralName}',
+        'No tienes permiso para añadir ${params.unauthPluralName}',
       );
     }
 
@@ -73,7 +73,7 @@ createSingleAddMutation<Variables, NewObj extends Object>(
     showMsg(
       context: params.context,
       message:
-          '${params.objName.uppercaseFirst()} añadid${params.successMsgVocal}',
+          '${params.successName.uppercaseFirst()} añadid${params.successMsgVocal}',
       severity: .success,
     );
 
