@@ -39,6 +39,9 @@ class UnitValidators {
 
 const kUnitsQueryKey = ['units'];
 
+/// Used in a query to get all the product names for units edit cell option selection
+const kUnitsProductOptionsQueryKey = ['productNames'];
+
 const kUnitIdentifierMinLength = 6;
 const kUnitIdentifierMaxLength = 255;
 

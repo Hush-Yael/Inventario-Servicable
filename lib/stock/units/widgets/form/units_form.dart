@@ -3,7 +3,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/src/core/query_function_context.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/form/base_modal_form.dart';
 import 'package:servicable_stock/shared/widgets/form/foreign_key_field.dart';
 import 'package:servicable_stock/shared/widgets/form/modal_form_btn.dart';
@@ -84,7 +83,7 @@ class UnitsForm extends HookWidget {
 
               ForeignKeyField(
                 field: UnitFormFields.productId.name,
-                queryKey: kProductNamesQueryKey,
+                queryKey: kUnitsProductOptionsQueryKey,
                 fetchOptions: getProductNames,
                 label: 'producto',
                 pluralLabel: 'productos',

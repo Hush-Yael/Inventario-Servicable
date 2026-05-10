@@ -1,6 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/shared/fn/mutations/single_update.dart';
-import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
 import 'package:servicable_stock/stock/units/units_types.dart';
 import 'package:servicable_stock/stock/units/view_model/units_table_mixin.dart';
@@ -29,34 +28,34 @@ mixin UpdateMutationsMixin on TableMixin {
         propName: UnitsTableColumns.soldTo.name,
       );
 
-  SingleUpdateMutation createChangeProduct(BuildContext context) =>
-      createSingleUpdateMutation(
-        sharedMutParams(
-          context,
-          msgSuccessName: 'producto asociado',
-          cb: (id, newPrice, [ctx]) => service.changeUnitProduct(id, newPrice),
-          // update category name as well
-          onSuccess: (event, ctx) {
-            final productNames = ctx.client
-                .getQueryData<ProductForeignKeyOptions>(kProductNamesQueryKey);
+  SingleUpdateMutation createChangeProduct(
+    BuildContext context,
+  ) => createSingleUpdateMutation(
+    sharedMutParams(
+      context,
+      msgSuccessName: 'producto asociado',
+      cb: (id, newPrice, [ctx]) => service.changeUnitProduct(id, newPrice),
+      // update category name as well
+      onSuccess: (event, ctx) {
+        final productNames = ctx.client.getQueryData<ProductForeignKeyOptions>(
+          kUnitsProductOptionsQueryKey,
+        );
 
-            if (productNames == null || productNames.isEmpty) return;
+        if (productNames == null || productNames.isEmpty) return;
 
-            final newProduct = event.value;
+        final newProduct = event.value;
 
-            final product = productNames.firstWhere(
-              (p) => p.label == newProduct,
-            );
+        final product = productNames.firstWhere((p) => p.label == newProduct);
 
-            event.row.metadata![UnitsMetaKeys.productId.name] = product.id;
+        event.row.metadata![UnitsMetaKeys.productId.name] = product.id;
 
-            event.row.cells[UnitsTableColumns.category.name] = TrinaCell(
-              value: product.categoryName ?? '',
-            );
-          },
-        ),
-        propName: UnitsTableColumns.product.name,
-      );
+        event.row.cells[UnitsTableColumns.category.name] = TrinaCell(
+          value: product.categoryName ?? '',
+        );
+      },
+    ),
+    propName: UnitsTableColumns.product.name,
+  );
 
   SingleUpdateMutation createChangeDetails(BuildContext context) =>
       createSingleUpdateMutation(

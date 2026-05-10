@@ -10,6 +10,10 @@ enum ProductFormFields { code, name, usesDetailedUnits, categoryId, units }
 enum CategoryFilterValue { all, withCategory, withoutCategory }
 
 const kProductsQueryKey = ['products'];
+
+/// Used in a query to get all the category names for products edit cell option selection
+const kProductsCategoryOptionsQueryKey = ['categoryNames'];
+
 const kProductCountsQueryKey = ['productsCounts'];
 
 class ProductValidators {

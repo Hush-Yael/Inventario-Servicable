@@ -2,7 +2,6 @@ import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/form/base_modal_form.dart';
 import 'package:servicable_stock/shared/widgets/form/field.dart';
 import 'package:servicable_stock/shared/widgets/form/foreign_key_field.dart';
@@ -105,7 +104,7 @@ class ProductsForm extends HookWidget {
                 ),
 
                 ForeignKeyField(
-                  queryKey: kCategoryNamesQueryKey,
+                  queryKey: kProductsCategoryOptionsQueryKey,
                   field: ProductFormFields.categoryId.name,
                   fetchOptions: ProductsVm.instance
                       .of(context)

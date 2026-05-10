@@ -22,7 +22,7 @@ class ProductsTable extends HookWidget {
     final routerState = GoRouterState.of(context);
 
     final categoryNamesQuery = useQuery(
-      kCategoryNamesQueryKey,
+      kProductsCategoryOptionsQueryKey,
       (_) => vm.service.fetchCategoryNames(),
     );
 

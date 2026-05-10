@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
-import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/card_wrapper.dart';
 import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
@@ -21,7 +20,7 @@ class UnitsTable extends HookWidget {
     final routerState = GoRouterState.of(context);
 
     final productNames = useQuery(
-      kProductNamesQueryKey,
+      kUnitsProductOptionsQueryKey,
       vm.service.getProductNames,
     );
 

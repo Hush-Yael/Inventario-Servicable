@@ -4,7 +4,6 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
-import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
 import 'package:servicable_stock/stock/units/units_models.dart';
 import 'package:servicable_stock/stock/units/units_service.dart';
@@ -66,7 +65,9 @@ class UnitsVm extends UnitsBaseVm with TableMixin, UpdateMutationsMixin {
           final queryClient = ctx.client;
 
           final productOptions = queryClient
-              .getQueryData<ProductForeignKeyOptions>(kProductNamesQueryKey);
+              .getQueryData<ProductForeignKeyOptions>(
+                kUnitsProductOptionsQueryKey,
+              );
 
           final productOption = productOptions?.firstWhere(
             (p) => p.id == productId,
