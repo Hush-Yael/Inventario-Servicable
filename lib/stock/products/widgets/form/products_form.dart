@@ -2,12 +2,15 @@ import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:servicable_stock/shared/shared_constants.dart';
 import 'package:servicable_stock/shared/widgets/form/base_modal_form.dart';
 import 'package:servicable_stock/shared/widgets/form/field.dart';
+import 'package:servicable_stock/shared/widgets/form/foreign_key_field.dart';
 import 'package:servicable_stock/shared/widgets/form/modal_form_btn.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
+import 'package:servicable_stock/stock/products/view_model/products_vm.dart';
 import 'package:servicable_stock/stock/products/widgets/form/uses_d_units_field.dart';
 
 class ProductsFormBtn
@@ -40,6 +43,8 @@ class ProductsForm extends HookWidget {
     final codeController = formVm.useAsyncValidationController(
       formVm.checkCodeExists,
     );
+
+    final enabled = Computed(() => formVm.enabled);
 
     return BaseModalForm(
       formVmProvider: formVmProvider,
@@ -99,7 +104,18 @@ class ProductsForm extends HookWidget {
                   ),
                 ),
 
-                CategoryField(),
+                ForeignKeyField(
+                  queryKey: kCategoryNamesQueryKey,
+                  field: ProductFormFields.categoryId.name,
+                  fetchOptions: ProductsVm.instance
+                      .of(context)
+                      .service
+                      .fetchCategoryNames,
+                  label: 'categoría',
+                  pluralLabel: 'categorías',
+                  pluralLabelVocal: 'a',
+                  enabled: enabled,
+                ),
 
                 Field(
                   ProductFormFields.units.name,
