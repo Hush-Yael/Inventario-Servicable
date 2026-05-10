@@ -2,7 +2,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart' hide Debouncer;
+import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/shared/debouncer.dart';
+import 'package:servicable_stock/shared/fn/mutations/single_add.dart';
 
 class FormWithAsyncValidation {
   final bool isModal;
@@ -55,8 +58,12 @@ class FormWithAsyncValidation {
   }
 }
 
-class ModalFormWithAsyncValidation extends FormWithAsyncValidation {
-  ModalFormWithAsyncValidation({super.isModal = true});
+class ModalFormWithAsyncValidation<Input, NewObj extends Object>
+    extends FormWithAsyncValidation {
+  ModalFormWithAsyncValidation(this.db, {super.isModal = true});
+
+  final AppDatabase db;
+  SingleAddMutation<Input, NewObj>? mutation;
 
   /// Used signals must be disposed manually to prevent crashing when using them when modal is opened again
   void disposeSignals() {
@@ -68,5 +75,48 @@ class ModalFormWithAsyncValidation extends FormWithAsyncValidation {
     useEffect(() {
       return disposeSignals;
     }, []);
+  }
+
+  Future<bool> checkAsyncErrorsBeforeSubmit() {
+    throw UnimplementedError();
+  }
+
+  T getValue<T>(String key) {
+    final val = formKey.currentState!.fields[key]?.value;
+
+    if (val.runtimeType == String) return val.trim();
+
+    return val;
+  }
+
+  Future<dynamic> submit(BuildContext modalContext) async {
+    if (isSubmitting.value || invalid) return;
+
+    isSubmitting.value = true;
+
+    final error = await stall(
+      checkAsyncErrorsBeforeSubmit(),
+      const .new(milliseconds: 250),
+    );
+
+    if (error) return isSubmitting.value = false;
+
+    try {
+      final input = getFormData();
+
+      await mutation!.mutateAsync(input);
+
+      if (modalContext.mounted) Navigator.of(modalContext).pop();
+    } catch (e) {
+      //
+    } finally {
+      isSubmitting.value = false;
+    }
+  }
+
+  Input getFormData() {
+    throw UnimplementedError(
+      'getFormData must be implemented to perform mutation',
+    );
   }
 }

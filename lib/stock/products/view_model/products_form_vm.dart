@@ -1,19 +1,20 @@
 import 'package:disco/disco.dart';
 import 'package:drift/drift.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/db/db.dart';
-import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/shared/form_with_async_validation.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
+import 'package:servicable_stock/stock/products/products_models.dart';
 
-class ProductsFormBaseVm extends ModalFormWithAsyncValidation {
-  final AppDatabase db;
+class ProductsFormVm
+    extends ModalFormWithAsyncValidation<AddProductInput, ProductWithDetails> {
+  ProductsFormVm(super.db);
 
-  ProductsFormBaseVm(this.db);
-
-  ProductsAddMutation? mutation;
+  static final instance = Provider((ctx) {
+    final db = AppDatabase.instance.of(ctx);
+    return ProductsFormVm(db);
+  });
 
   final usesDetailedUnits = Signal(false, autoDispose: false);
 
@@ -23,57 +24,30 @@ class ProductsFormBaseVm extends ModalFormWithAsyncValidation {
     usesDetailedUnits.dispose();
   }
 
-  dynamic getValue(String key) {
-    final val = formKey.currentState!.fields[key]?.value;
-
-    if (val.runtimeType == String) return val.trim();
-
-    return val;
-  }
-}
-
-class ProductsFormVm extends ProductsFormBaseVm with Validation {
-  ProductsFormVm(super.db);
-
-  static final instance = Provider((ctx) {
-    final db = AppDatabase.instance.of(ctx);
-    return ProductsFormVm(db);
-  });
-
-  Future<dynamic> submit(BuildContext modalContext) async {
-    if (isSubmitting.value || invalid) return;
-
-    isSubmitting.value = true;
-
+  @override
+  checkAsyncErrorsBeforeSubmit() async {
     final name = getValue(ProductFormFields.name.name);
     final code = getValue(ProductFormFields.code.name);
 
-    final errors = await stall(
-      Future.wait([checkNameExists(name), checkCodeExists(code)]),
-      const .new(milliseconds: 250),
-    );
+    final errors = await Future.wait([
+      checkNameExists(name),
+      checkCodeExists(code),
+    ]);
 
-    if (errors.any((e) => e)) return isSubmitting.value = false;
-
-    try {
-      await mutation!.mutateAsync((
-        name: name,
-        code: code,
-        categoryId: getValue('categoryId'),
-        units: getValue('units'),
-        usesDetailedUnits: getValue('usesDetailedUnits'),
-      ));
-
-      if (modalContext.mounted) Navigator.of(modalContext).pop();
-    } catch (e) {
-      //
-    } finally {
-      isSubmitting.value = false;
-    }
+    return (errors.any((e) => e));
   }
-}
 
-mixin Validation on ProductsFormBaseVm {
+  @override
+  getFormData() {
+    return (
+      name: getValue<String>(ProductFormFields.name.name),
+      code: getValue<String>(ProductFormFields.code.name),
+      categoryId: getValue('categoryId'),
+      units: getValue('units'),
+      usesDetailedUnits: getValue('usesDetailedUnits'),
+    );
+  }
+
   Future<bool> checkNameExists(String name) async {
     return await _checkProduct(
       (p) => db.products.name.equals(name),
