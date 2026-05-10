@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-import 'package:servicable_stock/shared/widgets/field.dart';
+import 'package:servicable_stock/shared/widgets/form/field.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 import 'package:servicable_stock/stock/products/view_model/products_form_vm.dart';
 import 'package:servicable_stock/stock/products/widgets/form/category_field.dart';

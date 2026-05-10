@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
-import 'package:servicable_stock/shared/widgets/field.dart';
+import 'package:servicable_stock/shared/widgets/form/field.dart';
 
 class FormFields extends HookWidget {
   const FormFields({super.key});

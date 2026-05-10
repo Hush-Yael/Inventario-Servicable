@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
-import 'package:servicable_stock/shared/widgets/submit_btn_ring.dart';
+import 'package:servicable_stock/shared/widgets/form/submit_btn_ring.dart';
 
 class FormBtns extends StatefulWidget {
   const FormBtns({super.key});

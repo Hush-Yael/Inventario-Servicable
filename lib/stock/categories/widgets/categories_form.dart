@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
-import 'package:servicable_stock/shared/widgets/submit_btn_ring.dart';
+import 'package:servicable_stock/shared/widgets/form/submit_btn_ring.dart';
 import 'package:servicable_stock/stock/categories/view_model/categories_vm.dart';
 import 'package:servicable_stock/stock/categories/categories_types.dart';
 
