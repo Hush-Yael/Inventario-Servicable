@@ -21,14 +21,8 @@ mixin AddMixin on TableMixin {
         ),
         createRow: createRow,
         createNewObj: (variables, ctx) {
-          final (
-            :name,
-            :code,
-            :units,
-            :usesDetailedUnits,
-            // :unitIdentifier,
-            :categoryId,
-          ) = variables;
+          final (:name, :code, :units, :usesDetailedUnits, :categoryId) =
+              variables;
 
           final categoryNames = ctx.client.getQueryData<TableForeignKeyOptions>(
             kCategoryNamesQueryKey,
@@ -46,7 +40,6 @@ mixin AddMixin on TableMixin {
             usesDetailedUnits: usesDetailedUnits,
             categoryName: categoryName,
             categoryId: categoryId,
-            // unitIdentifier: unitIdentifier ?? kProductUnitIdentifierDefault,
           );
         },
       );

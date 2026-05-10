@@ -3,8 +3,6 @@ import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/stock/categories/categories_models.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
 
-const kProductUnitIdentifierDefault = 'identificador';
-
 class Products extends Table {
   late final id = integer().autoIncrement()();
 
@@ -25,11 +23,6 @@ class Products extends Table {
   /// whether the product stock depends on individual detailed units or not
   late final usesDetailedUnits = boolean().withDefault(const Constant(true))();
 
-  /// label for the unit identifier field (shown as column header)
-  late final unitIdentifier = text().withDefault(
-    const Constant(kProductUnitIdentifierDefault),
-  )();
-
   late final categoryId = integer().nullable().references(
     Categories,
     #id,
@@ -47,7 +40,6 @@ class ProductWithDetails extends Product {
     required super.name,
     required super.units,
     required super.usesDetailedUnits,
-    super.unitIdentifier = kProductUnitIdentifierDefault,
     super.categoryId,
   });
 
@@ -60,7 +52,6 @@ class ProductWithDetails extends Product {
     String? name,
     int? units,
     bool? usesDetailedUnits,
-    String? unitIdentifier,
     Value<int?> categoryId = const Value.absent(),
     String? categoryName,
     int? unitsCount,
@@ -71,7 +62,6 @@ class ProductWithDetails extends Product {
       name: name ?? this.name,
       units: units ?? this.units,
       usesDetailedUnits: usesDetailedUnits ?? this.usesDetailedUnits,
-      unitIdentifier: unitIdentifier ?? this.unitIdentifier,
       categoryId: categoryId.present ? categoryId.value : this.categoryId,
       categoryName: categoryName ?? this.categoryName,
     );
@@ -87,7 +77,6 @@ class ProductWithDetails extends Product {
       name: product.name,
       units: product.units,
       usesDetailedUnits: product.usesDetailedUnits,
-      unitIdentifier: product.unitIdentifier,
       categoryId: product.categoryId,
       categoryName: categoryName,
     );

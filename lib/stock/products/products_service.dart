@@ -57,7 +57,6 @@ class ProductsService extends ServiceRepository {
             : row.read<int>(db.products.units.$name),
         usesDetailedUnits: usesDetailedUnits,
         categoryId: categoryId,
-        unitIdentifier: row.read<String>(db.products.unitIdentifier.$name),
         categoryName: row.read<String?>(category_name),
       );
     }).toList();
@@ -111,9 +110,6 @@ class ProductsService extends ServiceRepository {
               name: data.name,
               units: Value(data.units ?? 0),
               usesDetailedUnits: Value(data.usesDetailedUnits),
-              /*  unitIdentifier: data.unitIdentifier != null
-                  ? Value(data.unitIdentifier!)
-                  : const Value.absent(), */
               categoryId: Value(data.categoryId),
             ),
           ),

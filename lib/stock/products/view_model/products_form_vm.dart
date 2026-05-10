@@ -60,7 +60,6 @@ class ProductsFormVm extends ProductsFormBaseVm with Validation {
         name: name,
         code: code,
         categoryId: getValue('categoryId'),
-        // unitIdentifier: getValue('unitIdentifier'),
         units: getValue('units'),
         usesDetailedUnits: getValue('usesDetailedUnits'),
       ));

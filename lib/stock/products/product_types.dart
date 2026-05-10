@@ -15,7 +15,6 @@ typedef AddProductInput = ({
   String name,
   bool usesDetailedUnits,
   int? units,
-  // String? unitIdentifier,
   int? categoryId,
 });
 
