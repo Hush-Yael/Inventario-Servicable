@@ -19,7 +19,7 @@ mixin TableMixin on ProductsBaseVm {
     BuildContext context,
     ProductsDeleteMutation? deleteMutation, {
     required int listLength,
-    required TableForeignKeyOptions categoryNames,
+    required TableForeignKeyOptions categoryOptions,
   }) {
     final isAdmin = utils.isAdmin(context);
 
@@ -45,7 +45,7 @@ mixin TableMixin on ProductsBaseVm {
       ),
 
       .new(
-        type: .select<String>(categoryNames.map((opt) => opt!.label).toList()),
+        type: .select<String>(categoryOptions.map((opt) => opt.label).toList()),
         title: 'Categoría',
         field: ProductTableColumns.category.name,
         filterWidgetDelegate: fieldWithFilterType(

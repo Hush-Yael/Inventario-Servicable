@@ -22,7 +22,7 @@ class UnitsTable extends HookWidget {
 
     final productOptions = useQuery(
       kUnitsProductOptionsQueryKey,
-      vm.service.getProductNames,
+      vm.service.getProductOptions,
     );
 
     final categoryOptions = useQuery(

@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
+import 'package:servicable_stock/shared/shared_models.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
 
@@ -76,4 +77,14 @@ class UnitWithDetails extends Unit {
       productName: productName ?? this.productName,
     );
   }
+}
+
+class ProductForeignKeyOption extends TableForeignKeyOption {
+  const ProductForeignKeyOption({
+    required super.label,
+    required super.id,
+    this.categoryName,
+  });
+
+  final String? categoryName;
 }

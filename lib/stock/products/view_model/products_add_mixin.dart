@@ -7,39 +7,39 @@ import 'package:servicable_stock/stock/products/products_models.dart';
 import 'package:servicable_stock/stock/products/view_model/products_table_mixin.dart';
 
 mixin AddMixin on TableMixin {
-  ProductsAddMutation createAddMutation(BuildContext context) =>
-      createSingleAddMutation(
-        .new(
-          context,
-          queryKey: kProductsQueryKey,
-          timestamped: false,
-          getStateManager: getStateManager,
-          successName: 'producto',
-          unauthPluralName: 'productos',
-          cb: service.addProduct,
-        ),
-        createRow: createRow,
-        createNewObj: (variables, ctx) {
-          final (:name, :code, :units, :usesDetailedUnits, :categoryId) =
-              variables;
+  ProductsAddMutation createAddMutation(
+    BuildContext context,
+  ) => createSingleAddMutation(
+    .new(
+      context,
+      queryKey: kProductsQueryKey,
+      timestamped: false,
+      getStateManager: getStateManager,
+      successName: 'producto',
+      unauthPluralName: 'productos',
+      cb: service.addProduct,
+    ),
+    createRow: createRow,
+    createNewObj: (variables, ctx) {
+      final (:name, :code, :units, :usesDetailedUnits, :categoryId) = variables;
 
-          final categoryNames = ctx.client.getQueryData<TableForeignKeyOptions>(
-            kProductsCategoryOptionsQueryKey,
-          );
-
-          final categoryName = categoryNames
-              ?.firstWhere((c) => c!.id == categoryId)!
-              .label;
-
-          return ProductWithDetails(
-            id: -1,
-            name: name,
-            code: code,
-            units: 0,
-            usesDetailedUnits: usesDetailedUnits,
-            categoryName: categoryName,
-            categoryId: categoryId,
-          );
-        },
+      final categoryOptions = ctx.client.getQueryData<TableForeignKeyOptions>(
+        kProductsCategoryOptionsQueryKey,
       );
+
+      final categoryName = categoryOptions
+          ?.firstWhere((c) => c.id == categoryId)
+          .label;
+
+      return ProductWithDetails(
+        id: -1,
+        name: name,
+        code: code,
+        units: 0,
+        usesDetailedUnits: usesDetailedUnits,
+        categoryName: categoryName,
+        categoryId: categoryId,
+      );
+    },
+  );
 }

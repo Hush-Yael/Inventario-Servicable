@@ -109,7 +109,7 @@ class ProductsForm extends HookWidget {
                   fetchOptions: ProductsVm.instance
                       .of(context)
                       .service
-                      .fetchCategoryNames,
+                      .fetchCategoryOptions,
                   label: 'categoría',
                   pluralLabel: 'categorías',
                   pluralLabelVocal: 'a',

@@ -3,11 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/core/theme/theme.dart';
+import 'package:servicable_stock/shared/shared_models.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/form/field.dart';
 
-class ForeignKeyField<T extends List<dynamic>> extends HookWidget {
+class ForeignKeyField extends HookWidget {
   final List<String> queryKey;
-  final Future<T> Function([QueryFunctionContext? ctx]) fetchOptions;
+  final Future<TableForeignKeyOptions> Function([QueryFunctionContext? ctx])
+  fetchOptions;
   final String label;
   final String pluralLabel;
   final String pluralLabelVocal;
@@ -55,7 +58,7 @@ class ForeignKeyField<T extends List<dynamic>> extends HookWidget {
     ),
   );
 
-  Widget builder(T options) {
+  Widget builder(TableForeignKeyOptions options) {
     int? selected;
     int? prevSelected;
     String? prevSelectedText;
@@ -63,10 +66,10 @@ class ForeignKeyField<T extends List<dynamic>> extends HookWidget {
     final menuShown = Signal(boxKey.currentState?.isOverlayVisible ?? false);
     bool menuManuallyToggled = false;
 
-    return Field(
+    return Field<int>(
       field,
       label: label.uppercaseFirst(),
-      initialValue: options.first?.id,
+      initialValue: options.first.id,
       childBuilder: (field) {
         return Row(
           crossAxisAlignment: .start,
@@ -74,70 +77,71 @@ class ForeignKeyField<T extends List<dynamic>> extends HookWidget {
           children: [
             Expanded(
               child: SignalBuilder(
-                builder: (context, child) => AutoSuggestBox.form(
-                  key: boxKey,
-                  autovalidateMode: .onUserInteraction,
-                  validator: (text) {
-                    if (selected == null) {
-                      if (text != null && text.isNotEmpty) {
-                        return 'Seleccione una opción válida';
-                      }
+                builder: (context, child) =>
+                    AutoSuggestBox<TableForeignKeyOption>.form(
+                      key: boxKey,
+                      autovalidateMode: .onUserInteraction,
+                      validator: (text) {
+                        if (selected == null) {
+                          if (text != null && text.isNotEmpty) {
+                            return 'Seleccione una opción válida';
+                          }
 
-                      return 'Este campo es requerido';
-                    }
+                          return 'Este campo es requerido';
+                        }
 
-                    return null;
-                  },
-                  maxPopupHeight: 300,
-                  items: options.map((opt) {
-                    final label = opt!.label;
+                        return null;
+                      },
+                      maxPopupHeight: 300,
+                      items: options.map((opt) {
+                        final label = opt.label;
 
-                    return AutoSuggestBoxItem(
-                      value: opt,
-                      label: label,
-                      child: Tooltip(
-                        message: label,
-                        child: Text(
-                          opt.label,
-                          maxLines: 1,
-                          overflow: .ellipsis,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (text, reason) {
-                    final sameOptionText =
-                        text.trim().toLowerCase() == prevSelectedText;
+                        return AutoSuggestBoxItem(
+                          value: opt,
+                          label: label,
+                          child: Tooltip(
+                            message: label,
+                            child: Text(
+                              opt.label,
+                              maxLines: 1,
+                              overflow: .ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (text, reason) {
+                        final sameOptionText =
+                            text.trim().toLowerCase() == prevSelectedText;
 
-                    if (reason == TextChangedReason.userInput &&
-                        sameOptionText) {
-                      selected = prevSelected;
-                      return field.didChange(prevSelected);
-                    }
+                        if (reason == TextChangedReason.userInput &&
+                            sameOptionText) {
+                          selected = prevSelected;
+                          return field.didChange(prevSelected);
+                        }
 
-                    if (reason == TextChangedReason.cleared ||
-                        (reason == TextChangedReason.userInput &&
-                            !sameOptionText)) {
-                      selected = null;
-                      return field.didChange(null);
-                    }
-                  },
-                  onSelected: !enabled.value
-                      ? null
-                      : (v) {
-                          final id = (v.value as dynamic).id as int;
+                        if (reason == TextChangedReason.cleared ||
+                            (reason == TextChangedReason.userInput &&
+                                !sameOptionText)) {
+                          selected = null;
+                          return field.didChange(null);
+                        }
+                      },
+                      onSelected: !enabled.value
+                          ? null
+                          : (v) {
+                              final id = v.value!.id;
 
-                          field.didChange(id);
-                          prevSelected = id;
-                          prevSelectedText = v.label.toLowerCase();
-                          selected = id;
-                        },
-                  onOverlayVisibilityChanged: (open) {
-                    !menuManuallyToggled
-                        ? menuShown.value = open
-                        : menuManuallyToggled = false;
-                  },
-                ),
+                              field.didChange(id);
+                              prevSelected = id;
+                              prevSelectedText = v.label.toLowerCase();
+                              selected = id;
+                            },
+                      onOverlayVisibilityChanged: (open) {
+                        !menuManuallyToggled
+                            ? menuShown.value = open
+                            : menuManuallyToggled = false;
+                      },
+                    ),
               ),
             ),
 

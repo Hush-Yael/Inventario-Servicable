@@ -66,7 +66,7 @@ class _UnitsScreen extends HookWidget {
                       ),
                       child: UnitsForm(
                         formVmProvider: formVm,
-                        getProductNames: vm.service.getProductNames,
+                        getProductOptions: vm.service.getProductOptions,
                       ),
                     ),
                   ),

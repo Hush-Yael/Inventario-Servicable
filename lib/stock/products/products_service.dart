@@ -1,7 +1,9 @@
 import 'package:drift/drift.dart';
+import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/services_repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/shared/shared_models.dart';
 import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
@@ -63,12 +65,16 @@ class ProductsService extends ServiceRepository {
   }
 
   /// Fetches the names of all categories to use in the select widget
-  Future<TableForeignKeyOptions> fetchCategoryNames() async {
-    return await (db.selectOnly(db.categories)
-          ..addColumns([db.categories.name, db.categories.id])
-          ..orderBy([OrderingTerm.asc(db.categories.name)]))
-        .map(
-          (row) => (
+  Future<TableForeignKeyOptions> fetchCategoryOptions([
+    QueryFunctionContext? ctx,
+  ]) async {
+    final result = (db.selectOnly(db.categories)
+      ..addColumns([db.categories.name, db.categories.id])
+      ..orderBy([OrderingTerm.asc(db.categories.name)]));
+
+    return await result
+        .asyncMap(
+          (row) => TableForeignKeyOption(
             label: row.read(db.categories.name)!,
             id: row.read(db.categories.id)!,
           ),

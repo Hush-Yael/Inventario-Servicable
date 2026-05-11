@@ -73,11 +73,11 @@ mixin UpdateMutationsMixin on TableMixin {
   }
 
   int _getCategoryId(MutationFunctionContext ctx, String categoryName) {
-    final categoryNames = ctx.client.getQueryData<TableForeignKeyOptions>(
+    final categoryOptions = ctx.client.getQueryData<TableForeignKeyOptions>(
       kProductsCategoryOptionsQueryKey,
     );
 
-    return categoryNames!.firstWhere((opt) => opt!.label == categoryName)!.id;
+    return categoryOptions!.firstWhere((opt) => opt.label == categoryName).id;
   }
 
   SingleUpdateMutation createChangeCodeMutation(BuildContext context) =>

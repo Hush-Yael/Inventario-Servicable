@@ -47,9 +47,7 @@ mixin TableMixin on UnitsBaseVm {
       .new(
         title: 'Categoría',
         field: UnitsTableColumns.category.name,
-        type: .select<String>(
-          categoryOptions.map((opt) => opt!.label).toList(),
-        ),
+        type: .select<String>(categoryOptions.map((opt) => opt.label).toList()),
         enableEditingMode: false,
         filterWidgetDelegate: fieldWithFilterType(
           column: UnitsTableColumns.category.name,

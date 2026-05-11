@@ -4,6 +4,7 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:go_router/go_router.dart';
 import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/shared_constants.dart';
+import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/shared/widgets/table.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_constants.dart';
@@ -21,10 +22,12 @@ class ProductsTable extends HookWidget {
     final vm = ProductsVm.instance.of(context);
     final routerState = GoRouterState.of(context);
 
-    final categoryNamesQuery = useQuery(
+    final categoryOptionsQuery = useQuery(
       kProductsCategoryOptionsQueryKey,
-      (_) => vm.service.fetchCategoryNames(),
+      (_) => vm.service.fetchCategoryOptions(),
     );
+
+    const TableForeignKeyOptions emptyList = [];
 
     return QueryTable(
       query,
@@ -34,7 +37,7 @@ class ProductsTable extends HookWidget {
         context,
         null,
         listLength: 0,
-        categoryNames: const [],
+        categoryOptions: emptyList,
       ),
       renderGrid: (data, config, canEdit) {
         final deleteMutation = vm.createDeleteMutation(context);
@@ -50,7 +53,7 @@ class ProductsTable extends HookWidget {
               context,
               deleteMutation,
               listLength: 0,
-              categoryNames: categoryNamesQuery.data ?? const [],
+              categoryOptions: categoryOptionsQuery.data ?? emptyList,
             ),
             rows: vm.getRows(data!),
             onLoaded: (event) {

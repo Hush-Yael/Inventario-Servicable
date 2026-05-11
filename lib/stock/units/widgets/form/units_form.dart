@@ -1,7 +1,7 @@
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_query/src/core/query_function_context.dart';
+import 'package:flutter_query/flutter_query.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/shared/widgets/form/base_modal_form.dart';
 import 'package:servicable_stock/shared/widgets/form/foreign_key_field.dart';
@@ -26,12 +26,12 @@ class UnitsForm extends HookWidget {
   final Provider<UnitsFormVm> formVmProvider;
 
   final Future<ProductForeignKeyOptions> Function([QueryFunctionContext? ctx])
-  getProductNames;
+  getProductOptions;
 
   const UnitsForm({
     super.key,
     required this.formVmProvider,
-    required this.getProductNames,
+    required this.getProductOptions,
   });
 
   @override
@@ -84,7 +84,7 @@ class UnitsForm extends HookWidget {
               ForeignKeyField(
                 field: UnitFormFields.productId.name,
                 queryKey: kUnitsProductOptionsQueryKey,
-                fetchOptions: getProductNames,
+                fetchOptions: getProductOptions,
                 label: 'producto',
                 pluralLabel: 'productos',
                 enabled: enabled,

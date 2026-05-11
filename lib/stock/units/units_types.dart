@@ -19,10 +19,4 @@ typedef UnitsAddMutation = SingleAddMutation<AddUnitInput, UnitWithDetails>;
 typedef UnitsDeleteMutation =
     MutationResult<dynamic, Object?, TrinaColumnRendererContext, int>;
 
-typedef ProductForeignKeyOption = ({
-  String label,
-  int id,
-  String? categoryName,
-});
-
 typedef ProductForeignKeyOptions = List<ProductForeignKeyOption>;

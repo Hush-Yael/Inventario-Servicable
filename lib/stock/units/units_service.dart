@@ -3,6 +3,7 @@ import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/services_repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
+import 'package:servicable_stock/shared/shared_models.dart';
 import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/units/units_models.dart';
 import 'package:servicable_stock/stock/units/units_types.dart';
@@ -63,7 +64,7 @@ class UnitsService extends ServiceRepository {
     return await delete(id, C, 'No se pudo eliminar el producto');
   }
 
-  Future<ProductForeignKeyOptions> getProductNames([
+  Future<ProductForeignKeyOptions> getProductOptions([
     QueryFunctionContext? ctx,
   ]) async {
     final result = (db.selectOnly(db.products)
@@ -82,7 +83,7 @@ class UnitsService extends ServiceRepository {
 
     return await result
         .asyncMap(
-          (row) => (
+          (row) => ProductForeignKeyOption(
             id: row.read<int>(db.products.id)!,
             label: row.read<String>(db.products.name)!,
             categoryName: row.read<String>(db.categories.name),
@@ -111,7 +112,7 @@ class UnitsService extends ServiceRepository {
 
     return await result
         .asyncMap(
-          (row) => (
+          (row) => TableForeignKeyOption(
             label: row.read<String>(db.categories.name)!,
             id: row.read<int>((db.categories as dynamic).id)!,
           ),
