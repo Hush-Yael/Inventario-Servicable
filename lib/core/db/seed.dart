@@ -1,24 +1,16 @@
 import 'dart:convert';
-
-import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:faker/faker.dart';
+import 'package:servicable_stock/shared/password_manager.dart';
 
 Future<void> seed(AppDatabase db) async {
-  final algorithm = Argon2id(
-    memory: 10 * 1000, // 10 MB
-    parallelism: 2, //  two CPU cores.
-    iterations: 1,
-    hashLength: 32,
-  );
+  final pm = PasswordManager();
 
-  final salt = Uint8List(8);
-  final pass = await algorithm.deriveKeyFromPassword(
-    password: 'admin',
-    nonce: salt,
-  );
+  final salt = pm.generateSalt();
+
+  final pass = await pm.securePassword(passwordValue: 'admin', salt: salt);
 
   await db
       .into(db.users)

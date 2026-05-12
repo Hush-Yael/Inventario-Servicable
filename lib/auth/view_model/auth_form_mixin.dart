@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
 import 'package:servicable_stock/auth/view_model/auth_vm.dart';
@@ -49,18 +47,13 @@ mixin FormMixin on AuthBaseVm {
       return false;
     }
 
-    final secretPassToCompare = await algorithm.deriveKeyFromPassword(
-      password: password.value,
-      nonce: base64Decode(existingUser.salt),
+    final passwordValid = await passwordManager.compare(
+      passwordToCompare: password.value,
+      hashedPassword: existingUser.password,
+      encodedSalt: existingUser.salt,
     );
 
-    final String hashToCompare = base64Encode(
-      await secretPassToCompare.extractBytes(),
-    );
-
-    final String storedHash = existingUser.password;
-
-    if (hashToCompare != storedHash) {
+    if (!passwordValid) {
       if (context.mounted) {
         password.invalidate('La contraseña es incorrecta', shouldFocus: false);
       }
@@ -81,15 +74,11 @@ mixin FormMixin on AuthBaseVm {
       return false;
     }
 
-    final random = Random.secure();
+    final newSalt = passwordManager.generateSalt();
 
-    final newSalt = Uint8List.fromList(
-      List.generate(32, (_) => random.nextInt(256)),
-    );
-
-    final secretPass = await algorithm.deriveKeyFromPassword(
-      password: password.value,
-      nonce: newSalt,
+    final secretPass = await passwordManager.securePassword(
+      passwordValue: password.value,
+      salt: newSalt,
     );
 
     final User newUser = await service.signupNewUser(

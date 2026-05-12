@@ -1,4 +1,3 @@
-import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:servicable_stock/auth/auth_service.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/view_model/auth_form_mixin.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/shared/form_with_async_validation.dart';
+import 'package:servicable_stock/shared/password_manager.dart';
 
 class AuthBaseVm extends FormWithAsyncValidation {
   final AuthService service;
@@ -19,12 +19,7 @@ class AuthBaseVm extends FormWithAsyncValidation {
     required this.authState,
   });
 
-  final algorithm = Argon2id(
-    memory: 10 * 1000, // 10 MB
-    parallelism: 2, //  two CPU cores.
-    iterations: 1,
-    hashLength: 32,
-  );
+  final passwordManager = PasswordManager();
 
   final isSignIn = Signal(true);
 
