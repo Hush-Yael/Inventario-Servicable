@@ -16,7 +16,7 @@ enum UserRole {
 enum AuthFormFields { name, username, password }
 
 class AuthValidators {
-  static final nameValidators = FormBuilderValidators.compose([
+  static final name = FormBuilderValidators.compose([
     Validators.required,
     FormBuilderValidators.match(
       RegExp(r'^[a-zA-Z\u00C0-\u017F\s]+$'),
@@ -26,7 +26,7 @@ class AuthValidators {
     Validators.maxLength(kNameMaxLength),
   ]);
 
-  static final usernameValidators = FormBuilderValidators.compose([
+  static final username = FormBuilderValidators.compose([
     Validators.required,
     Validators.minLength(kUsernameMinLength),
     Validators.maxLength(kUsernameMaxLength),
@@ -37,7 +37,7 @@ class AuthValidators {
     ),
   ]);
 
-  static final passwordValidators = FormBuilderValidators.compose([
+  static final password = FormBuilderValidators.compose([
     Validators.required,
     Validators.minLength(kPasswordMinLength),
     Validators.maxLength(kPasswordMaxLength),

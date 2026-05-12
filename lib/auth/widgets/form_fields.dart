@@ -50,7 +50,7 @@ class FormFields extends HookWidget {
                         autovalidateMode: .onUserInteraction,
                         initialValue: field.value,
                         enabled: vm.enabled,
-                        validator: AuthValidators.nameValidators,
+                        validator: AuthValidators.name,
                         onChanged: field.didChange,
                         onFieldSubmitted: submit,
                       ),
@@ -74,7 +74,7 @@ class FormFields extends HookWidget {
                 enabled: vm.enabled,
                 validator: (value) => vm.fieldSyncAndAsyncValidation(
                   field,
-                  validator: AuthValidators.usernameValidators,
+                  validator: AuthValidators.username,
                 ),
                 onChanged: (v) => vm.changeAndClearAsyncError(v, field),
                 onFieldSubmitted: submit,
@@ -99,7 +99,7 @@ class FormFields extends HookWidget {
                 onSaved: field.didChange,
                 validator: (value) => vm.fieldSyncAndAsyncValidation(
                   field,
-                  validator: AuthValidators.passwordValidators,
+                  validator: AuthValidators.password,
                 ),
               ),
             );
