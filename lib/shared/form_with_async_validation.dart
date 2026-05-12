@@ -35,10 +35,11 @@ class FormWithAsyncValidation {
   }
 
   TextEditingController useAsyncValidationController(
-    Future<bool> Function(String text) check,
-  ) {
+    Future<bool> Function(String text) check, {
+    String? initialValue,
+  }) {
     final timer = Debouncer(700);
-    final controller = useTextEditingController();
+    final controller = useTextEditingController(text: initialValue);
 
     listener() {
       final text = controller.text.trim();
