@@ -41,6 +41,10 @@ class AuthValidators {
     Validators.required,
     Validators.minLength(kPasswordMinLength),
     Validators.maxLength(kPasswordMaxLength),
+    FormBuilderValidators.match(
+      RegExp(r'^[^\s]+$'),
+      errorText: 'La contraseña no puede contener espacios',
+    ),
   ]);
 }
 
