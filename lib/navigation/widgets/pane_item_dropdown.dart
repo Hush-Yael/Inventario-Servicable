@@ -24,11 +24,18 @@ class PaneItemDropdown extends StatelessWidget {
     return FlyoutTarget(
       controller: controller,
       child: ListTile.selectable(
-        title: Text(
-          text,
-          style: context.theme.navigationPaneTheme.unselectedTextStyle
-              ?.resolve({})
-              ?.copyWith(height: 0),
+        title: Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text(
+              text,
+              style: context.theme.navigationPaneTheme.unselectedTextStyle
+                  ?.resolve({})
+                  ?.copyWith(height: 0),
+            ),
+
+            const WindowsIcon(FluentIcons.chevron_right, size: 8),
+          ],
         ),
         subtitle: subtitle,
         leading: WindowsIcon(

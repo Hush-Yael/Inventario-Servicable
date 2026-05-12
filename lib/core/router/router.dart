@@ -17,7 +17,7 @@ class AppRouter {
   AppRouter({required this.authState});
 
   late final config = GoRouter(
-    initialLocation: MainNavigationPages.home.path,
+    initialLocation: MainNavigationPages.categories.path,
     refreshListenable: authState,
     routes: appRoutes,
     errorBuilder: (context, state) => const NotFound(),
@@ -34,7 +34,7 @@ class AppRouter {
 
     // Redirect to home if authenticated and on login
     if (isAuthenticated && state.matchedLocation.contains(authPath)) {
-      return MainNavigationPages.home.path;
+      return MainNavigationPages.categories.path;
     }
 
     return null; // No redirect

@@ -1,13 +1,19 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:servicable_stock/home/home_screen.dart';
+import 'package:servicable_stock/profile/profile_screen.dart';
 import 'package:servicable_stock/stock/categories/categories_screen.dart';
 import 'package:servicable_stock/stock/products/products_screen.dart';
 import 'package:servicable_stock/stock/units/units_screen.dart';
 import 'package:servicable_stock/users/users_screen.dart';
 
 enum MainNavigationPages<View extends StatelessWidget Function()> {
-  home('Inicio', path: '/', icon: FluentIcons.home, view: HomeScreen.new),
+  account(
+    'Datos de la cuenta',
+    path: '/profile',
+    icon: FluentIcons.contact_info,
+    view: ProfileScreen.new,
+    isMain: false,
+  ),
 
   users(
     'Usuarios',
@@ -42,12 +48,14 @@ enum MainNavigationPages<View extends StatelessWidget Function()> {
     required this.path,
     required this.icon,
     required this.view,
+    this.isMain = true,
   });
 
   final IconData icon;
   final String label;
   final View view;
   final String path;
+  final bool isMain;
 
   PaneItem get paneItem => PaneItem(
     title: Text(label),

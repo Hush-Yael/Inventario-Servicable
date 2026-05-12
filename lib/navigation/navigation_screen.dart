@@ -1,7 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:servicable_stock/auth/auth_state.dart';
+import 'package:servicable_stock/core/theme/theme.dart';
 import 'package:servicable_stock/navigation/navigation_pages.dart';
-import 'package:servicable_stock/navigation/widgets/account.dart';
 import 'package:servicable_stock/navigation/widgets/theme_selector.dart';
 
 class NavigationScreen extends StatelessWidget {
@@ -29,33 +30,64 @@ class NavigationScreen extends StatelessWidget {
         onChanged: (index) =>
             GoRouter.of(context).go(MainNavigationPages.values[index].path),
         toggleButton: null,
-        items: paneItems,
+        items: getPaneItems(context),
       ),
     );
   }
 
-  List<NavigationPaneItem> get paneItems => [
-    PaneItemWidgetAdapter(
-      child: Padding(
-        padding: const .only(top: 5.0),
-        child: Column(
-          spacing: 5,
-          mainAxisAlignment: .center,
-          crossAxisAlignment: .center,
-          children: [Image.asset('assets/logo.png', width: 140, fit: .cover)],
+  List<NavigationPaneItem> getPaneItems(BuildContext context) {
+    final authState = AuthState.instance.of(context);
+
+    return [
+      PaneItemWidgetAdapter(
+        child: Padding(
+          padding: const .only(top: 5.0),
+          child: Column(
+            spacing: 5,
+            mainAxisAlignment: .center,
+            crossAxisAlignment: .center,
+            children: [Image.asset('assets/logo.png', width: 140, fit: .cover)],
+          ),
         ),
+        applyPadding: false,
       ),
-      applyPadding: false,
-    ),
 
-    PaneItemSeparator(),
+      PaneItemSeparator(),
 
-    PaneItemWidgetAdapter(child: const Account(), applyPadding: false),
+      PaneItemWidgetAdapter(child: const ThemeSelector(), applyPadding: false),
 
-    PaneItemWidgetAdapter(child: const ThemeSelector(), applyPadding: false),
+      PaneItemExpander(
+        title: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(authState.user?.name ?? 'usuario desconocido'),
 
-    PaneItemSeparator(),
+            Text(
+              authState.user?.role.label ?? 'rol desconocido',
+              style: .new(
+                fontSize: 12,
+                color: context.theme.resources.textFillColorSecondary,
+              ),
+            ),
+          ],
+        ),
+        icon: const WindowsIcon(FluentIcons.contact),
+        items: [
+          MainNavigationPages.account.paneItem,
 
-    ...MainNavigationPages.values.map((page) => page.paneItem),
-  ];
+          PaneItemAction(
+            title: const Text('Cerrar sesión'),
+            icon: const WindowsIcon(FluentIcons.sign_out),
+            onTap: authState.clearUser,
+          ),
+        ],
+      ),
+
+      PaneItemSeparator(),
+
+      ...MainNavigationPages.values
+          .where((page) => page.isMain)
+          .map((page) => page.paneItem),
+    ];
+  }
 }

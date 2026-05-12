@@ -37,7 +37,7 @@ class NotFound extends StatelessWidget {
                   children: [Icon(FluentIcons.home), Text('Ir al inicio')],
                 ),
               ),
-              onPressed: () => context.go(MainNavigationPages.home.path),
+              onPressed: () => context.go(MainNavigationPages.categories.path),
             ),
           ],
         ),
