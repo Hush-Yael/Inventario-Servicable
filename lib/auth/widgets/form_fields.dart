@@ -18,6 +18,8 @@ class FormFields extends HookWidget {
 
     final passwordController = useTextEditingController();
 
+    void submit([_]) => vm.submit(context);
+
     void changePass() {
       final value = (passwordController.text);
 
@@ -50,7 +52,7 @@ class FormFields extends HookWidget {
                         enabled: vm.enabled,
                         validator: AuthValidators.nameValidators,
                         onChanged: field.didChange,
-                        onFieldSubmitted: vm.submit,
+                        onFieldSubmitted: submit,
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -75,7 +77,7 @@ class FormFields extends HookWidget {
                   validator: AuthValidators.usernameValidators,
                 ),
                 onChanged: (v) => vm.changeAndClearAsyncError(v, field),
-                onFieldSubmitted: vm.submit,
+                onFieldSubmitted: submit,
               ),
             );
           },
@@ -92,7 +94,7 @@ class FormFields extends HookWidget {
                 controller: passwordController,
                 autovalidateMode: .onUserInteraction,
                 enabled: vm.enabled,
-                onFieldSubmitted: vm.submit,
+                onFieldSubmitted: submit,
                 revealMode: .peekAlways,
                 onSaved: field.didChange,
                 validator: (value) => vm.fieldSyncAndAsyncValidation(

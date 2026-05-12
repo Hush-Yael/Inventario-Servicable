@@ -1,14 +1,19 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_query/flutter_query.dart';
 import 'package:flutter_solidart/flutter_solidart.dart' hide Debouncer;
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/shared/debouncer.dart';
 import 'package:servicable_stock/shared/fn/mutations/single_add.dart';
 
-class FormWithAsyncValidation {
+class FormWithAsyncValidation<
+  MutInput,
+  Mutation extends MutationResult<dynamic, dynamic, MutInput, dynamic>
+> {
   final bool isModal;
+  Mutation? mutation;
 
   FormWithAsyncValidation({this.isModal = false});
 
@@ -57,26 +62,6 @@ class FormWithAsyncValidation {
 
     return controller;
   }
-}
-
-class ModalFormWithAsyncValidation<Input, NewObj extends Object>
-    extends FormWithAsyncValidation {
-  ModalFormWithAsyncValidation(this.db, {super.isModal = true});
-
-  final AppDatabase db;
-  SingleAddMutation<Input, NewObj>? mutation;
-
-  /// Used signals must be disposed manually to prevent crashing when using them when modal is opened again
-  void disposeSignals() {
-    isSubmitting.dispose();
-  }
-
-  /// Dispose signals when the widget that shows  is disposed
-  void useSignalsDispose() {
-    useEffect(() {
-      return disposeSignals;
-    }, []);
-  }
 
   Future<bool> checkAsyncErrorsBeforeSubmit() {
     throw UnimplementedError();
@@ -90,7 +75,7 @@ class ModalFormWithAsyncValidation<Input, NewObj extends Object>
     return val;
   }
 
-  Future<dynamic> submit(BuildContext modalContext) async {
+  Future<dynamic> submit(BuildContext context) async {
     if (isSubmitting.value || invalid) return;
 
     isSubmitting.value = true;
@@ -102,22 +87,51 @@ class ModalFormWithAsyncValidation<Input, NewObj extends Object>
 
     if (error) return isSubmitting.value = false;
 
+    final input = getFormData();
+
     try {
-      final input = getFormData();
-
-      await mutation!.mutateAsync(input);
-
-      if (modalContext.mounted) Navigator.of(modalContext).pop();
+      return await mutation!.mutateAsync(input);
     } catch (e) {
-      //
+      if (context.mounted) {
+        showMsg(context: context, message: e.toString(), severity: .error);
+      }
     } finally {
       isSubmitting.value = false;
     }
   }
 
-  Input getFormData() {
+  MutInput getFormData() {
     throw UnimplementedError(
       'getFormData must be implemented to perform mutation',
     );
+  }
+}
+
+class ModalFormWithAsyncValidation<Input, NewObj extends Object>
+    extends FormWithAsyncValidation<Input, SingleAddMutation<Input, NewObj>> {
+  ModalFormWithAsyncValidation(this.db, {super.isModal = true});
+
+  final AppDatabase db;
+
+  /// Used signals must be disposed manually to prevent crashing when using them when modal is opened again
+  void disposeSignals() {
+    isSubmitting.dispose();
+  }
+
+  /// Dispose signals when the widget that shows  is disposed
+  void useSignalsDispose() {
+    useEffect(() {
+      return disposeSignals;
+    }, []);
+  }
+
+  @override
+  // ignore: avoid_renaming_method_parameters
+  Future<dynamic> submit(BuildContext modalContext) async {
+    final result = await super.submit(modalContext);
+
+    if (modalContext.mounted) Navigator.of(modalContext).pop();
+
+    return result;
   }
 }

@@ -16,7 +16,8 @@ mixin FormMixin on AuthBaseVm {
   final usernameTakenMsg = 'El usuario ya existe';
   final userNotFoundMsg = 'El usuario no existe';
 
-  Future submit([dynamic fieldValue]) async {
+  @override
+  Future submit(context) async {
     if (isSubmitting.value || invalid) return;
 
     isSubmitting.value = true;
