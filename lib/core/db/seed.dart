@@ -112,24 +112,29 @@ enum Category {
 Future<void> seed(AppDatabase db) async {
   final pm = PasswordManager();
 
-  final salt = pm.generateSalt();
+  await db.batch((batch) async {
+    final salt = pm.generateSalt();
 
-  final pass = await pm.securePassword(passwordValue: 'admin', salt: salt);
+    final pass = await pm.securePassword(passwordValue: '123', salt: salt);
+    final currentYear = DateTime.now().year;
 
-  await db
-      .into(db.users)
-      .insert(
-        UsersCompanion.insert(
-          role: UserRole.admin,
-          name: 'Administrador',
-          username: 'admin',
+    final users = await Future.wait(
+      UserRole.values.map((role) async {
+        return UsersCompanion.insert(
+          role: role,
+          name: role.label,
+          username: role.name,
           password: base64Encode(await pass.extractBytes()),
           salt: base64Encode(salt),
-          lastLogin: Value(DateTime.now()),
-        ),
-      );
+          lastLogin: Value(
+            faker.date.dateTime(minYear: currentYear, maxYear: currentYear),
+          ),
+        );
+      }),
+    );
 
-  await db.batch((batch) async {
+    batch.insertAll(db.users, users);
+
     batch.insertAll(
       db.categories,
       Category.values.mapIndexed((i, cat) {
