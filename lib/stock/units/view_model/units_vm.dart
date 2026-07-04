@@ -6,16 +6,16 @@ import 'package:servicable_stock/core/utils/table_utils.dart';
 import 'package:servicable_stock/shared/fn/mutations/index.dart';
 import 'package:servicable_stock/stock/units/units_constants.dart';
 import 'package:servicable_stock/stock/units/units_models.dart';
-import 'package:servicable_stock/stock/units/units_service.dart';
+import 'package:servicable_stock/stock/units/units_repository.dart';
 import 'package:servicable_stock/stock/units/units_types.dart';
 import 'package:servicable_stock/stock/units/view_model/units_table_mixin.dart';
 import 'package:servicable_stock/stock/units/view_model/units_update_mixin.dart';
 
 class UnitsBaseVm with VmTrinaGridMixin {
   final bool isAdmin;
-  UnitsBaseVm(this.service, {required this.isAdmin});
+  UnitsBaseVm(this.repository, {required this.isAdmin});
 
-  final UnitsService service;
+  final UnitsRepository repository;
 
   MutationCommonParams<C, S>
   sharedMutParams<C extends Function, S extends Function>(
@@ -37,51 +37,51 @@ class UnitsBaseVm with VmTrinaGridMixin {
 }
 
 class UnitsVm extends UnitsBaseVm with TableMixin, UpdateMutationsMixin {
-  UnitsVm(super.service, {required super.isAdmin});
+  UnitsVm(super.repository, {required super.isAdmin});
 
   static final instance = Provider((ctx) {
     final db = AppDatabase.instance.of(ctx);
     final isAdmin = utils.isAdmin(ctx);
 
-    return UnitsVm(UnitsService(db, table: db.units), isAdmin: isAdmin);
+    return UnitsVm(UnitsRepository(db, table: db.units), isAdmin: isAdmin);
   });
 
   UnitsDeleteMutation createDeleteMutation(BuildContext context) =>
       createSingleDeleteMutation(
         sharedMutParams(
           context,
-          cb: service.deleteUnit,
+          cb: repository.deleteUnit,
           msgSuccessName: 'unidad',
         ),
         isAdmin: isAdmin,
       );
 
-  UnitsAddMutation createAddMutation(BuildContext context) =>
-      createSingleAddMutation(
-        sharedMutParams(context, cb: service.addUnit, msgSuccessName: 'unidad'),
-        createRow: createRow,
-        createNewObj: (variables, ctx) {
-          final (:identifier, :details, :soldTo, :productId) = variables;
-          final queryClient = ctx.client;
+  UnitsAddMutation createAddMutation(
+    BuildContext context,
+  ) => createSingleAddMutation(
+    sharedMutParams(context, cb: repository.addUnit, msgSuccessName: 'unidad'),
+    createRow: createRow,
+    createNewObj: (variables, ctx) {
+      final (:identifier, :details, :soldTo, :productId) = variables;
+      final queryClient = ctx.client;
 
-          final productOptions = queryClient
-              .getQueryData<ProductForeignKeyOptions>(
-                kUnitsProductOptionsQueryKey,
-              );
-
-          final productOption = productOptions?.firstWhere(
-            (p) => p.id == productId,
-          );
-
-          return UnitWithDetails(
-            id: -1,
-            identifier: identifier,
-            details: details,
-            soldTo: soldTo,
-            productId: productId,
-            productName: productOption?.label,
-            categoryName: productOption?.categoryName,
-          );
-        },
+      final productOptions = queryClient.getQueryData<ProductForeignKeyOptions>(
+        kUnitsProductOptionsQueryKey,
       );
+
+      final productOption = productOptions?.firstWhere(
+        (p) => p.id == productId,
+      );
+
+      return UnitWithDetails(
+        id: -1,
+        identifier: identifier,
+        details: details,
+        soldTo: soldTo,
+        productId: productId,
+        productName: productOption?.label,
+        categoryName: productOption?.categoryName,
+      );
+    },
+  );
 }

@@ -23,7 +23,7 @@ mixin FormMixin on AuthBaseVm {
     isSubmitting.value = true;
 
     final User? existingUser = await stall(
-      service.getExistingUser(username.value),
+      repository.getExistingUser(username.value),
       const Duration(milliseconds: 250),
     );
 
@@ -62,7 +62,7 @@ mixin FormMixin on AuthBaseVm {
       return false;
     }
 
-    await service.updateCurrentUserLastLogin(existingUser.id);
+    await repository.updateCurrentUserLastLogin(existingUser.id);
 
     authState.setUser(existingUser);
 
@@ -82,7 +82,7 @@ mixin FormMixin on AuthBaseVm {
       salt: newSalt,
     );
 
-    final User newUser = await service.signupNewUser(
+    final User newUser = await repository.signupNewUser(
       name: name.value,
       username: username.value,
       password: base64Encode(await secretPass.extractBytes()),
@@ -95,7 +95,7 @@ mixin FormMixin on AuthBaseVm {
   }
 
   Future<bool> checkUsername(String value) async {
-    final User? existingUser = await service.getExistingUser(value);
+    final User? existingUser = await repository.getExistingUser(value);
 
     final exists = existingUser != null;
 

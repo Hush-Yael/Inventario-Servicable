@@ -16,7 +16,7 @@ mixin ChangeRoleMutationMixin on TableMixin {
           );
         }
 
-        return await service.changeUsersRole(role, getIdsFromSelected);
+        return await repository.changeUsersRole(role, getIdsFromSelected);
       },
 
       onMutate: (role, _) {

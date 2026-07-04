@@ -34,12 +34,12 @@ class _ProductsScreen extends HookWidget {
 
     final ProductsQuery query = useQuery(
       kProductsQueryKey,
-      (context) => vm.service.getProducts(),
+      (context) => vm.repository.getProducts(),
     );
 
     final countsQuery = useQuery(
       kProductCountsQueryKey,
-      (_) => vm.service.fetchProductsCountsByCategory(),
+      (_) => vm.repository.fetchProductsCountsByCategory(),
     );
 
     final isAdmin = vm.isAdmin;

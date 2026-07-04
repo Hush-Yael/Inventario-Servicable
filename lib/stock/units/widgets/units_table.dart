@@ -22,12 +22,12 @@ class UnitsTable extends HookWidget {
 
     final productOptions = useQuery(
       kUnitsProductOptionsQueryKey,
-      vm.service.getProductOptions,
+      vm.repository.getProductOptions,
     );
 
     final categoryOptions = useQuery(
       kUnitsCategoryOptionsQueryKey,
-      vm.service.getCategoryOptions,
+      vm.repository.getCategoryOptions,
     );
 
     const ProductForeignKeyOptions emptyList = [];

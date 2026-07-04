@@ -38,7 +38,7 @@ mixin UpdateMutationsMixin on TableMixin {
       msgPropNameVocal: 'a',
       prop: ProductTableColumns.category.name,
       updateFn: (id, newCategory, [ctx]) async {
-        return service.changeProductCategoryId(
+        return repository.changeProductCategoryId(
           id,
           _getCategoryId(ctx!, newCategory),
         );
@@ -86,7 +86,7 @@ mixin UpdateMutationsMixin on TableMixin {
         msgPropName: 'código',
         prop: ProductTableColumns.code.name,
         updateFn: (id, newCode, [ctx]) =>
-            service.changeProductCode(id, newCode),
+            repository.changeProductCode(id, newCode),
       );
 
   SingleUpdateMutation createRenameMutation(BuildContext context) =>
@@ -94,7 +94,7 @@ mixin UpdateMutationsMixin on TableMixin {
         context,
         msgPropName: 'nombre',
         prop: ProductTableColumns.name.name,
-        updateFn: (id, newName, [ctx]) => service.renameProduct(id, newName),
+        updateFn: (id, newName, [ctx]) => repository.renameProduct(id, newName),
       );
 
   SingleUpdateMutation createChangeUnitsMutation(BuildContext context) =>
@@ -104,6 +104,6 @@ mixin UpdateMutationsMixin on TableMixin {
         msgPropNameVocal: 'as',
         prop: ProductTableColumns.units.name,
         updateFn: (id, newUnits, [ctx]) =>
-            service.changeProductUnits(id, newUnits),
+            repository.changeProductUnits(id, newUnits),
       );
 }

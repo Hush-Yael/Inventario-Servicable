@@ -8,7 +8,7 @@ import 'package:servicable_stock/stock/categories/view_model/categories_table_mi
 mixin MutationsMixin on TableMixin {
   CategoriesAddMutation createAddMutation(BuildContext context) =>
       createSingleAddMutation(
-        _params(context, service.addCategory),
+        _params(context, repository.addCategory),
         createRow: createRow,
         createNewObj: (name, ctx) {
           final now = DateTime.now();
@@ -28,14 +28,14 @@ mixin MutationsMixin on TableMixin {
       createSingleUpdateMutation(
         _params(
           context,
-          (id, newName, [ctx]) => service.updateCategoryName(id, newName),
+          (id, newName, [ctx]) => repository.updateCategoryName(id, newName),
         ),
         propName: CategoryTableColumns.name.name,
       );
 
   SingleDeleteMutation createDeleteMutation(BuildContext context) =>
       createSingleDeleteMutation(
-        _params(context, service.deleteCategory),
+        _params(context, repository.deleteCategory),
         isAdmin: isAdmin,
       );
 

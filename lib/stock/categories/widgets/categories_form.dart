@@ -55,7 +55,7 @@ class CategoriesForm extends HookWidget {
     if (text.isEmpty) return;
 
     final vm = CategoriesVm.instance.of(context);
-    final errorMsg = vm.service.validateCategoryNameLength(text);
+    final errorMsg = vm.repository.validateCategoryNameLength(text);
 
     if (errorMsg != null) {
       showMsg(context: context, message: errorMsg, severity: .error);

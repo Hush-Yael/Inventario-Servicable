@@ -1,27 +1,23 @@
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/auth/auth_constants.dart';
-import 'package:servicable_stock/core/services_repository.dart';
+import 'package:servicable_stock/core/repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
-import 'package:servicable_stock/users/service/users_repository.dart';
 import 'package:servicable_stock/users/users_types.dart';
 
-class UsersService extends ServiceRepository implements UsersRepository {
-  const UsersService(super.db, {required super.table});
+class UsersRepository extends Repository {
+  const UsersRepository(super.db, {required super.table});
 
-  @override
   Future<UsersList> fetchUsers() async {
     return await stall((db.select(db.users)).get());
   }
 
-  @override
   Future<int> deleteUsers(List<int> ids) async {
     final op = stall((db.delete(db.users)..where((u) => u.id.isIn(ids))).go());
 
     return await ensureMutated(op, 'No se pudieron eliminar los usuarios');
   }
 
-  @override
   Future<int> changeUsersRole(UserRole role, List<int> ids) async {
     final op = stall(
       (db.update(

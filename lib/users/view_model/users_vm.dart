@@ -3,32 +3,30 @@ import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
-import 'package:servicable_stock/users/service/users_repository.dart';
-import 'package:servicable_stock/users/service/users_service.dart';
-// import 'package:servicable_stock/users/service/users_fake_service.dart';
+import 'package:servicable_stock/users/users_repository.dart';
 import 'package:servicable_stock/users/users_types.dart';
 import 'package:servicable_stock/users/view_model/users_delete_mixin.dart';
 import 'package:servicable_stock/users/view_model/users_table_mixin.dart';
 import 'package:servicable_stock/users/view_model/users_change_role_mixin.dart';
 
 class UsersBaseVm with VmTrinaGridMixin {
-  final UsersRepository service;
+  final UsersRepository repository;
   final AuthState authState;
   final bool isAdmin;
 
   UsersBaseVm({
-    required this.service,
+    required this.repository,
     required this.authState,
     required this.isAdmin,
   });
 
-  late final Future<UsersList> Function() getUsers = service.fetchUsers;
+  late final Future<UsersList> Function() getUsers = repository.fetchUsers;
 }
 
 class UsersVm extends UsersBaseVm
     with TableMixin, DeleteMutationMixin, ChangeRoleMutationMixin {
   UsersVm({
-    required super.service,
+    required super.repository,
     required super.authState,
     required super.isAdmin,
   });
@@ -36,12 +34,11 @@ class UsersVm extends UsersBaseVm
   static final instance = Provider((ctx) {
     final AppDatabase db = AppDatabase.instance.of(ctx);
     final authState = AuthState.instance.of(ctx);
-    final usersService = UsersService(db, table: db.users);
+    final usersRepository = UsersRepository(db, table: db.users);
     final bool isAdmin = utils.isAdmin(ctx);
-    // final usersService = FakeUsersService();
 
     return UsersVm(
-      service: usersService,
+      repository: usersRepository,
       authState: authState,
       isAdmin: isAdmin,
     );

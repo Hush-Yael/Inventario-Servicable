@@ -24,7 +24,7 @@ class ProductsTable extends HookWidget {
 
     final categoryOptionsQuery = useQuery(
       kProductsCategoryOptionsQueryKey,
-      (_) => vm.service.fetchCategoryOptions(),
+      (_) => vm.repository.fetchCategoryOptions(),
     );
 
     const TableForeignKeyOptions emptyList = [];

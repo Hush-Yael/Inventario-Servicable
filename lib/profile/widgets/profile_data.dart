@@ -20,7 +20,7 @@ class Data extends HookWidget {
     final authState = AuthState.instance.of(context);
 
     vm.mutation = useMutation(
-      (input, _) async => await vm.service.updateCurrentUser(input),
+      (input, _) async => await vm.repository.updateCurrentUser(input),
       onError: (error, variables, onMutateResult, _) {
         showMsg(context: context, message: error.toString(), severity: .error);
       },

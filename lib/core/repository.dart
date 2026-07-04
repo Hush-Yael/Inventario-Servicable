@@ -4,12 +4,12 @@ import 'package:drift/native.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 
-/// All the services used in the app must have a db dependency
-class ServiceRepository {
+/// All the repositories used in the app must have a db dependency
+class Repository {
   final AppDatabase db;
   final TableInfo<Table, dynamic> table;
 
-  const ServiceRepository(this.db, {required this.table});
+  const Repository(this.db, {required this.table});
 
   static const int uniqueConflict = 2067;
   static const int foreignConstraint = 1811;

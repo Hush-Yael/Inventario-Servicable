@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
-import 'package:servicable_stock/core/services_repository.dart';
+import 'package:servicable_stock/core/repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/stock/categories/categories_constants.dart';
 import 'package:servicable_stock/stock/categories/categories_models.dart';
 import 'package:servicable_stock/stock/categories/categories_types.dart';
 
-class CategoriesService extends ServiceRepository {
-  CategoriesService(super.db, {required super.table});
+class CategoriesRepository extends Repository {
+  CategoriesRepository(super.db, {required super.table});
 
   Future<CategoriesList> fetchCategories() async {
     final $categories = db.categories.actualTableName;
@@ -82,7 +82,7 @@ class CategoriesService extends ServiceRepository {
       op,
       'No se pudo crear la categoría',
       onSqliteException: (error) =>
-          error.extendedResultCode == ServiceRepository.uniqueConflict
+          error.extendedResultCode == Repository.uniqueConflict
           ? 'Ya existe una categoría con el mismo nombre'
           : null,
     );
@@ -111,7 +111,7 @@ class CategoriesService extends ServiceRepository {
       op,
       'No se pudo actualizar el nombre de la categoría',
       onSqliteException: (error) =>
-          error.extendedResultCode == ServiceRepository.uniqueConflict
+          error.extendedResultCode == Repository.uniqueConflict
           ? 'Ese nombre de categoría ya existe'
           : null,
     );

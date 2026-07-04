@@ -11,7 +11,7 @@ mixin UpdateMutationsMixin on TableMixin {
         sharedMutParams(
           context,
           cb: (id, newIdentifier, [ctx]) =>
-              service.changeUnitIdentifier(id, newIdentifier),
+              repository.changeUnitIdentifier(id, newIdentifier),
           msgSuccessName: 'identificador',
         ),
         propName: UnitsTableColumns.identifier.name,
@@ -22,7 +22,7 @@ mixin UpdateMutationsMixin on TableMixin {
         sharedMutParams(
           context,
           cb: (id, newIdentifier, [ctx]) =>
-              service.changeUnitSoldTo(id, newIdentifier),
+              repository.changeUnitSoldTo(id, newIdentifier),
           msgSuccessName: 'adquiriente',
         ),
         propName: UnitsTableColumns.soldTo.name,
@@ -33,7 +33,8 @@ mixin UpdateMutationsMixin on TableMixin {
         sharedMutParams(
           context,
           msgSuccessName: 'producto asociado',
-          cb: (id, newPrice, [ctx]) => service.changeUnitProduct(id, newPrice),
+          cb: (id, newPrice, [ctx]) =>
+              repository.changeUnitProduct(id, newPrice),
           // update category name as well
           onSuccess: (event, ctx) {
             final productOptions = ctx.client
@@ -64,7 +65,7 @@ mixin UpdateMutationsMixin on TableMixin {
         sharedMutParams(
           context,
           cb: (id, newDetails, [ctx]) =>
-              service.changeUnitDetails(id, newDetails),
+              repository.changeUnitDetails(id, newDetails),
           msgSuccessName: 'detalles',
         ),
         propName: UnitsTableColumns.details.name,

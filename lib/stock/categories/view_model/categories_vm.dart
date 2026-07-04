@@ -2,24 +2,24 @@ import 'package:disco/disco.dart';
 import 'package:servicable_stock/core/db/db.dart';
 import 'package:servicable_stock/core/utils/fn.dart' as utils;
 import 'package:servicable_stock/core/utils/table_utils.dart';
-import 'package:servicable_stock/stock/categories/categories_service.dart';
+import 'package:servicable_stock/stock/categories/categories_repository.dart';
 import 'package:servicable_stock/stock/categories/view_model/categories_mutations_mixin.dart';
 import 'package:servicable_stock/stock/categories/view_model/categories_table_mixin.dart';
 
 class CategoriesBaseVm with VmTrinaGridMixin {
   final bool isAdmin;
-  final CategoriesService service;
+  final CategoriesRepository repository;
 
-  CategoriesBaseVm(this.service, {required this.isAdmin});
+  CategoriesBaseVm(this.repository, {required this.isAdmin});
 }
 
 class CategoriesVm extends CategoriesBaseVm with TableMixin, MutationsMixin {
-  CategoriesVm(super.service, {required super.isAdmin});
+  CategoriesVm(super.repository, {required super.isAdmin});
 
   static final instance = Provider((context) {
     final db = AppDatabase.instance.of(context);
-    final service = CategoriesService(db, table: db.categories);
+    final repository = CategoriesRepository(db, table: db.categories);
 
-    return CategoriesVm(service, isAdmin: utils.isAdmin(context));
+    return CategoriesVm(repository, isAdmin: utils.isAdmin(context));
   });
 }

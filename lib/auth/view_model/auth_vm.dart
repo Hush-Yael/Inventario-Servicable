@@ -1,6 +1,6 @@
 import 'package:disco/disco.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:servicable_stock/auth/auth_service.dart';
+import 'package:servicable_stock/auth/auth_repository.dart';
 import 'package:servicable_stock/auth/auth_state.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:servicable_stock/auth/view_model/auth_form_mixin.dart';
@@ -9,12 +9,12 @@ import 'package:servicable_stock/shared/form_with_async_validation.dart';
 import 'package:servicable_stock/shared/password_manager.dart';
 
 class AuthBaseVm extends FormWithAsyncValidation {
-  final AuthService service;
+  final AuthRepository repository;
   final BuildContext context;
   final AuthState authState;
 
   AuthBaseVm({
-    required this.service,
+    required this.repository,
     required this.context,
     required this.authState,
   });
@@ -35,7 +35,7 @@ class AuthBaseVm extends FormWithAsyncValidation {
 
 class AuthVm extends AuthBaseVm with FormMixin {
   AuthVm({
-    required super.service,
+    required super.repository,
     required super.context,
     required super.authState,
   });
@@ -44,7 +44,7 @@ class AuthVm extends AuthBaseVm with FormMixin {
     final db = AppDatabase.instance.of(ctx);
 
     return AuthVm(
-      service: AuthService(db, table: db.users),
+      repository: AuthRepository(db, table: db.users),
       authState: AuthState.instance.of(ctx),
       context: ctx,
     );

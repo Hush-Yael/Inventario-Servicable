@@ -17,7 +17,7 @@ mixin AddMixin on TableMixin {
       getStateManager: getStateManager,
       successName: 'producto',
       unauthPluralName: 'productos',
-      cb: service.addProduct,
+      cb: repository.addProduct,
     ),
     createRow: createRow,
     createNewObj: (variables, ctx) {

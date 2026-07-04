@@ -34,7 +34,7 @@ class _UnitsScreen extends HookWidget {
 
     final UnitsQuery query = useQuery(
       kUnitsQueryKey,
-      (_) => vm.service.getUnits(),
+      (_) => vm.repository.getUnits(),
     );
 
     final formVm = UnitsFormVm.instance;
@@ -66,7 +66,7 @@ class _UnitsScreen extends HookWidget {
                       ),
                       child: UnitsForm(
                         formVmProvider: formVm,
-                        getProductOptions: vm.service.getProductOptions,
+                        getProductOptions: vm.repository.getProductOptions,
                       ),
                     ),
                   ),

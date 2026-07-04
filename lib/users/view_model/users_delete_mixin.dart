@@ -13,7 +13,7 @@ mixin DeleteMutationMixin on TableMixin {
           return Future.error('No tienes permiso para eliminar usuarios');
         }
 
-        return await service.deleteUsers(getIdsFromSelected);
+        return await repository.deleteUsers(getIdsFromSelected);
       },
 
       onMutate: (variables, _) {

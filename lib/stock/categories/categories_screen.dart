@@ -32,7 +32,7 @@ class _CategoriesScreen extends HookWidget {
 
     final query = useQuery(
       kCategoriesQueryKey,
-      (context) => vm.service.fetchCategories(),
+      (context) => vm.repository.fetchCategories(),
     );
 
     return ScaffoldPage(

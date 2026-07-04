@@ -12,7 +12,7 @@ mixin DeleteMutationMixin on ProductsBaseVm {
       createSingleDeleteMutation(
         .new(
           context,
-          cb: service.deleteProduct,
+          cb: repository.deleteProduct,
           successName: 'producto',
           unauthPluralName: 'productos',
           queryKey: kProductsQueryKey,

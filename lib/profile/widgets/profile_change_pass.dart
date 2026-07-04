@@ -24,7 +24,7 @@ class ChangePass extends HookWidget {
     final newPassController = useTextEditingController();
 
     vm.mutation = useMutation(
-      (input, _) async => await vm.service.updateCurrentPassword(input),
+      (input, _) async => await vm.repository.updateCurrentPassword(input),
       onError: (error, variables, onMutateResult, _) {
         showMsg(context: context, message: error.toString(), severity: .error);
       },

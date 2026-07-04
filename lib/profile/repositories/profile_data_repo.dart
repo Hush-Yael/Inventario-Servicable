@@ -1,13 +1,17 @@
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
-import 'package:servicable_stock/core/services_repository.dart';
+import 'package:servicable_stock/core/repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/profile/profile_types.dart';
 
-class ProfileDataService extends ServiceRepository {
+class ProfileDataRepository extends Repository {
   final int currentId;
 
-  ProfileDataService(super.db, {required super.table, required this.currentId});
+  ProfileDataRepository(
+    super.db, {
+    required super.table,
+    required this.currentId,
+  });
 
   Future<User> updateCurrentUser(UpdateDataInput input) async {
     final op =
@@ -25,7 +29,7 @@ class ProfileDataService extends ServiceRepository {
         op,
         'No se pudieron actualizar los datos',
         onSqliteException: (error) =>
-            error.extendedResultCode == ServiceRepository.uniqueConflict
+            error.extendedResultCode == Repository.uniqueConflict
             ? 'Ese nombre de usuario ya está en uso'
             : null,
       ),

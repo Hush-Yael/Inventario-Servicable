@@ -1,15 +1,15 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_query/flutter_query.dart';
 import 'package:servicable_stock/core/db/db.dart';
-import 'package:servicable_stock/core/services_repository.dart';
+import 'package:servicable_stock/core/repository.dart';
 import 'package:servicable_stock/core/utils/fn.dart';
 import 'package:servicable_stock/shared/shared_models.dart';
 import 'package:servicable_stock/shared/shared_types.dart';
 import 'package:servicable_stock/stock/products/product_types.dart';
 import 'package:servicable_stock/stock/products/products_models.dart';
 
-class ProductsService extends ServiceRepository {
-  ProductsService(super.db, {required super.table});
+class ProductsRepository extends Repository {
+  ProductsRepository(super.db, {required super.table});
 
   final C = ProductsCompanion.new;
 
@@ -126,7 +126,7 @@ class ProductsService extends ServiceRepository {
       op,
       'No se pudo crear el producto',
       onSqliteException: (error) {
-        return error.extendedResultCode == ServiceRepository.uniqueConflict
+        return error.extendedResultCode == Repository.uniqueConflict
             ? 'Ya existe un producto con ese código'
             : null;
       },

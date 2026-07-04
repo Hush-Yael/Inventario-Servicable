@@ -1,15 +1,19 @@
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:servicable_stock/core/db/db.dart';
-import 'package:servicable_stock/core/services_repository.dart';
+import 'package:servicable_stock/core/repository.dart';
 import 'package:servicable_stock/profile/profile_types.dart';
 import 'package:servicable_stock/shared/password_manager.dart';
 
-class ProfilePassService extends ServiceRepository {
+class ProfilePassRepository extends Repository {
   final int currentId;
   final passwordManager = PasswordManager();
 
-  ProfilePassService(super.db, {required super.table, required this.currentId});
+  ProfilePassRepository(
+    super.db, {
+    required super.table,
+    required this.currentId,
+  });
 
   Future<bool> checkPassword({
     required String newPassword,
