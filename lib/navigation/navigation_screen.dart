@@ -57,20 +57,7 @@ class NavigationScreen extends StatelessWidget {
       PaneItemWidgetAdapter(child: const ThemeSelector(), applyPadding: false),
 
       PaneItemExpander(
-        title: Column(
-          crossAxisAlignment: .start,
-          children: [
-            Text(authState.user?.name ?? 'usuario desconocido'),
-
-            Text(
-              authState.user?.role.label ?? 'rol desconocido',
-              style: .new(
-                fontSize: 12,
-                color: context.theme.resources.textFillColorSecondary,
-              ),
-            ),
-          ],
-        ),
+        title: AccountInfo(authState: authState),
         icon: const WindowsIcon(FluentIcons.contact),
         items: [
           MainNavigationPages.account.paneItem,
@@ -89,5 +76,51 @@ class NavigationScreen extends StatelessWidget {
           .where((page) => page.isMain)
           .map((page) => page.paneItem),
     ];
+  }
+}
+
+class AccountInfo extends StatefulWidget {
+  const AccountInfo({super.key, required this.authState});
+
+  final AuthState authState;
+
+  @override
+  State<AccountInfo> createState() => _AccountInfoState();
+}
+
+class _AccountInfoState extends State<AccountInfo> {
+  @override
+  void initState() {
+    super.initState();
+    // Add listener to rebuild widget when notifier changes
+    widget.authState.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    // Remove listener to prevent memory leaks
+    widget.authState.removeListener(() {});
+    widget.authState.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        Text(widget.authState.user?.name ?? 'usuario desconocido'),
+
+        Text(
+          widget.authState.user?.role.label ?? 'rol desconocido',
+          style: .new(
+            fontSize: 12,
+            color: context.theme.resources.textFillColorSecondary,
+          ),
+        ),
+      ],
+    );
   }
 }
