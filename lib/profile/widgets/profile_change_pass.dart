@@ -35,11 +35,11 @@ class ChangePass extends HookWidget {
           severity: .success,
         );
 
-        vm.formKey.currentState!.validate();
-
         currentPassController.text = '';
         newPassController.text = '';
         confirmPassController.text = '';
+
+        vm.formKey.currentState?.reset();
 
         authState.setUser(user);
       },
